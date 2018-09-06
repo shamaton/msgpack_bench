@@ -1,41 +1,13 @@
 package bench_test
 
 import (
-	"bytes"
 	"fmt"
+	"math"
 	"testing"
 
 	shamaton "github.com/shamaton/msgpack"
 	vmihailenco "github.com/vmihailenco/msgpack"
 )
-
-type BenchChild struct {
-	Int    int
-	String string
-}
-type BenchMarkStruct struct {
-	Int    int
-	Uint   uint
-	Float  float32
-	Double float64
-	Bool   bool
-	String string
-	Array  *[]int
-	Map    map[string]uint
-	Child  BenchChild
-}
-
-var v = BenchMarkStruct{
-	Int:    -123,
-	Uint:   456,
-	Float:  1.234,
-	Double: 6.789,
-	Bool:   true,
-	String: "this is text.",
-	Array:  &[]int{1, 2, 3, 4, 5, 6, 7, 8, 9},
-	Map:    map[string]uint{"this": 1, "is": 2, "map": 3},
-	Child:  BenchChild{Int: 123456, String: "this is struct of child"},
-}
 
 // var v = 777
 //var v = "thit is test"
@@ -60,10 +32,15 @@ var v = BenchMarkStruct{
 
 //var v = time.Now()
 
-var data []byte
-var e2 error
+var (
+	Int    = int(1234567)
+	Float  = float64(math.MaxFloat64)
+	String = "this_string_is_used_for_benchmark"
 
-var dataInt []byte
+	dataInt    []byte
+	dataFloat  []byte
+	dataString []byte
+)
 
 func init() {
 
@@ -83,17 +60,23 @@ func init() {
 		}
 	*/
 
-	data, e2 = shamaton.Encode(v)
-	if e2 != nil {
-		fmt.Println("init err : ", e2)
-	}
-
-	dataInt, _ = shamaton.Encode(1234567)
+	dataInt, _ = shamaton.Encode(Int)
+	dataFloat, _ = shamaton.Encode(Float)
+	dataString, _ = shamaton.Encode(String)
 }
 
-func BenchmarkEncIntShamaton(b *testing.B) {
+func BenchmarkMsgEncIntShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(1234567)
+		_, err := shamaton.Encode(Int)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+func BenchmarkMsgEncIntVmihailenco(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := vmihailenco.Marshal(Int)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -101,9 +84,39 @@ func BenchmarkEncIntShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkEncIntVmihailenco(b *testing.B) {
+func BenchmarkMsgEncFloatShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := vmihailenco.Marshal(1234567)
+		_, err := shamaton.Encode(Float)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkMsgEncFloatVmihailenco(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := vmihailenco.Marshal(Float)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkMsgEncStringShamaton(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := shamaton.Encode(String)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkMsgEncStringVmihailenco(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := vmihailenco.Marshal(String)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -113,7 +126,7 @@ func BenchmarkEncIntVmihailenco(b *testing.B) {
 
 //////////////////////////
 
-func BenchmarkDecIntShamaton(b *testing.B) {
+func BenchmarkMsgDecIntShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r int
 		err := shamaton.Decode(dataInt, &r)
@@ -124,7 +137,7 @@ func BenchmarkDecIntShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkDecIntVmihailenco(b *testing.B) {
+func BenchmarkMsgDecIntVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r int
 		err := vmihailenco.Unmarshal(dataInt, &r)
@@ -135,20 +148,10 @@ func BenchmarkDecIntVmihailenco(b *testing.B) {
 	}
 }
 
-func BenchmarkDesShamaton(b *testing.B) {
+func BenchmarkMsgDecFloatShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		var r BenchMarkStruct
-		err := shamaton.Decode(data, &r)
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-	}
-}
-func BenchmarkDesVmihailenco(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		var r BenchMarkStruct
-		err := vmihailenco.Unmarshal(data, &r)
+		var r float64
+		err := shamaton.Decode(dataFloat, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -156,9 +159,20 @@ func BenchmarkDesVmihailenco(b *testing.B) {
 	}
 }
 
-func BenchmarkArrayShamaton(b *testing.B) {
+func BenchmarkMsgDecFloatVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsArray(v)
+		var r float64
+		err := vmihailenco.Unmarshal(dataFloat, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+func BenchmarkMsgDecStringShamaton(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r string
+		err := shamaton.Decode(dataString, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -166,33 +180,10 @@ func BenchmarkArrayShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkArrayVmihailenco(b *testing.B) {
+func BenchmarkMsgDecStringVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-
-		var buf bytes.Buffer
-		enc := vmihailenco.NewEncoder(&buf).StructAsArray(true)
-		err := enc.Encode(v)
-
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-	}
-}
-
-func BenchmarkMapShamaton(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsMap(v)
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-	}
-}
-
-func BenchmarkMapVmihailenco(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, err := vmihailenco.Marshal(v)
+		var r string
+		err := vmihailenco.Unmarshal(dataString, &r)
 		if err != nil {
 			fmt.Println(err)
 			break

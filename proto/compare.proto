@@ -1,0 +1,19 @@
+syntax = "proto3";
+package protocmp;
+
+message BenchMarkStruct {
+	int32  Int    = 1;
+	uint32 Uint   = 2;
+	float  Float  = 3;
+	double Double = 4;
+	bool   Bool   = 5;
+	string String = 6;
+	repeated int32 Array = 7;
+	map<string, uint32> Map = 8;
+    BenchChild child = 9;
+  }
+  
+  message BenchChild {
+	int32  Int    = 1;
+    string String = 2;
+  }

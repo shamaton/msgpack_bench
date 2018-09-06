@@ -22,6 +22,22 @@
   revision = "ba1fdae953817c647126f88300c07ccd370b61ab"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/shamaton/zeroformatter"
+  packages = [
+    ".",
+    "char",
+    "datetimeoffset"
+  ]
+  revision = "a6f97790196830bc048557605b6fffeb3b5fbd44"
+
+[[projects]]
+  name = "github.com/ugorji/go"
+  packages = ["codec"]
+  revision = "b4c50a2b199d93b13dc15e78929cfb23bfdf21ab"
+  version = "v1.1.1"
+
+[[projects]]
   name = "github.com/vmihailenco/msgpack"
   packages = [
     ".",
@@ -55,6 +71,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d7bf28e4c92358b9d06d87e2a9e56d9a00b35b8f3fe98d93437c47a8f5f7bd16"
+  inputs-digest = "2ff99946e5653180e88a3cfa3cd2358b743f998923cd425f90fe40314ab4870a"
   solver-name = "gps-cdcl"
   solver-version = 1
