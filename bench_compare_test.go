@@ -2,6 +2,7 @@ package bench_test
 
 import (
 	"bytes"
+	"encoding/gob"
 	"encoding/json"
 	"fmt"
 	"os"
@@ -61,6 +62,7 @@ var (
 	mapMsgpack   []byte
 	zeroFmtpack  []byte
 	jsonPack     []byte
+	gobPack      []byte
 	protoPack    []byte
 )
 
@@ -106,6 +108,14 @@ func init() {
 		os.Exit(1)
 	}
 	protoPack = d
+
+	buf := bytes.NewBuffer(nil)
+	err = gob.NewEncoder(buf).Encode(v)
+	if err != nil {
+		fmt.Println("init err : ", err)
+		os.Exit(1)
+	}
+	gobPack = buf.Bytes()
 }
 
 func BenchmarkCompareDecodeShamaton(b *testing.B) {
@@ -177,6 +187,18 @@ func BenchmarkCompareDecodeJson(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
 		err := json.Unmarshal(jsonPack, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareDecodeGob(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r BenchMarkStruct
+		buf := bytes.NewBuffer(gobPack)
+		err := gob.NewDecoder(buf).Decode(&r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -268,6 +290,17 @@ func BenchmarkCompareEncodeZeroformatter(b *testing.B) {
 func BenchmarkCompareEncodeJson(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := json.Marshal(v)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareEncodeGob(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		buf := bytes.NewBuffer(nil)
+		err := gob.NewEncoder(buf).Encode(v)
 		if err != nil {
 			fmt.Println(err)
 			break
