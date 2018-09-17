@@ -53,6 +53,9 @@ func init() {
 	dataByte, _ = shamaton.Encode(Byte)
 	dataInterfaces, _ = shamaton.Encode(Interfaces)
 	dataTime, _ = shamaton.Encode(Time)
+
+	initCompare()
+	initUseCase()
 }
 
 func BenchmarkMsgEncIntShamaton(b *testing.B) {

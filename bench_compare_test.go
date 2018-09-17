@@ -33,7 +33,7 @@ type BenchMarkStruct struct {
 	Child  BenchChild
 }
 
-var v = BenchMarkStruct{
+var bench = BenchMarkStruct{
 	Int:    -123,
 	Uint:   456,
 	Float:  1.234,
@@ -45,83 +45,83 @@ var v = BenchMarkStruct{
 	Child:  BenchChild{Int: 123456, String: "this is struct of child"},
 }
 
-var protov = &protocmp.BenchMarkStruct{
-	Int:     int32(v.Int),
-	Uint:    uint32(v.Uint),
-	Float:   v.Float,
-	Double:  v.Double,
-	Bool:    v.Bool,
-	String_: v.String,
+var protobench = &protocmp.BenchMarkStruct{
+	Int:     int32(bench.Int),
+	Uint:    uint32(bench.Uint),
+	Float:   bench.Float,
+	Double:  bench.Double,
+	Bool:    bench.Bool,
+	String_: bench.String,
 	Array:   []int32{1, 2, 3, 4, 5, 6, 7, 8, 9},
 	Map:     map[string]uint32{"this": 1, "is": 2, "map": 3},
 	Child:   &protocmp.BenchChild{Int: 123456, String_: "this is struct of child"},
 }
 
 var (
-	arrayMsgpack []byte
-	mapMsgpack   []byte
-	zeroFmtpack  []byte
-	jsonPack     []byte
-	gobPack      []byte
-	protoPack    []byte
+	arrayMsgpackBench []byte
+	mapMsgpackBench   []byte
+	zeroFmtpackBench  []byte
+	jsonPackBench     []byte
+	gobPackBench      []byte
+	protoPackBench    []byte
 )
 
 // for codec
 var (
-	mh = &codec.MsgpackHandle{}
+	mhBench = &codec.MsgpackHandle{}
 )
 
-func init() {
+func initCompare() {
 	// ugorji
-	mh.MapType = reflect.TypeOf(v)
+	mhBench.MapType = reflect.TypeOf(bench)
 
-	d, err := shamaton.EncodeStructAsArray(v)
+	d, err := shamaton.EncodeStructAsArray(bench)
 	if err != nil {
 		fmt.Println("init err : ", err)
 		os.Exit(1)
 	}
-	arrayMsgpack = d
-	d, err = shamaton.EncodeStructAsMap(v)
+	arrayMsgpackBench = d
+	d, err = shamaton.EncodeStructAsMap(bench)
 	if err != nil {
 		fmt.Println("init err : ", err)
 		os.Exit(1)
 	}
-	mapMsgpack = d
+	mapMsgpackBench = d
 
-	d, err = zeroformatter.Serialize(v)
+	d, err = zeroformatter.Serialize(bench)
 	if err != nil {
 		fmt.Println("init err : ", err)
 		os.Exit(1)
 	}
-	zeroFmtpack = d
+	zeroFmtpackBench = d
 
-	d, err = json.Marshal(v)
+	d, err = json.Marshal(bench)
 	if err != nil {
 		fmt.Println("init err : ", err)
 		os.Exit(1)
 	}
-	jsonPack = d
+	jsonPackBench = d
 
-	d, err = proto.Marshal(protov)
+	d, err = proto.Marshal(protobench)
 	if err != nil {
 		fmt.Println("init err : ", err)
 		os.Exit(1)
 	}
-	protoPack = d
+	protoPackBench = d
 
 	buf := bytes.NewBuffer(nil)
-	err = gob.NewEncoder(buf).Encode(v)
+	err = gob.NewEncoder(buf).Encode(bench)
 	if err != nil {
 		fmt.Println("init err : ", err)
 		os.Exit(1)
 	}
-	gobPack = buf.Bytes()
+	gobPackBench = buf.Bytes()
 }
 
 func BenchmarkCompareDecodeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := shamaton.DecodeStructAsMap(mapMsgpack, &r)
+		err := shamaton.DecodeStructAsMap(mapMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -131,7 +131,7 @@ func BenchmarkCompareDecodeShamaton(b *testing.B) {
 func BenchmarkCompareDecodeVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := vmihailenco.Unmarshal(mapMsgpack, &r)
+		err := vmihailenco.Unmarshal(mapMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -142,7 +142,7 @@ func BenchmarkCompareDecodeVmihailenco(b *testing.B) {
 func BenchmarkCompareDecodeArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := shamaton.DecodeStructAsArray(arrayMsgpack, &r)
+		err := shamaton.DecodeStructAsArray(arrayMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -152,7 +152,7 @@ func BenchmarkCompareDecodeArrayShamaton(b *testing.B) {
 func BenchmarkCompareDecodeArrayVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := vmihailenco.Unmarshal(arrayMsgpack, &r)
+		err := vmihailenco.Unmarshal(arrayMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -163,7 +163,7 @@ func BenchmarkCompareDecodeArrayVmihailenco(b *testing.B) {
 func BenchmarkCompareDecodeUgorji(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		dec := codec.NewDecoderBytes(mapMsgpack, mh)
+		dec := codec.NewDecoderBytes(mapMsgpackBench, mhBench)
 		err := dec.Decode(&r)
 		if err != nil {
 			fmt.Println(err)
@@ -175,7 +175,7 @@ func BenchmarkCompareDecodeUgorji(b *testing.B) {
 func BenchmarkCompareDecodeZeroformatter(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := zeroformatter.Deserialize(&r, zeroFmtpack)
+		err := zeroformatter.Deserialize(&r, zeroFmtpackBench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -186,7 +186,7 @@ func BenchmarkCompareDecodeZeroformatter(b *testing.B) {
 func BenchmarkCompareDecodeJson(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := json.Unmarshal(jsonPack, &r)
+		err := json.Unmarshal(jsonPackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -197,7 +197,7 @@ func BenchmarkCompareDecodeJson(b *testing.B) {
 func BenchmarkCompareDecodeGob(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		buf := bytes.NewBuffer(gobPack)
+		buf := bytes.NewBuffer(gobPackBench)
 		err := gob.NewDecoder(buf).Decode(&r)
 		if err != nil {
 			fmt.Println(err)
@@ -209,7 +209,7 @@ func BenchmarkCompareDecodeGob(b *testing.B) {
 func BenchmarkCompareDecodeProtocolBuffer(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r protocmp.BenchMarkStruct
-		err := proto.Unmarshal(protoPack, &r)
+		err := proto.Unmarshal(protoPackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -221,7 +221,7 @@ func BenchmarkCompareDecodeProtocolBuffer(b *testing.B) {
 
 func BenchmarkCompareEncodeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsMap(v)
+		_, err := shamaton.EncodeStructAsMap(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -231,7 +231,7 @@ func BenchmarkCompareEncodeShamaton(b *testing.B) {
 
 func BenchmarkCompareEncodeVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := vmihailenco.Marshal(v)
+		_, err := vmihailenco.Marshal(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -241,7 +241,7 @@ func BenchmarkCompareEncodeVmihailenco(b *testing.B) {
 
 func BenchmarkCompareEncodeArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsArray(v)
+		_, err := shamaton.EncodeStructAsArray(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -254,7 +254,7 @@ func BenchmarkCompareEncodeArrayVmihailenco(b *testing.B) {
 
 		var buf bytes.Buffer
 		enc := vmihailenco.NewEncoder(&buf).StructAsArray(true)
-		err := enc.Encode(v)
+		err := enc.Encode(bench)
 
 		if err != nil {
 			fmt.Println(err)
@@ -267,8 +267,8 @@ func BenchmarkCompareEncodeUgorji(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
 		b := []byte{}
-		enc := codec.NewEncoderBytes(&b, mh)
-		err := enc.Encode(v)
+		enc := codec.NewEncoderBytes(&b, mhBench)
+		err := enc.Encode(bench)
 
 		if err != nil {
 			fmt.Println(err)
@@ -279,7 +279,7 @@ func BenchmarkCompareEncodeUgorji(b *testing.B) {
 
 func BenchmarkCompareEncodeZeroformatter(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := zeroformatter.Serialize(v)
+		_, err := zeroformatter.Serialize(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -289,7 +289,7 @@ func BenchmarkCompareEncodeZeroformatter(b *testing.B) {
 
 func BenchmarkCompareEncodeJson(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := json.Marshal(v)
+		_, err := json.Marshal(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -300,7 +300,7 @@ func BenchmarkCompareEncodeJson(b *testing.B) {
 func BenchmarkCompareEncodeGob(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		buf := bytes.NewBuffer(nil)
-		err := gob.NewEncoder(buf).Encode(v)
+		err := gob.NewEncoder(buf).Encode(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -310,7 +310,7 @@ func BenchmarkCompareEncodeGob(b *testing.B) {
 
 func BenchmarkCompareEncodeProtocolBuffer(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := proto.Marshal(protov)
+		_, err := proto.Marshal(protobench)
 		if err != nil {
 			fmt.Println(err)
 			break
