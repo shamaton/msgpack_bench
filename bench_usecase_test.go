@@ -74,7 +74,7 @@ func initUseCase() {
 	mhUser.MapType = reflect.TypeOf(user)
 
 	// item
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 100; i++ {
 		name := "item" + fmt.Sprint(i)
 		item := Item{
 			ID:     i,
