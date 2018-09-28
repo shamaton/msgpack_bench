@@ -116,6 +116,35 @@ func initCompare() {
 		os.Exit(1)
 	}
 	gobPackBench = buf.Bytes()
+
+	// check
+	check()
+}
+
+func check() {
+	var mp, arr, vmp, varr, c BenchMarkStruct
+	shamaton.DecodeStructAsArray(arrayMsgpackBench, &arr)
+	shamaton.DecodeStructAsMap(mapMsgpackBench, &mp)
+	vmihailenco.Unmarshal(arrayMsgpackBench, &varr)
+	vmihailenco.Unmarshal(mapMsgpackBench, &vmp)
+	codec.NewDecoderBytes(mapMsgpackBench, mhBench).Decode(&c)
+
+	if !reflect.DeepEqual(mp, arr) {
+		fmt.Println("not equal")
+		os.Exit(1)
+	}
+	if !reflect.DeepEqual(mp, varr) {
+		fmt.Println("not equal")
+		os.Exit(1)
+	}
+	if !reflect.DeepEqual(mp, vmp) {
+		fmt.Println("not equal")
+		os.Exit(1)
+	}
+	if !reflect.DeepEqual(mp, c) {
+		fmt.Println("not equal")
+		os.Exit(1)
+	}
 }
 
 func BenchmarkCompareDecodeShamaton(b *testing.B) {
