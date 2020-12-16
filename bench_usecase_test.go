@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"math"
 	"os"
-	"reflect"
 	"testing"
 
 	"github.com/golang/protobuf/proto"
@@ -71,7 +70,7 @@ var (
 
 func initUseCase() {
 	// ugorji
-	mhUser.MapType = reflect.TypeOf(user)
+	//mhUser.MapType = reflect.TypeOf(user)
 
 	// item
 	for i := 0; i < 100; i++ {
@@ -271,7 +270,8 @@ func BenchmarkUseCaseEncodeArrayVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
 		var buf bytes.Buffer
-		enc := vmihailenco.NewEncoder(&buf).StructAsArray(true)
+		enc := vmihailenco.NewEncoder(&buf)
+		enc.UseArrayEncodedStructs(true)
 		err := enc.Encode(user)
 
 		if err != nil {

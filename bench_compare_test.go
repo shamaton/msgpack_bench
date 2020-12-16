@@ -73,7 +73,7 @@ var (
 
 func initCompare() {
 	// ugorji
-	mhBench.MapType = reflect.TypeOf(bench)
+	//mhBench.MapType = reflect.TypeOf(bench)
 
 	d, err := shamaton.EncodeStructAsArray(bench)
 	if err != nil {
@@ -282,7 +282,8 @@ func BenchmarkCompareEncodeArrayVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
 		var buf bytes.Buffer
-		enc := vmihailenco.NewEncoder(&buf).StructAsArray(true)
+		enc := vmihailenco.NewEncoder(&buf)
+		enc.UseArrayEncodedStructs(true)
 		err := enc.Encode(bench)
 
 		if err != nil {
