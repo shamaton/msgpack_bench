@@ -1,4 +1,4 @@
-package bench_test
+package bench
 
 import (
 	"bytes"
@@ -7,32 +7,17 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"reflect"
 	"testing"
 
 	"github.com/golang/protobuf/proto"
 	shamaton "github.com/shamaton/msgpack"
 	"github.com/shamaton/msgpack_bench/protocmp"
+	shamatongen "github.com/shamaton/msgpackgen/msgpack"
 	"github.com/shamaton/zeroformatter"
 	"github.com/ugorji/go/codec"
-	vmihailenco "github.com/vmihailenco/msgpack"
+	vmihailenco "github.com/vmihailenco/msgpack/v5"
 )
-
-type Item struct {
-	ID     int
-	Name   string
-	Effect float32
-	Num    uint
-}
-
-type User struct {
-	ID       int
-	Name     string
-	Level    uint
-	Exp      uint64
-	Type     bool
-	EquipIDs []uint32
-	Items    []Item
-}
 
 var user = User{
 	ID:       12345,
@@ -133,6 +118,120 @@ func initUseCase() {
 		os.Exit(1)
 	}
 	gobPackUser = buf.Bytes()
+
+	{
+		dd, err := shamatongen.EncodeAsArray(user)
+		if err != nil {
+			fmt.Println("init err : ", err)
+			os.Exit(1)
+		}
+		if !reflect.DeepEqual(arrayMsgpackUser, dd) {
+			fmt.Println("not equal as array")
+			os.Exit(1)
+		}
+		dd, err = shamatongen.EncodeAsMap(user)
+		if err != nil {
+			fmt.Println("init err : ", err)
+			os.Exit(1)
+		}
+		if !reflect.DeepEqual(mapMsgpackUser, dd) {
+			fmt.Println("not equal as map")
+			os.Exit(1)
+		}
+	}
+
+	{
+		var v User
+		err := shamaton.DecodeStructAsMap(mapMsgpackUser, &v)
+		if err != nil {
+			fmt.Println("init err : ", err)
+			os.Exit(1)
+		}
+		if err = checkUseCaseDecodeValue(v); err != nil {
+			fmt.Println("init err : ", err)
+			os.Exit(1)
+		}
+	}
+	{
+		var v User
+		err := shamaton.DecodeStructAsArray(arrayMsgpackUser, &v)
+		if err != nil {
+			fmt.Println("init err : ", err)
+			os.Exit(1)
+		}
+		if err = checkUseCaseDecodeValue(v); err != nil {
+			fmt.Println("init err : ", err)
+			os.Exit(1)
+		}
+	}
+	{
+		var v User
+		err := shamatongen.DecodeAsMap(mapMsgpackUser, &v)
+		if err != nil {
+			fmt.Println("init err : ", err)
+			os.Exit(1)
+		}
+		if err = checkUseCaseDecodeValue(v); err != nil {
+			fmt.Println("init err : ", err)
+			os.Exit(1)
+		}
+	}
+	{
+		var v User
+		err := shamatongen.DecodeAsArray(arrayMsgpackUser, &v)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		if err = checkUseCaseDecodeValue(v); err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	}
+}
+
+func checkUseCaseDecodeValue(u User) error {
+	if len(user.Items) != len(u.Items) {
+		return fmt.Errorf("item length is different %d, %d", len(user.Items), len(u.Items))
+	}
+
+	if user.ID != u.ID {
+		return fmt.Errorf("id is different %d, %d", user.ID, u.ID)
+	}
+	if user.Name != u.Name {
+		return fmt.Errorf("name is different %s, %s", user.Name, u.Name)
+	}
+	if user.Type != u.Type {
+		return fmt.Errorf("type is different %v, %v", user.Type, u.Type)
+	}
+	if user.Level != u.Level {
+		return fmt.Errorf("level is different %d, %d", user.Level, u.Level)
+	}
+	if user.Exp != u.Exp {
+		return fmt.Errorf("exp is different %d, %d", user.Exp, u.Exp)
+	}
+
+	for i := range user.EquipIDs {
+		if user.EquipIDs[i] != u.EquipIDs[i] {
+			return fmt.Errorf("equip id is different %d, %d, %d", i, user.EquipIDs[i], u.EquipIDs[i])
+		}
+	}
+
+	for i := range user.Items {
+		if user.Items[i].ID != u.Items[i].ID {
+			return fmt.Errorf("item id is different, %d, %d, %d", i, user.Items[i].ID, u.Items[i].ID)
+		}
+		if user.Items[i].Name != u.Items[i].Name {
+			return fmt.Errorf("item name is different %d, %s, %s", i, user.Items[i].Name, u.Items[i].Name)
+		}
+		if user.Items[i].Effect != u.Items[i].Effect {
+			return fmt.Errorf("item effect is different %d, %f, %f", i, user.Items[i].Effect, u.Items[i].Effect)
+		}
+		if user.Items[i].Num != u.Items[i].Num {
+			return fmt.Errorf("item num is different %d, %d, %d", i, user.Items[i].Num, u.Items[i].Num)
+		}
+	}
+	return nil
 }
 
 func BenchmarkUseCaseDecodeShamaton(b *testing.B) {
@@ -145,10 +244,23 @@ func BenchmarkUseCaseDecodeShamaton(b *testing.B) {
 		}
 	}
 }
+
 func BenchmarkUseCaseDecodeVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r User
 		err := vmihailenco.Unmarshal(mapMsgpackUser, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkUseCaseDecodeShamatonGen(b *testing.B) {
+
+	for i := 0; i < b.N; i++ {
+		var r User
+		err := shamatongen.DecodeAsMap(mapMsgpackUser, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -166,10 +278,33 @@ func BenchmarkUseCaseDecodeArrayShamaton(b *testing.B) {
 		}
 	}
 }
+
 func BenchmarkUseCaseDecodeArrayVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r User
 		err := vmihailenco.Unmarshal(arrayMsgpackUser, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkUseCaseDecodeArrayShamatonGen(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r User
+		err := shamatongen.DecodeAsArray(arrayMsgpackUser, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkUseCaseDecodeTinylib(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r User
+		_, err := r.UnmarshalMsg(mapMsgpackUser)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -246,6 +381,16 @@ func BenchmarkUseCaseEncodeShamaton(b *testing.B) {
 	}
 }
 
+func BenchmarkUseCaseEncodeShamatonGen(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := shamatongen.EncodeAsMap(user)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
 func BenchmarkUseCaseEncodeVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(user)
@@ -266,6 +411,16 @@ func BenchmarkUseCaseEncodeArrayShamaton(b *testing.B) {
 	}
 }
 
+func BenchmarkUseCaseEncodeArrayShamatonGen(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := shamatongen.EncodeAsArray(user)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
 func BenchmarkUseCaseEncodeArrayVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
@@ -274,6 +429,16 @@ func BenchmarkUseCaseEncodeArrayVmihailenco(b *testing.B) {
 		enc.UseArrayEncodedStructs(true)
 		err := enc.Encode(user)
 
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkUseCaseEncodeTinylib(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := user.MarshalMsg(nil)
 		if err != nil {
 			fmt.Println(err)
 			break

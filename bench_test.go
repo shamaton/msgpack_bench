@@ -1,4 +1,4 @@
-package bench_test
+package bench
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"time"
 
 	shamaton "github.com/shamaton/msgpack"
-	vmihailenco "github.com/vmihailenco/msgpack"
+	vmihailenco "github.com/vmihailenco/msgpack/v5"
 )
 
 var (
@@ -64,6 +64,7 @@ func init() {
 
 	initCompare()
 	initUseCase()
+	RegisterGeneratedResolver()
 }
 
 func BenchmarkMsgEncIntShamaton(b *testing.B) {

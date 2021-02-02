@@ -1,4 +1,4 @@
-package bench_test
+package bench
 
 import (
 	"bytes"
@@ -12,26 +12,11 @@ import (
 	"github.com/golang/protobuf/proto"
 	shamaton "github.com/shamaton/msgpack"
 	"github.com/shamaton/msgpack_bench/protocmp"
+	shamatongen "github.com/shamaton/msgpackgen/msgpack"
 	"github.com/shamaton/zeroformatter"
 	"github.com/ugorji/go/codec"
-	vmihailenco "github.com/vmihailenco/msgpack"
+	vmihailenco "github.com/vmihailenco/msgpack/v5"
 )
-
-type BenchChild struct {
-	Int    int
-	String string
-}
-type BenchMarkStruct struct {
-	Int    int
-	Uint   uint
-	Float  float32
-	Double float64
-	Bool   bool
-	String string
-	Array  []int
-	Map    map[string]uint
-	Child  BenchChild
-}
 
 var bench = BenchMarkStruct{
 	Int:    -123,
@@ -122,14 +107,25 @@ func initCompare() {
 }
 
 func check() {
-	var mp, arr, vmp, varr, c BenchMarkStruct
+	var mp, arr, genmp, genarr, vmp, varr, tmp, c BenchMarkStruct
 	shamaton.DecodeStructAsArray(arrayMsgpackBench, &arr)
 	shamaton.DecodeStructAsMap(mapMsgpackBench, &mp)
+	shamatongen.DecodeAsArray(arrayMsgpackBench, &genarr)
+	shamatongen.DecodeAsMap(mapMsgpackBench, &genmp)
 	vmihailenco.Unmarshal(arrayMsgpackBench, &varr)
 	vmihailenco.Unmarshal(mapMsgpackBench, &vmp)
+	tmp.UnmarshalMsg(mapMsgpackBench)
 	codec.NewDecoderBytes(mapMsgpackBench, mhBench).Decode(&c)
 
 	if !reflect.DeepEqual(mp, arr) {
+		fmt.Println("not equal")
+		os.Exit(1)
+	}
+	if !reflect.DeepEqual(mp, genarr) {
+		fmt.Println("not equal")
+		os.Exit(1)
+	}
+	if !reflect.DeepEqual(mp, genmp) {
 		fmt.Println("not equal")
 		os.Exit(1)
 	}
@@ -138,6 +134,10 @@ func check() {
 		os.Exit(1)
 	}
 	if !reflect.DeepEqual(mp, vmp) {
+		fmt.Println("not equal")
+		os.Exit(1)
+	}
+	if !reflect.DeepEqual(mp, tmp) {
 		fmt.Println("not equal")
 		os.Exit(1)
 	}
@@ -157,10 +157,33 @@ func BenchmarkCompareDecodeShamaton(b *testing.B) {
 		}
 	}
 }
+
+func BenchmarkCompareDecodeTinylib(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r BenchMarkStruct
+		_, err := r.UnmarshalMsg(mapMsgpackBench)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
 func BenchmarkCompareDecodeVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
 		err := vmihailenco.Unmarshal(mapMsgpackBench, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareDecodeShamatonGen(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r BenchMarkStruct
+		err := shamatongen.DecodeAsMap(mapMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -178,10 +201,22 @@ func BenchmarkCompareDecodeArrayShamaton(b *testing.B) {
 		}
 	}
 }
+
 func BenchmarkCompareDecodeArrayVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
 		err := vmihailenco.Unmarshal(arrayMsgpackBench, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareDecodeArrayShamatonGen(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r BenchMarkStruct
+		err := shamatongen.DecodeAsArray(arrayMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -248,6 +283,16 @@ func BenchmarkCompareDecodeProtocolBuffer(b *testing.B) {
 
 /////////////////////////////////////////////////////////////////
 
+func BenchmarkCompareEncodeShamatonGen(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := shamatongen.EncodeAsMap(bench)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
 func BenchmarkCompareEncodeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.EncodeStructAsMap(bench)
@@ -258,9 +303,29 @@ func BenchmarkCompareEncodeShamaton(b *testing.B) {
 	}
 }
 
+func BenchmarkCompareEncodeTinylib(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := bench.MarshalMsg(nil)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
 func BenchmarkCompareEncodeVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(bench)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareEncodeArrayShamatonGen(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := shamatongen.EncodeAsArray(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
