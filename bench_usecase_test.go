@@ -383,7 +383,7 @@ func BenchmarkUseCaseEncodeShamaton(b *testing.B) {
 
 func BenchmarkUseCaseEncodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsMap(user)
+		_, err := shamatongen.EncodeAsMap(&user)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -413,7 +413,7 @@ func BenchmarkUseCaseEncodeArrayShamaton(b *testing.B) {
 
 func BenchmarkUseCaseEncodeArrayShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsArray(user)
+		_, err := shamatongen.EncodeAsArray(&user)
 		if err != nil {
 			fmt.Println(err)
 			break

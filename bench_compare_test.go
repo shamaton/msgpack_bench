@@ -285,7 +285,7 @@ func BenchmarkCompareDecodeProtocolBuffer(b *testing.B) {
 
 func BenchmarkCompareEncodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsMap(bench)
+		_, err := shamatongen.EncodeAsMap(&bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -325,7 +325,7 @@ func BenchmarkCompareEncodeVmihailenco(b *testing.B) {
 
 func BenchmarkCompareEncodeArrayShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsArray(bench)
+		_, err := shamatongen.EncodeAsArray(&bench)
 		if err != nil {
 			fmt.Println(err)
 			break
