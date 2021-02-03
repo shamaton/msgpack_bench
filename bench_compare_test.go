@@ -147,32 +147,10 @@ func check() {
 	}
 }
 
-func BenchmarkCompareDecodeShamaton(b *testing.B) {
+func BenchmarkCompareDecodeArrayShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := shamaton.DecodeStructAsMap(mapMsgpackBench, &r)
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-	}
-}
-
-func BenchmarkCompareDecodeTinylib(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		var r BenchMarkStruct
-		_, err := r.UnmarshalMsg(mapMsgpackBench)
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-	}
-}
-
-func BenchmarkCompareDecodeVmihailenco(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		var r BenchMarkStruct
-		err := vmihailenco.Unmarshal(mapMsgpackBench, &r)
+		err := shamatongen.DecodeAsArray(arrayMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -191,6 +169,17 @@ func BenchmarkCompareDecodeShamatonGen(b *testing.B) {
 	}
 }
 
+func BenchmarkCompareDecodeTinylib(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r BenchMarkStruct
+		_, err := r.UnmarshalMsg(mapMsgpackBench)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
 func BenchmarkCompareDecodeArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
@@ -202,21 +191,10 @@ func BenchmarkCompareDecodeArrayShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareDecodeArrayVmihailenco(b *testing.B) {
+func BenchmarkCompareDecodeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := vmihailenco.Unmarshal(arrayMsgpackBench, &r)
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-	}
-}
-
-func BenchmarkCompareDecodeArrayShamatonGen(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		var r BenchMarkStruct
-		err := shamatongen.DecodeAsArray(arrayMsgpackBench, &r)
+		err := shamaton.DecodeStructAsMap(mapMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -236,10 +214,32 @@ func BenchmarkCompareDecodeUgorji(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareDecodeZeroformatter(b *testing.B) {
+func BenchmarkCompareDecodeArrayVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := zeroformatter.Deserialize(&r, zeroFmtpackBench)
+		err := vmihailenco.Unmarshal(arrayMsgpackBench, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareDecodeVmihailenco(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r BenchMarkStruct
+		err := vmihailenco.Unmarshal(mapMsgpackBench, &r)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareDecodeProtocolBuffer(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		var r protocmp.BenchMarkStruct
+		err := proto.Unmarshal(protoPackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -270,10 +270,10 @@ func BenchmarkCompareDecodeGob(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareDecodeProtocolBuffer(b *testing.B) {
+func BenchmarkCompareDecodeZeroformatter(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		var r protocmp.BenchMarkStruct
-		err := proto.Unmarshal(protoPackBench, &r)
+		var r BenchMarkStruct
+		err := zeroformatter.Deserialize(&r, zeroFmtpackBench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -283,19 +283,9 @@ func BenchmarkCompareDecodeProtocolBuffer(b *testing.B) {
 
 /////////////////////////////////////////////////////////////////
 
-func BenchmarkCompareEncodeShamatonGen(b *testing.B) {
+func BenchmarkCompareEncodeArrayShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsMap(&bench)
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-	}
-}
-
-func BenchmarkCompareEncodeShamaton(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsMap(bench)
+		_, err := shamatongen.EncodeAsArray(&bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -313,19 +303,9 @@ func BenchmarkCompareEncodeTinylib(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareEncodeVmihailenco(b *testing.B) {
+func BenchmarkCompareEncodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := vmihailenco.Marshal(bench)
-		if err != nil {
-			fmt.Println(err)
-			break
-		}
-	}
-}
-
-func BenchmarkCompareEncodeArrayShamatonGen(b *testing.B) {
-	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsArray(&bench)
+		_, err := shamatongen.EncodeAsMap(&bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -336,6 +316,30 @@ func BenchmarkCompareEncodeArrayShamatonGen(b *testing.B) {
 func BenchmarkCompareEncodeArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.EncodeStructAsArray(bench)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareEncodeShamaton(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		_, err := shamaton.EncodeStructAsMap(bench)
+		if err != nil {
+			fmt.Println(err)
+			break
+		}
+	}
+}
+
+func BenchmarkCompareEncodeUgorji(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+
+		b := []byte{}
+		enc := codec.NewEncoderBytes(&b, mhBench)
+		err := enc.Encode(bench)
+
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -358,13 +362,9 @@ func BenchmarkCompareEncodeArrayVmihailenco(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareEncodeUgorji(b *testing.B) {
+func BenchmarkCompareEncodeVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-
-		b := []byte{}
-		enc := codec.NewEncoderBytes(&b, mhBench)
-		err := enc.Encode(bench)
-
+		_, err := vmihailenco.Marshal(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -372,9 +372,9 @@ func BenchmarkCompareEncodeUgorji(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareEncodeZeroformatter(b *testing.B) {
+func BenchmarkCompareEncodeProtocolBuffer(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := zeroformatter.Serialize(bench)
+		_, err := proto.Marshal(protobench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -403,9 +403,9 @@ func BenchmarkCompareEncodeGob(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareEncodeProtocolBuffer(b *testing.B) {
+func BenchmarkCompareEncodeZeroformatter(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := proto.Marshal(protobench)
+		_, err := zeroformatter.Serialize(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
