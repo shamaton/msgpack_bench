@@ -1,6 +1,7 @@
 package bench
 
 //go:generate go run github.com/shamaton/msgpackgen
+////go:generate msgpackgen -v
 //go:generate go run github.com/tinylib/msgp -o msgp_gen.go
 
 type BenchChild struct {

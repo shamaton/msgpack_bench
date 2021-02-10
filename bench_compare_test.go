@@ -108,10 +108,10 @@ func initCompare() {
 
 func check() {
 	var mp, arr, genmp, genarr, vmp, varr, tmp, c BenchMarkStruct
-	shamaton.DecodeStructAsArray(arrayMsgpackBench, &arr)
-	shamaton.DecodeStructAsMap(mapMsgpackBench, &mp)
-	shamatongen.DecodeAsArray(arrayMsgpackBench, &genarr)
-	shamatongen.DecodeAsMap(mapMsgpackBench, &genmp)
+	shamaton.UnmarshalAsArray(arrayMsgpackBench, &arr)
+	shamaton.UnmarshalAsMap(mapMsgpackBench, &mp)
+	shamatongen.UnmarshalAsArray(arrayMsgpackBench, &genarr)
+	shamatongen.UnmarshalAsMap(mapMsgpackBench, &genmp)
 	vmihailenco.Unmarshal(arrayMsgpackBench, &varr)
 	vmihailenco.Unmarshal(mapMsgpackBench, &vmp)
 	tmp.UnmarshalMsg(mapMsgpackBench)
@@ -150,7 +150,7 @@ func check() {
 func BenchmarkCompareDecodeArrayShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := shamatongen.DecodeAsArray(arrayMsgpackBench, &r)
+		err := shamatongen.UnmarshalAsArray(arrayMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -161,7 +161,7 @@ func BenchmarkCompareDecodeArrayShamatonGen(b *testing.B) {
 func BenchmarkCompareDecodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := shamatongen.DecodeAsMap(mapMsgpackBench, &r)
+		err := shamatongen.UnmarshalAsMap(mapMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -285,7 +285,7 @@ func BenchmarkCompareDecodeZeroformatter(b *testing.B) {
 
 func BenchmarkCompareEncodeArrayShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsArray(&bench)
+		_, err := shamatongen.MarshalAsArray(&bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -305,7 +305,7 @@ func BenchmarkCompareEncodeTinylib(b *testing.B) {
 
 func BenchmarkCompareEncodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsMap(&bench)
+		_, err := shamatongen.MarshalAsMap(&bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -315,7 +315,7 @@ func BenchmarkCompareEncodeShamatonGen(b *testing.B) {
 
 func BenchmarkCompareEncodeArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsArray(bench)
+		_, err := shamaton.MarshalAsArray(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -325,7 +325,7 @@ func BenchmarkCompareEncodeArrayShamaton(b *testing.B) {
 
 func BenchmarkCompareEncodeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsMap(bench)
+		_, err := shamaton.MarshalAsMap(bench)
 		if err != nil {
 			fmt.Println(err)
 			break
