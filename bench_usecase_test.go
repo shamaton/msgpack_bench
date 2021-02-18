@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/golang/protobuf/proto"
-	shamaton "github.com/shamaton/msgpack"
+	shamaton "github.com/shamaton/msgpack/v2"
 	"github.com/shamaton/msgpack_bench/protocmp"
 	shamatongen "github.com/shamaton/msgpackgen/msgpack"
 	"github.com/shamaton/zeroformatter"
@@ -77,13 +77,13 @@ func initUseCase() {
 		protouser.Items = append(protouser.Items, pItem)
 	}
 
-	d, err := shamaton.EncodeStructAsArray(user)
+	d, err := shamaton.MarshalAsArray(user)
 	if err != nil {
 		fmt.Println("init err : ", err)
 		os.Exit(1)
 	}
 	arrayMsgpackUser = d
-	d, err = shamaton.EncodeStructAsMap(user)
+	d, err = shamaton.MarshalAsMap(user)
 	if err != nil {
 		fmt.Println("init err : ", err)
 		os.Exit(1)
@@ -120,7 +120,7 @@ func initUseCase() {
 	gobPackUser = buf.Bytes()
 
 	{
-		dd, err := shamatongen.EncodeAsArray(user)
+		dd, err := shamatongen.MarshalAsArray(user)
 		if err != nil {
 			fmt.Println("init err : ", err)
 			os.Exit(1)
@@ -129,7 +129,7 @@ func initUseCase() {
 			fmt.Println("not equal as array")
 			os.Exit(1)
 		}
-		dd, err = shamatongen.EncodeAsMap(user)
+		dd, err = shamatongen.MarshalAsMap(user)
 		if err != nil {
 			fmt.Println("init err : ", err)
 			os.Exit(1)
@@ -142,7 +142,7 @@ func initUseCase() {
 
 	{
 		var v User
-		err := shamaton.DecodeStructAsMap(mapMsgpackUser, &v)
+		err := shamaton.UnmarshalAsMap(mapMsgpackUser, &v)
 		if err != nil {
 			fmt.Println("init err : ", err)
 			os.Exit(1)
@@ -154,7 +154,7 @@ func initUseCase() {
 	}
 	{
 		var v User
-		err := shamaton.DecodeStructAsArray(arrayMsgpackUser, &v)
+		err := shamaton.UnmarshalAsArray(arrayMsgpackUser, &v)
 		if err != nil {
 			fmt.Println("init err : ", err)
 			os.Exit(1)
@@ -166,7 +166,7 @@ func initUseCase() {
 	}
 	{
 		var v User
-		err := shamatongen.DecodeAsMap(mapMsgpackUser, &v)
+		err := shamatongen.UnmarshalAsMap(mapMsgpackUser, &v)
 		if err != nil {
 			fmt.Println("init err : ", err)
 			os.Exit(1)
@@ -178,7 +178,7 @@ func initUseCase() {
 	}
 	{
 		var v User
-		err := shamatongen.DecodeAsArray(arrayMsgpackUser, &v)
+		err := shamatongen.UnmarshalAsArray(arrayMsgpackUser, &v)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -237,7 +237,7 @@ func checkUseCaseDecodeValue(u User) error {
 func BenchmarkUseCaseDecodeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r User
-		err := shamaton.DecodeStructAsMap(mapMsgpackUser, &r)
+		err := shamaton.UnmarshalAsMap(mapMsgpackUser, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -260,7 +260,7 @@ func BenchmarkUseCaseDecodeShamatonGen(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		var r User
-		err := shamatongen.DecodeAsMap(mapMsgpackUser, &r)
+		err := shamatongen.UnmarshalAsMap(mapMsgpackUser, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -271,7 +271,7 @@ func BenchmarkUseCaseDecodeShamatonGen(b *testing.B) {
 func BenchmarkUseCaseDecodeArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r User
-		err := shamaton.DecodeStructAsArray(arrayMsgpackUser, &r)
+		err := shamaton.UnmarshalAsArray(arrayMsgpackUser, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -293,7 +293,7 @@ func BenchmarkUseCaseDecodeArrayVmihailenco(b *testing.B) {
 func BenchmarkUseCaseDecodeArrayShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r User
-		err := shamatongen.DecodeAsArray(arrayMsgpackUser, &r)
+		err := shamatongen.UnmarshalAsArray(arrayMsgpackUser, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -373,7 +373,7 @@ func BenchmarkUseCaseDecodeProtocolBuffer(b *testing.B) {
 
 func BenchmarkUseCaseEncodeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsMap(user)
+		_, err := shamaton.MarshalAsMap(user)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -383,7 +383,7 @@ func BenchmarkUseCaseEncodeShamaton(b *testing.B) {
 
 func BenchmarkUseCaseEncodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsMap(&user)
+		_, err := shamatongen.MarshalAsMap(&user)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -403,7 +403,7 @@ func BenchmarkUseCaseEncodeVmihailenco(b *testing.B) {
 
 func BenchmarkUseCaseEncodeArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.EncodeStructAsArray(user)
+		_, err := shamaton.MarshalAsArray(user)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -413,7 +413,7 @@ func BenchmarkUseCaseEncodeArrayShamaton(b *testing.B) {
 
 func BenchmarkUseCaseEncodeArrayShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamatongen.EncodeAsArray(&user)
+		_, err := shamatongen.MarshalAsArray(&user)
 		if err != nil {
 			fmt.Println(err)
 			break

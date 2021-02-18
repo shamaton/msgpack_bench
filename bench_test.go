@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	shamaton "github.com/shamaton/msgpack"
+	shamaton "github.com/shamaton/msgpack/v2"
 	vmihailenco "github.com/vmihailenco/msgpack/v5"
 )
 
@@ -52,15 +52,15 @@ func init() {
 		Map[fmt.Sprint(i)+fmt.Sprint(i)] = i * i
 	}
 
-	dataInt, _ = shamaton.Encode(Int)
-	dataFloat, _ = shamaton.Encode(Float)
-	dataString, _ = shamaton.Encode(String)
-	dataBool, _ = shamaton.Encode(Bool)
-	dataArray, _ = shamaton.Encode(Array)
-	dataMap, _ = shamaton.Encode(Map)
-	dataByte, _ = shamaton.Encode(Byte)
-	dataInterfaces, _ = shamaton.Encode(Interfaces)
-	dataTime, _ = shamaton.Encode(Time)
+	dataInt, _ = shamaton.Marshal(Int)
+	dataFloat, _ = shamaton.Marshal(Float)
+	dataString, _ = shamaton.Marshal(String)
+	dataBool, _ = shamaton.Marshal(Bool)
+	dataArray, _ = shamaton.Marshal(Array)
+	dataMap, _ = shamaton.Marshal(Map)
+	dataByte, _ = shamaton.Marshal(Byte)
+	dataInterfaces, _ = shamaton.Marshal(Interfaces)
+	dataTime, _ = shamaton.Marshal(Time)
 
 	initCompare()
 	initUseCase()
@@ -69,7 +69,7 @@ func init() {
 
 func BenchmarkMsgEncIntShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(Int)
+		_, err := shamaton.Marshal(Int)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -88,7 +88,7 @@ func BenchmarkMsgEncIntVmihailenco(b *testing.B) {
 
 func BenchmarkMsgEncFloatShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(Float)
+		_, err := shamaton.Marshal(Float)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -108,7 +108,7 @@ func BenchmarkMsgEncFloatVmihailenco(b *testing.B) {
 
 func BenchmarkMsgEncStringShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(String)
+		_, err := shamaton.Marshal(String)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -128,7 +128,7 @@ func BenchmarkMsgEncStringVmihailenco(b *testing.B) {
 
 func BenchmarkMsgEncBoolShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(Bool)
+		_, err := shamaton.Marshal(Bool)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -147,7 +147,7 @@ func BenchmarkMsgEncBoolVmihailenco(b *testing.B) {
 }
 func BenchmarkMsgEncArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(Array)
+		_, err := shamaton.Marshal(Array)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -166,7 +166,7 @@ func BenchmarkMsgEncArrayVmihailenco(b *testing.B) {
 }
 func BenchmarkMsgEncMapShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(Map)
+		_, err := shamaton.Marshal(Map)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -186,7 +186,7 @@ func BenchmarkMsgEncMapVmihailenco(b *testing.B) {
 
 func BenchmarkMsgEncTimeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(Time)
+		_, err := shamaton.Marshal(Time)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -206,7 +206,7 @@ func BenchmarkMsgEncTimeVmihailenco(b *testing.B) {
 
 func BenchmarkMsgEncByteShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(Byte)
+		_, err := shamaton.Marshal(Byte)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -225,7 +225,7 @@ func BenchmarkMsgEncByteVmihailenco(b *testing.B) {
 }
 func BenchmarkMsgEncInterfaceShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := shamaton.Encode(Interfaces)
+		_, err := shamaton.Marshal(Interfaces)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -248,7 +248,7 @@ func BenchmarkMsgEncInterfaceVmihailenco(b *testing.B) {
 func BenchmarkMsgDecIntShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r int
-		err := shamaton.Decode(dataInt, &r)
+		err := shamaton.Unmarshal(dataInt, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -270,7 +270,7 @@ func BenchmarkMsgDecIntVmihailenco(b *testing.B) {
 func BenchmarkMsgDecFloatShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r float64
-		err := shamaton.Decode(dataFloat, &r)
+		err := shamaton.Unmarshal(dataFloat, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -291,7 +291,7 @@ func BenchmarkMsgDecFloatVmihailenco(b *testing.B) {
 func BenchmarkMsgDecStringShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r string
-		err := shamaton.Decode(dataString, &r)
+		err := shamaton.Unmarshal(dataString, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -313,7 +313,7 @@ func BenchmarkMsgDecStringVmihailenco(b *testing.B) {
 func BenchmarkMsgDecBoolShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r bool
-		err := shamaton.Decode(dataBool, &r)
+		err := shamaton.Unmarshal(dataBool, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -335,7 +335,7 @@ func BenchmarkMsgDecBoolVmihailenco(b *testing.B) {
 func BenchmarkMsgDecArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r []int
-		err := shamaton.Decode(dataArray, &r)
+		err := shamaton.Unmarshal(dataArray, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -356,7 +356,7 @@ func BenchmarkMsgDecArrayVmihailenco(b *testing.B) {
 func BenchmarkMsgDecMapShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r map[string]int
-		err := shamaton.Decode(dataMap, &r)
+		err := shamaton.Unmarshal(dataMap, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -377,7 +377,7 @@ func BenchmarkMsgDecMapVmihailenco(b *testing.B) {
 func BenchmarkMsgDecTimeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r time.Time
-		err := shamaton.Decode(dataTime, &r)
+		err := shamaton.Unmarshal(dataTime, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -399,7 +399,7 @@ func BenchmarkMsgDecTimeVmihailenco(b *testing.B) {
 func BenchmarkMsgDecByteShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r []byte
-		err := shamaton.Decode(dataByte, &r)
+		err := shamaton.Unmarshal(dataByte, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -421,7 +421,7 @@ func BenchmarkMsgDecByteVmihailenco(b *testing.B) {
 func BenchmarkMsgDecInterfaceShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r []interface{}
-		err := shamaton.Decode(dataInterfaces, &r)
+		err := shamaton.Unmarshal(dataInterfaces, &r)
 		if err != nil {
 			fmt.Println(err)
 			break
