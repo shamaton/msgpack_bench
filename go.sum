@@ -19,8 +19,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/shamaton/msgpack/v2 v2.0.0 h1:qaFDySYUa5LPaWNBQc9wA72YGaNts86aW9364i8ztGM=
 github.com/shamaton/msgpack/v2 v2.0.0/go.mod h1:aTUEmh31ziGX1Ml7wMPLVY0f4vT3CRsCvZRoSCs+VGg=
-github.com/shamaton/msgpackgen v0.1.0 h1:JzHCO0hxxwNg4Hk2GEiKsXvfgF81QopmubnwBn6MhOQ=
-github.com/shamaton/msgpackgen v0.1.0/go.mod h1:IPBa+TaqE5H+APs+KuHNlYpMTnhQTLmb84qyJYdlzFQ=
+github.com/shamaton/msgpackgen v0.1.1 h1:Aq+uhF53vaYO0kDgsEt4O+ogE1tU3okB0SyhnNllAzo=
+github.com/shamaton/msgpackgen v0.1.1/go.mod h1:IPBa+TaqE5H+APs+KuHNlYpMTnhQTLmb84qyJYdlzFQ=
 github.com/shamaton/zeroformatter v1.0.1 h1:sy2vSFx+fhPgm4vINiO2mjs4lfItoR1Pc0Ngp7DmCxY=
 github.com/shamaton/zeroformatter v1.0.1/go.mod h1:4vJ8JOtbcmCWAtGNlqP2KIkdLOQiDapR/snC2Repmuw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
