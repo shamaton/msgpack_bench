@@ -158,10 +158,10 @@ func BenchmarkCompareDecodeArrayShamatonGen(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareDecodeShamatonGen(b *testing.B) {
+func BenchmarkCompareDecodeTinylib(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := shamatongen.UnmarshalAsMap(mapMsgpackBench, &r)
+		_, err := r.UnmarshalMsg(mapMsgpackBench)
 		if err != nil {
 			fmt.Println(err)
 			break
@@ -169,10 +169,10 @@ func BenchmarkCompareDecodeShamatonGen(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareDecodeTinylib(b *testing.B) {
+func BenchmarkCompareDecodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		_, err := r.UnmarshalMsg(mapMsgpackBench)
+		err := shamatongen.UnmarshalAsMap(mapMsgpackBench, &r)
 		if err != nil {
 			fmt.Println(err)
 			break

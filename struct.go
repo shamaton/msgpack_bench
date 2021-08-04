@@ -1,6 +1,6 @@
 package bench
 
-//go:generate go run github.com/shamaton/msgpackgen
+//go:generate go run github.com/shamaton/msgpackgen -strict
 ////go:generate msgpackgen -v
 //go:generate go run github.com/tinylib/msgp -o msgp_gen.go
 
