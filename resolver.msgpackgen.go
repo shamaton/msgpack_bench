@@ -147,7 +147,7 @@ func ___encodeAsArray(i interface{}) ([]byte, error) {
 		}
 		return b, err
 	}
-	return nil, nil
+	return nil, fmt.Errorf("use strict option : undefined type")
 }
 
 // encodeAsMap
@@ -274,7 +274,7 @@ func ___encodeAsMap(i interface{}) ([]byte, error) {
 		}
 		return b, err
 	}
-	return nil, nil
+	return nil, fmt.Errorf("use strict option : undefined type")
 }
 
 // decode
@@ -346,7 +346,7 @@ func ___decodeAsArray(data []byte, i interface{}) (bool, error) {
 		}
 		return true, err
 	}
-	return false, nil
+	return false, fmt.Errorf("use strict option : undefined type")
 }
 
 // decodeAsMap
@@ -409,7 +409,7 @@ func ___decodeAsMap(data []byte, i interface{}) (bool, error) {
 		}
 		return true, err
 	}
-	return false, nil
+	return false, fmt.Errorf("use strict option : undefined type")
 }
 
 // calculate size from github.com/shamaton/msgpack_bench.BenchChild
@@ -479,19 +479,39 @@ func ___decodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829
 
 // decode to github.com/shamaton/msgpack_bench.BenchChild
 func ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild, decoder *dec.Decoder, offset int) (int, error) {
+	keys := [][]byte{
+		{uint8(0x49), uint8(0x6e), uint8(0x74)},                                        // Int
+		{uint8(0x53), uint8(0x74), uint8(0x72), uint8(0x69), uint8(0x6e), uint8(0x67)}, // String
+	}
 	offset, err := decoder.CheckStructHeader(2, offset)
 	if err != nil {
 		return 0, err
 	}
 	count := 0
 	for count < 2 {
-		var s string
-		s, offset, err = decoder.AsString(offset)
+		var dataKey []byte
+		dataKey, offset, err = decoder.AsStringBytes(offset)
 		if err != nil {
 			return 0, err
 		}
-		switch s {
-		case "Int":
+		fieldIndex := -1
+		for i, key := range keys {
+			if len(dataKey) != len(key) {
+				continue
+			}
+			fieldIndex = i
+			for dataKeyIndex := range dataKey {
+				if dataKey[dataKeyIndex] != key[dataKeyIndex] {
+					fieldIndex = -1
+					break
+				}
+			}
+			if fieldIndex >= 0 {
+				break
+			}
+		}
+		switch fieldIndex {
+		case 0:
 			{
 				var vv int
 				vv, offset, err = decoder.AsInt(offset)
@@ -501,7 +521,7 @@ func ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a4
 				v.Int = vv
 			}
 			count++
-		case "String":
+		case 1:
 			{
 				var vv string
 				vv, offset, err = decoder.AsString(offset)
@@ -512,7 +532,7 @@ func ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a4
 			}
 			count++
 		default:
-			return 0, fmt.Errorf("unknown key[%s] found", s)
+			return 0, fmt.Errorf("unknown key[%s] found", string(dataKey))
 		}
 	}
 	return offset, err
@@ -802,19 +822,46 @@ func ___decodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6
 
 // decode to github.com/shamaton/msgpack_bench.BenchMarkStruct
 func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchMarkStruct, decoder *dec.Decoder, offset int) (int, error) {
+	keys := [][]byte{
+		{uint8(0x49), uint8(0x6e), uint8(0x74)},                                        // Int
+		{uint8(0x55), uint8(0x69), uint8(0x6e), uint8(0x74)},                           // Uint
+		{uint8(0x46), uint8(0x6c), uint8(0x6f), uint8(0x61), uint8(0x74)},              // Float
+		{uint8(0x44), uint8(0x6f), uint8(0x75), uint8(0x62), uint8(0x6c), uint8(0x65)}, // Double
+		{uint8(0x42), uint8(0x6f), uint8(0x6f), uint8(0x6c)},                           // Bool
+		{uint8(0x53), uint8(0x74), uint8(0x72), uint8(0x69), uint8(0x6e), uint8(0x67)}, // String
+		{uint8(0x41), uint8(0x72), uint8(0x72), uint8(0x61), uint8(0x79)},              // Array
+		{uint8(0x4d), uint8(0x61), uint8(0x70)},                                        // Map
+		{uint8(0x43), uint8(0x68), uint8(0x69), uint8(0x6c), uint8(0x64)},              // Child
+	}
 	offset, err := decoder.CheckStructHeader(9, offset)
 	if err != nil {
 		return 0, err
 	}
 	count := 0
 	for count < 9 {
-		var s string
-		s, offset, err = decoder.AsString(offset)
+		var dataKey []byte
+		dataKey, offset, err = decoder.AsStringBytes(offset)
 		if err != nil {
 			return 0, err
 		}
-		switch s {
-		case "Int":
+		fieldIndex := -1
+		for i, key := range keys {
+			if len(dataKey) != len(key) {
+				continue
+			}
+			fieldIndex = i
+			for dataKeyIndex := range dataKey {
+				if dataKey[dataKeyIndex] != key[dataKeyIndex] {
+					fieldIndex = -1
+					break
+				}
+			}
+			if fieldIndex >= 0 {
+				break
+			}
+		}
+		switch fieldIndex {
+		case 0:
 			{
 				var vv int
 				vv, offset, err = decoder.AsInt(offset)
@@ -824,7 +871,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Int = vv
 			}
 			count++
-		case "Uint":
+		case 1:
 			{
 				var vv uint
 				vv, offset, err = decoder.AsUint(offset)
@@ -834,7 +881,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Uint = vv
 			}
 			count++
-		case "Float":
+		case 2:
 			{
 				var vv float32
 				vv, offset, err = decoder.AsFloat32(offset)
@@ -844,7 +891,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Float = vv
 			}
 			count++
-		case "Double":
+		case 3:
 			{
 				var vv float64
 				vv, offset, err = decoder.AsFloat64(offset)
@@ -854,7 +901,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Double = vv
 			}
 			count++
-		case "Bool":
+		case 4:
 			{
 				var vv bool
 				vv, offset, err = decoder.AsBool(offset)
@@ -864,7 +911,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Bool = vv
 			}
 			count++
-		case "String":
+		case 5:
 			{
 				var vv string
 				vv, offset, err = decoder.AsString(offset)
@@ -874,7 +921,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.String = vv
 			}
 			count++
-		case "Array":
+		case 6:
 			if !decoder.IsCodeNil(offset) {
 				var vv []int
 				var vvl int
@@ -896,7 +943,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				offset++
 			}
 			count++
-		case "Map":
+		case 7:
 			if !decoder.IsCodeNil(offset) {
 				var vv map[string]uint
 				var vvl int
@@ -923,7 +970,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				offset++
 			}
 			count++
-		case "Child":
+		case 8:
 			{
 				var vv BenchChild
 				offset, err = ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&vv, decoder, offset)
@@ -934,7 +981,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 			}
 			count++
 		default:
-			return 0, fmt.Errorf("unknown key[%s] found", s)
+			return 0, fmt.Errorf("unknown key[%s] found", string(dataKey))
 		}
 	}
 	return offset, err
@@ -1035,19 +1082,41 @@ func ___decodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c
 
 // decode to github.com/shamaton/msgpack_bench.Item
 func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item, decoder *dec.Decoder, offset int) (int, error) {
+	keys := [][]byte{
+		{uint8(0x49), uint8(0x44)},                                                     // ID
+		{uint8(0x4e), uint8(0x61), uint8(0x6d), uint8(0x65)},                           // Name
+		{uint8(0x45), uint8(0x66), uint8(0x66), uint8(0x65), uint8(0x63), uint8(0x74)}, // Effect
+		{uint8(0x4e), uint8(0x75), uint8(0x6d)},                                        // Num
+	}
 	offset, err := decoder.CheckStructHeader(4, offset)
 	if err != nil {
 		return 0, err
 	}
 	count := 0
 	for count < 4 {
-		var s string
-		s, offset, err = decoder.AsString(offset)
+		var dataKey []byte
+		dataKey, offset, err = decoder.AsStringBytes(offset)
 		if err != nil {
 			return 0, err
 		}
-		switch s {
-		case "ID":
+		fieldIndex := -1
+		for i, key := range keys {
+			if len(dataKey) != len(key) {
+				continue
+			}
+			fieldIndex = i
+			for dataKeyIndex := range dataKey {
+				if dataKey[dataKeyIndex] != key[dataKeyIndex] {
+					fieldIndex = -1
+					break
+				}
+			}
+			if fieldIndex >= 0 {
+				break
+			}
+		}
+		switch fieldIndex {
+		case 0:
 			{
 				var vv int
 				vv, offset, err = decoder.AsInt(offset)
@@ -1057,7 +1126,7 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.ID = vv
 			}
 			count++
-		case "Name":
+		case 1:
 			{
 				var vv string
 				vv, offset, err = decoder.AsString(offset)
@@ -1067,7 +1136,7 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Name = vv
 			}
 			count++
-		case "Effect":
+		case 2:
 			{
 				var vv float32
 				vv, offset, err = decoder.AsFloat32(offset)
@@ -1077,7 +1146,7 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Effect = vv
 			}
 			count++
-		case "Num":
+		case 3:
 			{
 				var vv uint
 				vv, offset, err = decoder.AsUint(offset)
@@ -1088,7 +1157,7 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 			}
 			count++
 		default:
-			return 0, fmt.Errorf("unknown key[%s] found", s)
+			return 0, fmt.Errorf("unknown key[%s] found", string(dataKey))
 		}
 	}
 	return offset, err
@@ -1341,19 +1410,44 @@ func ___decodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c
 
 // decode to github.com/shamaton/msgpack_bench.User
 func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *User, decoder *dec.Decoder, offset int) (int, error) {
+	keys := [][]byte{
+		{uint8(0x49), uint8(0x44)},                                                                               // ID
+		{uint8(0x4e), uint8(0x61), uint8(0x6d), uint8(0x65)},                                                     // Name
+		{uint8(0x4c), uint8(0x65), uint8(0x76), uint8(0x65), uint8(0x6c)},                                        // Level
+		{uint8(0x45), uint8(0x78), uint8(0x70)},                                                                  // Exp
+		{uint8(0x54), uint8(0x79), uint8(0x70), uint8(0x65)},                                                     // Type
+		{uint8(0x45), uint8(0x71), uint8(0x75), uint8(0x69), uint8(0x70), uint8(0x49), uint8(0x44), uint8(0x73)}, // EquipIDs
+		{uint8(0x49), uint8(0x74), uint8(0x65), uint8(0x6d), uint8(0x73)},                                        // Items
+	}
 	offset, err := decoder.CheckStructHeader(7, offset)
 	if err != nil {
 		return 0, err
 	}
 	count := 0
 	for count < 7 {
-		var s string
-		s, offset, err = decoder.AsString(offset)
+		var dataKey []byte
+		dataKey, offset, err = decoder.AsStringBytes(offset)
 		if err != nil {
 			return 0, err
 		}
-		switch s {
-		case "ID":
+		fieldIndex := -1
+		for i, key := range keys {
+			if len(dataKey) != len(key) {
+				continue
+			}
+			fieldIndex = i
+			for dataKeyIndex := range dataKey {
+				if dataKey[dataKeyIndex] != key[dataKeyIndex] {
+					fieldIndex = -1
+					break
+				}
+			}
+			if fieldIndex >= 0 {
+				break
+			}
+		}
+		switch fieldIndex {
+		case 0:
 			{
 				var vv int
 				vv, offset, err = decoder.AsInt(offset)
@@ -1363,7 +1457,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.ID = vv
 			}
 			count++
-		case "Name":
+		case 1:
 			{
 				var vv string
 				vv, offset, err = decoder.AsString(offset)
@@ -1373,7 +1467,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Name = vv
 			}
 			count++
-		case "Level":
+		case 2:
 			{
 				var vv uint
 				vv, offset, err = decoder.AsUint(offset)
@@ -1383,7 +1477,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Level = vv
 			}
 			count++
-		case "Exp":
+		case 3:
 			{
 				var vv uint64
 				vv, offset, err = decoder.AsUint64(offset)
@@ -1393,7 +1487,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Exp = vv
 			}
 			count++
-		case "Type":
+		case 4:
 			{
 				var vv bool
 				vv, offset, err = decoder.AsBool(offset)
@@ -1403,7 +1497,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Type = vv
 			}
 			count++
-		case "EquipIDs":
+		case 5:
 			if !decoder.IsCodeNil(offset) {
 				var vv []uint32
 				var vvl int
@@ -1425,7 +1519,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				offset++
 			}
 			count++
-		case "Items":
+		case 6:
 			if !decoder.IsCodeNil(offset) {
 				var vv []Item
 				var vvl int
@@ -1448,7 +1542,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 			}
 			count++
 		default:
-			return 0, fmt.Errorf("unknown key[%s] found", s)
+			return 0, fmt.Errorf("unknown key[%s] found", string(dataKey))
 		}
 	}
 	return offset, err
