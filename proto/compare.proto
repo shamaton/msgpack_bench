@@ -1,5 +1,6 @@
 syntax = "proto3";
 package protocmp;
+option go_package = "github.com/shamaton/msgpack_bench/protocmp";
 
 message Item {
 	int32  ID     = 1;

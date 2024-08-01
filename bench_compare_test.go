@@ -9,13 +9,13 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/golang/protobuf/proto"
 	shamaton "github.com/shamaton/msgpack/v2"
 	"github.com/shamaton/msgpack_bench/protocmp"
 	shamatongen "github.com/shamaton/msgpackgen/msgpack"
 	"github.com/shamaton/zeroformatter"
 	"github.com/ugorji/go/codec"
 	vmihailenco "github.com/vmihailenco/msgpack/v5"
+	"google.golang.org/protobuf/proto"
 )
 
 var bench = BenchMarkStruct{

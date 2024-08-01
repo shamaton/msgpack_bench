@@ -34,7 +34,7 @@ var (
 
 /*
 INSTALL PACKAGES
-go get -u github.com/golang/protobuf/proto
+go get -u google.golang.org/protobuf/proto
 go get -u github.com/shamaton/zeroformatter
 go get -u github.com/ugorji/go/codec
 go get -u github.com/vmihailenco/msgpack
