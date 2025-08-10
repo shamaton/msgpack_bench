@@ -2,7 +2,6 @@ package bench
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/go-json-experiment/json"
 	"github.com/shamaton/msgpack/v2"
 	"io"
@@ -25,15 +24,13 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(hoge)
-		fmt.Println(fuga)
 		if !reflect.DeepEqual(hoge, fuga) {
 			panic("fuga is not equal to hoge")
 		}
 		mtt = make([]byte, len(tt))
 		copy(mtt, tt)
 
-		fmt.Printf("% 02x\n", tt)
+		//fmt.Printf("% 02x\n", tt)
 	}
 	{
 		buf := new(bytes.Buffer)
@@ -41,14 +38,13 @@ func init() {
 		if err != nil {
 			panic(err)
 		}
-		fmt.Printf("% 02x\n", buf.Bytes())
+		//fmt.Printf("% 02x\n", buf.Bytes())
+
 		var fuga Hoge
 		err = msgpack.UnmarshalRead(bytes.NewReader(buf.Bytes()), &fuga)
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(hoge)
-		fmt.Println(fuga)
 		if !reflect.DeepEqual(hoge, fuga) {
 			panic("fuga is not equal to hoge")
 		}

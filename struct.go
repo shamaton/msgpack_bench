@@ -20,22 +20,6 @@ type BenchMarkStruct struct {
 	Child  BenchChild      `msgpack:",omitempty"`
 }
 
-type BenchChildOmitempty struct {
-	Int    int    `msgpack:",omitempty"`
-	String string `msgpack:",omitempty"`
-}
-type BenchMarkStructOmitempty struct {
-	Int    int             `msgpack:",omitempty"`
-	Uint   uint            `msgpack:",omitempty"`
-	Float  float32         `msgpack:",omitempty"`
-	Double float64         `msgpack:",omitempty"`
-	Bool   bool            `msgpack:",omitempty"`
-	String string          `msgpack:",omitempty"`
-	Array  []int           `msgpack:",omitempty"`
-	Map    map[string]uint `msgpack:",omitempty"`
-	Child  BenchChild      `msgpack:",omitempty"`
-}
-
 type Item struct {
 	ID     int
 	Name   string
