@@ -5,19 +5,35 @@ package bench
 //go:generate go run github.com/tinylib/msgp -o msgp_gen.go
 
 type BenchChild struct {
-	Int    int
-	String string
+	Int    int    `msgpack:",omitempty"`
+	String string `msgpack:",omitempty"`
 }
 type BenchMarkStruct struct {
-	Int    int
-	Uint   uint
-	Float  float32
-	Double float64
-	Bool   bool
-	String string
-	Array  []int
-	Map    map[string]uint
-	Child  BenchChild
+	Int    int             `msgpack:",omitempty"`
+	Uint   uint            `msgpack:",omitempty"`
+	Float  float32         `msgpack:",omitempty"`
+	Double float64         `msgpack:",omitempty"`
+	Bool   bool            `msgpack:",omitempty"`
+	String string          `msgpack:",omitempty"`
+	Array  []int           `msgpack:",omitempty"`
+	Map    map[string]uint `msgpack:",omitempty"`
+	Child  BenchChild      `msgpack:",omitempty"`
+}
+
+type BenchChildOmitempty struct {
+	Int    int    `msgpack:",omitempty"`
+	String string `msgpack:",omitempty"`
+}
+type BenchMarkStructOmitempty struct {
+	Int    int             `msgpack:",omitempty"`
+	Uint   uint            `msgpack:",omitempty"`
+	Float  float32         `msgpack:",omitempty"`
+	Double float64         `msgpack:",omitempty"`
+	Bool   bool            `msgpack:",omitempty"`
+	String string          `msgpack:",omitempty"`
+	Array  []int           `msgpack:",omitempty"`
+	Map    map[string]uint `msgpack:",omitempty"`
+	Child  BenchChild      `msgpack:",omitempty"`
 }
 
 type Item struct {
