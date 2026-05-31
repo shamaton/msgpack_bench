@@ -4,452 +4,2952 @@ package bench
 
 import (
 	"fmt"
+	protocmp "github.com/shamaton/msgpack_bench/protocmp"
 	msgpack "github.com/shamaton/msgpackgen/msgpack"
 	dec "github.com/shamaton/msgpackgen/msgpack/dec"
 	enc "github.com/shamaton/msgpackgen/msgpack/enc"
+	"math"
 )
 
-// RegisterGeneratedResolver registers generated resolver.
-func RegisterGeneratedResolver() {
-	msgpack.SetResolver(___encodeAsMap, ___encodeAsArray, ___decodeAsMap, ___decodeAsArray)
-}
-
-// encode
-func ___encode(i interface{}) ([]byte, error) {
+// Marshal returns the MessagePack-encoded byte array of v.
+func Marshal(v any) ([]byte, error) {
 	if msgpack.StructAsArray() {
-		return ___encodeAsArray(i)
-	} else {
-		return ___encodeAsMap(i)
+		return MarshalAsArray(v)
 	}
+	return MarshalAsMap(v)
 }
 
-// encodeAsArray
-func ___encodeAsArray(i interface{}) ([]byte, error) {
-	switch v := i.(type) {
+// MarshalAsMap encodes data as map format.
+func MarshalAsMap(v any) ([]byte, error) {
+	b, err := ___marshalAsMapTo(v, nil)
+	return b, err
+}
+func ___marshalAsMapTo(v any, buf []byte) ([]byte, error) {
+	switch v := v.(type) {
+	case protocmp.Item:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case *protocmp.Item:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case protocmp.User:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case *protocmp.User:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case protocmp.BenchMarkStruct:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case *protocmp.BenchMarkStruct:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case protocmp.BenchChild:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case *protocmp.BenchChild:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
 	case BenchChild:
-		encoder := enc.NewEncoder()
-		size, err := ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "BenchChild", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case *BenchChild:
-		encoder := enc.NewEncoder()
-		size, err := ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "BenchChild", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case BenchMarkStruct:
-		encoder := enc.NewEncoder()
-		size, err := ___calcArraySizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "BenchMarkStruct", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case *BenchMarkStruct:
-		encoder := enc.NewEncoder()
-		size, err := ___calcArraySizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "BenchMarkStruct", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case Item:
-		encoder := enc.NewEncoder()
-		size, err := ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "Item", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case *Item:
-		encoder := enc.NewEncoder()
-		size, err := ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "Item", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case User:
-		encoder := enc.NewEncoder()
-		size, err := ___calcArraySizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "User", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case *User:
-		encoder := enc.NewEncoder()
-		size, err := ___calcArraySizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcMapSizeMaxUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcMapSizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcMapSizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "User", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	}
-	return nil, fmt.Errorf("use strict option : undefined type")
+	return nil, msgpack.ErrUndefinedType
 }
 
-// encodeAsMap
-func ___encodeAsMap(i interface{}) ([]byte, error) {
-	switch v := i.(type) {
+// MarshalAsArray encodes data as array format.
+func MarshalAsArray(v any) ([]byte, error) {
+	b, err := ___marshalAsArrayTo(v, nil)
+	return b, err
+}
+func ___marshalAsArrayTo(v any, buf []byte) ([]byte, error) {
+	switch v := v.(type) {
+	case protocmp.Item:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case *protocmp.Item:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case protocmp.User:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case *protocmp.User:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case protocmp.BenchMarkStruct:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case *protocmp.BenchMarkStruct:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case protocmp.BenchChild:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
+	case *protocmp.BenchChild:
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, buf, start)
+		if err != nil {
+			return nil, err
+		}
+		return buf[:offset], nil
 	case BenchChild:
-		encoder := enc.NewEncoder()
-		size, err := ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "BenchChild", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case *BenchChild:
-		encoder := enc.NewEncoder()
-		size, err := ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "BenchChild", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case BenchMarkStruct:
-		encoder := enc.NewEncoder()
-		size, err := ___calcMapSizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "BenchMarkStruct", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case *BenchMarkStruct:
-		encoder := enc.NewEncoder()
-		size, err := ___calcMapSizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "BenchMarkStruct", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case Item:
-		encoder := enc.NewEncoder()
-		size, err := ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "Item", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case *Item:
-		encoder := enc.NewEncoder()
-		size, err := ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "Item", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case User:
-		encoder := enc.NewEncoder()
-		size, err := ___calcMapSizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "User", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	case *User:
-		encoder := enc.NewEncoder()
-		size, err := ___calcMapSizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder)
+		start := len(buf)
+		remaining := cap(buf) - start
+		var size int
+		var err error
+		if remaining > 0 {
+			size, err = ___calcArraySizeMaxUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		} else {
+			size, err = ___calcArraySizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		if remaining > 0 && remaining < size {
+			size, err = ___calcArraySizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v)
+			if err != nil {
+				return nil, err
+			}
+		}
+		buf = enc.RequireAt(buf, start, size)
+		offset, err := ___encodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, buf, start)
 		if err != nil {
 			return nil, err
 		}
-		encoder.MakeBytes(size)
-		b, offset, err := ___encodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, encoder, 0)
-		if err != nil {
-			return nil, err
-		}
-		if size != offset {
-			return nil, fmt.Errorf("%s size / offset different %d : %d", "User", size, offset)
-		}
-		return b, err
+		return buf[:offset], nil
 	}
-	return nil, fmt.Errorf("use strict option : undefined type")
+	return nil, msgpack.ErrUndefinedType
 }
 
-// decode
-func ___decode(data []byte, i interface{}) (bool, error) {
+// Unmarshal analyzes the MessagePack-encoded data and stores the result into v.
+func Unmarshal(data []byte, v any) error {
 	if msgpack.StructAsArray() {
-		return ___decodeAsArray(data, i)
-	} else {
-		return ___decodeAsMap(data, i)
+		return UnmarshalAsArray(data, v)
 	}
+	return UnmarshalAsMap(data, v)
 }
 
-// decodeAsArray
-func ___decodeAsArray(data []byte, i interface{}) (bool, error) {
-	switch v := i.(type) {
-	case *BenchChild:
-		decoder := dec.NewDecoder(data)
-		offset, err := ___decodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
-		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
-		}
-		return true, err
-	case **BenchChild:
-		decoder := dec.NewDecoder(data)
-		offset, err := ___decodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
-		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
-		}
-		return true, err
-	case *BenchMarkStruct:
-		decoder := dec.NewDecoder(data)
-		offset, err := ___decodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
-		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
-		}
-		return true, err
-	case **BenchMarkStruct:
-		decoder := dec.NewDecoder(data)
-		offset, err := ___decodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
-		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
-		}
-		return true, err
-	case *Item:
-		decoder := dec.NewDecoder(data)
-		offset, err := ___decodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
-		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
-		}
-		return true, err
-	case **Item:
-		decoder := dec.NewDecoder(data)
-		offset, err := ___decodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
-		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
-		}
-		return true, err
-	case *User:
-		decoder := dec.NewDecoder(data)
-		offset, err := ___decodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
-		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
-		}
-		return true, err
-	case **User:
-		decoder := dec.NewDecoder(data)
-		offset, err := ___decodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
-		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
-		}
-		return true, err
-	}
-	return false, fmt.Errorf("use strict option : undefined type")
+// UnmarshalAsMap decodes data that is encoded as map format.
+func UnmarshalAsMap(data []byte, v any) error {
+	err := ___unmarshalAsMap(data, v)
+	return err
 }
-
-// decodeAsMap
-func ___decodeAsMap(data []byte, i interface{}) (bool, error) {
-	switch v := i.(type) {
+func ___unmarshalAsMap(data []byte, v any) error {
+	switch v := v.(type) {
+	case *protocmp.Item:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeMapItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **protocmp.Item:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeMapItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *protocmp.User:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeMapUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **protocmp.User:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeMapUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *protocmp.BenchMarkStruct:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeMapBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **protocmp.BenchMarkStruct:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeMapBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *protocmp.BenchChild:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeMapBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **protocmp.BenchChild:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeMapBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
 	case *BenchChild:
 		decoder := dec.NewDecoder(data)
 		offset, err := ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
 		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
 		}
-		return true, err
+		return err
 	case **BenchChild:
 		decoder := dec.NewDecoder(data)
 		offset, err := ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
 		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
 		}
-		return true, err
+		return err
 	case *BenchMarkStruct:
 		decoder := dec.NewDecoder(data)
 		offset, err := ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
 		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
 		}
-		return true, err
+		return err
 	case **BenchMarkStruct:
 		decoder := dec.NewDecoder(data)
 		offset, err := ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
 		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
 		}
-		return true, err
+		return err
 	case *Item:
 		decoder := dec.NewDecoder(data)
 		offset, err := ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
 		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
 		}
-		return true, err
+		return err
 	case **Item:
 		decoder := dec.NewDecoder(data)
 		offset, err := ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
 		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
 		}
-		return true, err
+		return err
 	case *User:
 		decoder := dec.NewDecoder(data)
 		offset, err := ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
 		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
 		}
-		return true, err
+		return err
 	case **User:
 		decoder := dec.NewDecoder(data)
 		offset, err := ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
 		if err == nil && offset != decoder.Len() {
-			return true, fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
 		}
-		return true, err
+		return err
 	}
-	return false, fmt.Errorf("use strict option : undefined type")
+	return msgpack.ErrUndefinedType
+}
+
+// UnmarshalAsArray decodes data that is encoded as array format.
+func UnmarshalAsArray(data []byte, v any) error {
+	err := ___unmarshalAsArray(data, v)
+	return err
+}
+func ___unmarshalAsArray(data []byte, v any) error {
+	switch v := v.(type) {
+	case *protocmp.Item:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **protocmp.Item:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *protocmp.User:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **protocmp.User:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *protocmp.BenchMarkStruct:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **protocmp.BenchMarkStruct:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *protocmp.BenchChild:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **protocmp.BenchChild:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *BenchChild:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **BenchChild:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *BenchMarkStruct:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **BenchMarkStruct:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *Item:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **Item:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case *User:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	case **User:
+		decoder := dec.NewDecoder(data)
+		offset, err := ___decodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(*v, decoder, 0)
+		if err == nil && offset != decoder.Len() {
+			return fmt.Errorf("read length is different [%d] [%d] ", offset, decoder.Len())
+		}
+		return err
+	}
+	return msgpack.ErrUndefinedType
+}
+
+// calculate size from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___calcArraySizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += enc.CalcInt32(v.ID)
+	size += enc.CalcString(v.Name)
+	size += enc.CalcFloat32(v.Effect)
+	size += enc.CalcUint32(v.Num)
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___calcArraySizeMaxItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += enc.CalcInt32Max(v.ID)
+	size += enc.CalcStringMax(v.Name)
+	size += enc.CalcFloat32Max(v.Effect)
+	size += enc.CalcUint32Max(v.Num)
+	return size, nil
+}
+
+// calculate size from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___calcMapSizeItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += 3
+	size += enc.CalcInt32(v.ID)
+	size += 5
+	size += enc.CalcString(v.Name)
+	size += 7
+	size += enc.CalcFloat32(v.Effect)
+	size += 4
+	size += enc.CalcUint32(v.Num)
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___calcMapSizeMaxItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += 3
+	size += enc.CalcInt32Max(v.ID)
+	size += 5
+	size += enc.CalcStringMax(v.Name)
+	size += 7
+	size += enc.CalcFloat32Max(v.Effect)
+	size += 4
+	size += enc.CalcUint32Max(v.Num)
+	return size, nil
+}
+
+// calculate no-error size from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___calcArraySizeNoErrItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += enc.CalcInt32(v.ID)
+	size += enc.CalcString(v.Name)
+	size += enc.CalcFloat32(v.Effect)
+	size += enc.CalcUint32(v.Num)
+	return size
+}
+
+// calculate no-error max size from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___calcArraySizeMaxNoErrItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += enc.CalcInt32Max(v.ID)
+	size += enc.CalcStringMax(v.Name)
+	size += enc.CalcFloat32Max(v.Effect)
+	size += enc.CalcUint32Max(v.Num)
+	return size
+}
+
+// calculate no-error size from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___calcMapSizeNoErrItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += 3
+	size += enc.CalcInt32(v.ID)
+	size += 5
+	size += enc.CalcString(v.Name)
+	size += 7
+	size += enc.CalcFloat32(v.Effect)
+	size += 4
+	size += enc.CalcUint32(v.Num)
+	return size
+}
+
+// calculate no-error max size from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___calcMapSizeMaxNoErrItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += 3
+	size += enc.CalcInt32Max(v.ID)
+	size += 5
+	size += enc.CalcStringMax(v.Name)
+	size += 7
+	size += enc.CalcFloat32Max(v.Effect)
+	size += 4
+	size += enc.CalcUint32Max(v.Num)
+	return size
+}
+
+// encode from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___encodeArrayItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsArray(buf, 4, offset)
+	offset = enc.WriteInt32(buf, v.ID, offset)
+	offset = enc.WriteString(buf, v.Name, offset)
+	offset = enc.WriteFloat32(buf, v.Effect, offset)
+	offset = enc.WriteUint32(buf, v.Num, offset)
+	return offset, err
+}
+
+// encode from github.com/shamaton/msgpack_bench/protocmp.Item
+func ___encodeMapItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsMap(buf, 4, offset)
+	offset += copy(buf[offset:offset+3], "\xa2ID")
+	offset = enc.WriteInt32(buf, v.ID, offset)
+	offset += copy(buf[offset:offset+5], "\xa4Name")
+	offset = enc.WriteString(buf, v.Name, offset)
+	offset += copy(buf[offset:offset+7], "\xa6Effect")
+	offset = enc.WriteFloat32(buf, v.Effect, offset)
+	offset += copy(buf[offset:offset+4], "\xa3Num")
+	offset = enc.WriteUint32(buf, v.Num, offset)
+	return offset, err
+}
+
+// decode to github.com/shamaton/msgpack_bench/protocmp.Item
+func ___decodeArrayItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item, decoder *dec.Decoder, offset int) (int, error) {
+	offset, err := decoder.CheckStructHeader(4, offset)
+	if err != nil {
+		return 0, err
+	}
+	{
+		var vv int32
+		vv, offset, err = decoder.AsInt32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.ID = vv
+	}
+	{
+		var vv string
+		vv, offset, err = decoder.AsString(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Name = vv
+	}
+	{
+		var vv float32
+		vv, offset, err = decoder.AsFloat32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Effect = vv
+	}
+	{
+		var vv uint32
+		vv, offset, err = decoder.AsUint32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Num = vv
+	}
+	return offset, err
+}
+
+// decode to github.com/shamaton/msgpack_bench/protocmp.Item
+func ___decodeMapItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.Item, decoder *dec.Decoder, offset int) (int, error) {
+	offset, err := decoder.CheckStructHeader(4, offset)
+	if err != nil {
+		return 0, err
+	}
+	count := 0
+	for count < 4 {
+		var dataKey []byte
+		dataKey, offset, err = decoder.AsStringBytes(offset)
+		if err != nil {
+			return 0, err
+		}
+		switch string(dataKey) {
+		case "ID":
+			{
+				var vv int32
+				vv, offset, err = decoder.AsInt32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.ID = vv
+			}
+			count++
+		case "Name":
+			{
+				var vv string
+				vv, offset, err = decoder.AsString(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Name = vv
+			}
+			count++
+		case "Effect":
+			{
+				var vv float32
+				vv, offset, err = decoder.AsFloat32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Effect = vv
+			}
+			count++
+		case "Num":
+			{
+				var vv uint32
+				vv, offset, err = decoder.AsUint32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Num = vv
+			}
+			count++
+		default:
+			return 0, fmt.Errorf("unknown key[%s] found", string(dataKey))
+		}
+	}
+	return offset, err
+}
+func ___isNotEmptyItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v protocmp.Item) bool {
+	if v.ID != 0 {
+		return true
+	}
+	if v.Name != "" {
+		return true
+	}
+	if v.Effect != 0 {
+		return true
+	}
+	if v.Num != 0 {
+		return true
+	}
+	return false
+}
+
+// calculate size from github.com/shamaton/msgpack_bench/protocmp.User
+func ___calcArraySizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.User) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(7)
+	size += enc.CalcInt32(v.ID)
+	size += enc.CalcString(v.Name)
+	size += enc.CalcUint32(v.Level)
+	size += enc.CalcUint64(v.Exp)
+	size += enc.CalcBool(v.Type)
+	if v.EquipIDs != nil {
+		s, err := enc.CalcSliceLength(len(v.EquipIDs), false)
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for _, vv := range v.EquipIDs {
+			size += enc.CalcUint32(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	if v.Items != nil {
+		s, err := enc.CalcSliceLength(len(v.Items), false)
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for _, vv := range v.Items {
+			if vv != nil {
+				size_vv := ___calcArraySizeNoErrItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(vv)
+				size += size_vv
+			} else {
+				size += enc.CalcNil()
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench/protocmp.User
+func ___calcArraySizeMaxUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.User) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(7)
+	size += enc.CalcInt32Max(v.ID)
+	size += enc.CalcStringMax(v.Name)
+	size += enc.CalcUint32Max(v.Level)
+	size += enc.CalcUint64Max(v.Exp)
+	size += enc.CalcBoolMax(v.Type)
+	if v.EquipIDs != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.EquipIDs), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.EquipIDs {
+				size += enc.CalcUint32Max(vv)
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	if v.Items != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.Items), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.Items {
+				if vv != nil {
+					size_vv := ___calcArraySizeMaxNoErrItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(vv)
+					size += size_vv
+				} else {
+					size += enc.CalcNil()
+				}
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// calculate size from github.com/shamaton/msgpack_bench/protocmp.User
+func ___calcMapSizeUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.User) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(7)
+	size += 3
+	size += enc.CalcInt32(v.ID)
+	size += 5
+	size += enc.CalcString(v.Name)
+	size += 6
+	size += enc.CalcUint32(v.Level)
+	size += 4
+	size += enc.CalcUint64(v.Exp)
+	size += 5
+	size += enc.CalcBool(v.Type)
+	size += 9
+	if v.EquipIDs != nil {
+		s, err := enc.CalcSliceLength(len(v.EquipIDs), false)
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for _, vv := range v.EquipIDs {
+			size += enc.CalcUint32(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	size += 6
+	if v.Items != nil {
+		s, err := enc.CalcSliceLength(len(v.Items), false)
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for _, vv := range v.Items {
+			if vv != nil {
+				size_vv := ___calcMapSizeNoErrItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(vv)
+				size += size_vv
+			} else {
+				size += enc.CalcNil()
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench/protocmp.User
+func ___calcMapSizeMaxUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.User) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(7)
+	size += 3
+	size += enc.CalcInt32Max(v.ID)
+	size += 5
+	size += enc.CalcStringMax(v.Name)
+	size += 6
+	size += enc.CalcUint32Max(v.Level)
+	size += 4
+	size += enc.CalcUint64Max(v.Exp)
+	size += 5
+	size += enc.CalcBoolMax(v.Type)
+	size += 9
+	if v.EquipIDs != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.EquipIDs), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.EquipIDs {
+				size += enc.CalcUint32Max(vv)
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	size += 6
+	if v.Items != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.Items), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.Items {
+				if vv != nil {
+					size_vv := ___calcMapSizeMaxNoErrItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(vv)
+					size += size_vv
+				} else {
+					size += enc.CalcNil()
+				}
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// encode from github.com/shamaton/msgpack_bench/protocmp.User
+func ___encodeArrayUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.User, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsArray(buf, 7, offset)
+	offset = enc.WriteInt32(buf, v.ID, offset)
+	offset = enc.WriteString(buf, v.Name, offset)
+	offset = enc.WriteUint32(buf, v.Level, offset)
+	offset = enc.WriteUint64(buf, v.Exp, offset)
+	offset = enc.WriteBool(buf, v.Type, offset)
+	if v.EquipIDs != nil {
+		offset = enc.WriteSliceLength(buf, len(v.EquipIDs), offset, false)
+		for _, vv := range v.EquipIDs {
+			offset = enc.WriteUint32(buf, vv, offset)
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	if v.Items != nil {
+		offset = enc.WriteSliceLength(buf, len(v.Items), offset, false)
+		for _, vv := range v.Items {
+			if vv != nil {
+				offset, err = ___encodeArrayItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(vv, buf, offset)
+				if err != nil {
+					return 0, err
+				}
+			} else {
+				offset = enc.WriteNil(buf, offset)
+			}
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	return offset, err
+}
+
+// encode from github.com/shamaton/msgpack_bench/protocmp.User
+func ___encodeMapUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.User, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsMap(buf, 7, offset)
+	offset += copy(buf[offset:offset+3], "\xa2ID")
+	offset = enc.WriteInt32(buf, v.ID, offset)
+	offset += copy(buf[offset:offset+5], "\xa4Name")
+	offset = enc.WriteString(buf, v.Name, offset)
+	offset += copy(buf[offset:offset+6], "\xa5Level")
+	offset = enc.WriteUint32(buf, v.Level, offset)
+	offset += copy(buf[offset:offset+4], "\xa3Exp")
+	offset = enc.WriteUint64(buf, v.Exp, offset)
+	offset += copy(buf[offset:offset+5], "\xa4Type")
+	offset = enc.WriteBool(buf, v.Type, offset)
+	offset += copy(buf[offset:offset+9], "\xa8EquipIDs")
+	if v.EquipIDs != nil {
+		offset = enc.WriteSliceLength(buf, len(v.EquipIDs), offset, false)
+		for _, vv := range v.EquipIDs {
+			offset = enc.WriteUint32(buf, vv, offset)
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	offset += copy(buf[offset:offset+6], "\xa5Items")
+	if v.Items != nil {
+		offset = enc.WriteSliceLength(buf, len(v.Items), offset, false)
+		for _, vv := range v.Items {
+			if vv != nil {
+				offset, err = ___encodeMapItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(vv, buf, offset)
+				if err != nil {
+					return 0, err
+				}
+			} else {
+				offset = enc.WriteNil(buf, offset)
+			}
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	return offset, err
+}
+
+// decode to github.com/shamaton/msgpack_bench/protocmp.User
+func ___decodeArrayUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.User, decoder *dec.Decoder, offset int) (int, error) {
+	offset, err := decoder.CheckStructHeader(7, offset)
+	if err != nil {
+		return 0, err
+	}
+	{
+		var vv int32
+		vv, offset, err = decoder.AsInt32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.ID = vv
+	}
+	{
+		var vv string
+		vv, offset, err = decoder.AsString(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Name = vv
+	}
+	{
+		var vv uint32
+		vv, offset, err = decoder.AsUint32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Level = vv
+	}
+	{
+		var vv uint64
+		vv, offset, err = decoder.AsUint64(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Exp = vv
+	}
+	{
+		var vv bool
+		vv, offset, err = decoder.AsBool(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Type = vv
+	}
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
+		if err != nil {
+			return 0, err
+		}
+		if !isNil {
+			var vv []uint32
+			var vvl int
+			vvl, offset, err = decoder.SliceLength(offset)
+			if err != nil {
+				return 0, err
+			}
+			vv = make([]uint32, vvl)
+			for vvi := range vv {
+				vv[vvi], offset, err = decoder.AsUint32(offset)
+				if err != nil {
+					return 0, err
+				}
+			}
+			v.EquipIDs = vv
+		} else {
+			offset++
+		}
+	}
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
+		if err != nil {
+			return 0, err
+		}
+		if !isNil {
+			var vv []*protocmp.Item
+			var vvl int
+			vvl, offset, err = decoder.SliceLength(offset)
+			if err != nil {
+				return 0, err
+			}
+			vv = make([]*protocmp.Item, vvl)
+			for vvi := range vv {
+				var vvv *protocmp.Item
+				{
+					isNil, err := decoder.IsCodeNilChecked(offset)
+					if err != nil {
+						return 0, err
+					}
+					if !isNil {
+						var vvvp protocmp.Item
+						offset, err = ___decodeArrayItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&vvvp, decoder, offset)
+						if err != nil {
+							return 0, err
+						}
+						vvv = &vvvp
+					} else {
+						offset++
+					}
+				}
+				vv[vvi] = vvv
+			}
+			v.Items = vv
+		} else {
+			offset++
+		}
+	}
+	return offset, err
+}
+
+// decode to github.com/shamaton/msgpack_bench/protocmp.User
+func ___decodeMapUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.User, decoder *dec.Decoder, offset int) (int, error) {
+	offset, err := decoder.CheckStructHeader(7, offset)
+	if err != nil {
+		return 0, err
+	}
+	count := 0
+	for count < 7 {
+		var dataKey []byte
+		dataKey, offset, err = decoder.AsStringBytes(offset)
+		if err != nil {
+			return 0, err
+		}
+		switch string(dataKey) {
+		case "ID":
+			{
+				var vv int32
+				vv, offset, err = decoder.AsInt32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.ID = vv
+			}
+			count++
+		case "Name":
+			{
+				var vv string
+				vv, offset, err = decoder.AsString(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Name = vv
+			}
+			count++
+		case "Level":
+			{
+				var vv uint32
+				vv, offset, err = decoder.AsUint32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Level = vv
+			}
+			count++
+		case "Exp":
+			{
+				var vv uint64
+				vv, offset, err = decoder.AsUint64(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Exp = vv
+			}
+			count++
+		case "Type":
+			{
+				var vv bool
+				vv, offset, err = decoder.AsBool(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Type = vv
+			}
+			count++
+		case "EquipIDs":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
+				if err != nil {
+					return 0, err
+				}
+				if !isNil {
+					var vv []uint32
+					var vvl int
+					vvl, offset, err = decoder.SliceLength(offset)
+					if err != nil {
+						return 0, err
+					}
+					vv = make([]uint32, vvl)
+					for vvi := range vv {
+						vv[vvi], offset, err = decoder.AsUint32(offset)
+						if err != nil {
+							return 0, err
+						}
+					}
+					v.EquipIDs = vv
+				} else {
+					offset++
+				}
+			}
+			count++
+		case "Items":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
+				if err != nil {
+					return 0, err
+				}
+				if !isNil {
+					var vv []*protocmp.Item
+					var vvl int
+					vvl, offset, err = decoder.SliceLength(offset)
+					if err != nil {
+						return 0, err
+					}
+					vv = make([]*protocmp.Item, vvl)
+					for vvi := range vv {
+						var vvv *protocmp.Item
+						{
+							isNil, err := decoder.IsCodeNilChecked(offset)
+							if err != nil {
+								return 0, err
+							}
+							if !isNil {
+								var vvvp protocmp.Item
+								offset, err = ___decodeMapItem_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&vvvp, decoder, offset)
+								if err != nil {
+									return 0, err
+								}
+								vvv = &vvvp
+							} else {
+								offset++
+							}
+						}
+						vv[vvi] = vvv
+					}
+					v.Items = vv
+				} else {
+					offset++
+				}
+			}
+			count++
+		default:
+			return 0, fmt.Errorf("unknown key[%s] found", string(dataKey))
+		}
+	}
+	return offset, err
+}
+func ___isNotEmptyUser_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v protocmp.User) bool {
+	if v.ID != 0 {
+		return true
+	}
+	if v.Name != "" {
+		return true
+	}
+	if v.Level != 0 {
+		return true
+	}
+	if v.Exp != 0 {
+		return true
+	}
+	if v.Type {
+		return true
+	}
+	if v.EquipIDs != nil {
+		return true
+	}
+	if v.Items != nil {
+		return true
+	}
+	return false
+}
+
+// calculate size from github.com/shamaton/msgpack_bench/protocmp.BenchMarkStruct
+func ___calcArraySizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchMarkStruct) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(9)
+	size += enc.CalcInt32(v.Int)
+	size += enc.CalcUint32(v.Uint)
+	size += enc.CalcFloat32(v.Float)
+	size += enc.CalcFloat64(v.Double)
+	size += enc.CalcBool(v.Bool)
+	size += enc.CalcString(v.String_)
+	if v.Array != nil {
+		s, err := enc.CalcSliceLength(len(v.Array), false)
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for _, vv := range v.Array {
+			size += enc.CalcInt32(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	if v.Map != nil {
+		s, err := enc.CalcMapLength(len(v.Map))
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for kk, vv := range v.Map {
+			size += enc.CalcString(kk)
+			size += enc.CalcUint32(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	if v.Child != nil {
+		size_v_Child := ___calcArraySizeNoErrBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v.Child)
+		size += size_v_Child
+	} else {
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench/protocmp.BenchMarkStruct
+func ___calcArraySizeMaxBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchMarkStruct) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(9)
+	size += enc.CalcInt32Max(v.Int)
+	size += enc.CalcUint32Max(v.Uint)
+	size += enc.CalcFloat32Max(v.Float)
+	size += enc.CalcFloat64Max(v.Double)
+	size += enc.CalcBoolMax(v.Bool)
+	size += enc.CalcStringMax(v.String_)
+	if v.Array != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.Array), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.Array {
+				size += enc.CalcInt32Max(vv)
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	if v.Map != nil {
+		s, err := enc.CalcMapLengthMax(len(v.Map))
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for kk, vv := range v.Map {
+			size += enc.CalcStringMax(kk)
+			size += enc.CalcUint32Max(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	if v.Child != nil {
+		size_v_Child := ___calcArraySizeMaxNoErrBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v.Child)
+		size += size_v_Child
+	} else {
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// calculate size from github.com/shamaton/msgpack_bench/protocmp.BenchMarkStruct
+func ___calcMapSizeBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchMarkStruct) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(9)
+	size += 4
+	size += enc.CalcInt32(v.Int)
+	size += 5
+	size += enc.CalcUint32(v.Uint)
+	size += 6
+	size += enc.CalcFloat32(v.Float)
+	size += 7
+	size += enc.CalcFloat64(v.Double)
+	size += 5
+	size += enc.CalcBool(v.Bool)
+	size += 8
+	size += enc.CalcString(v.String_)
+	size += 6
+	if v.Array != nil {
+		s, err := enc.CalcSliceLength(len(v.Array), false)
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for _, vv := range v.Array {
+			size += enc.CalcInt32(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	size += 4
+	if v.Map != nil {
+		s, err := enc.CalcMapLength(len(v.Map))
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for kk, vv := range v.Map {
+			size += enc.CalcString(kk)
+			size += enc.CalcUint32(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	size += 6
+	if v.Child != nil {
+		size_v_Child := ___calcMapSizeNoErrBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v.Child)
+		size += size_v_Child
+	} else {
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench/protocmp.BenchMarkStruct
+func ___calcMapSizeMaxBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchMarkStruct) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(9)
+	size += 4
+	size += enc.CalcInt32Max(v.Int)
+	size += 5
+	size += enc.CalcUint32Max(v.Uint)
+	size += 6
+	size += enc.CalcFloat32Max(v.Float)
+	size += 7
+	size += enc.CalcFloat64Max(v.Double)
+	size += 5
+	size += enc.CalcBoolMax(v.Bool)
+	size += 8
+	size += enc.CalcStringMax(v.String_)
+	size += 6
+	if v.Array != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.Array), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.Array {
+				size += enc.CalcInt32Max(vv)
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	size += 4
+	if v.Map != nil {
+		s, err := enc.CalcMapLengthMax(len(v.Map))
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for kk, vv := range v.Map {
+			size += enc.CalcStringMax(kk)
+			size += enc.CalcUint32Max(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	size += 6
+	if v.Child != nil {
+		size_v_Child := ___calcMapSizeMaxNoErrBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v.Child)
+		size += size_v_Child
+	} else {
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// encode from github.com/shamaton/msgpack_bench/protocmp.BenchMarkStruct
+func ___encodeArrayBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchMarkStruct, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsArray(buf, 9, offset)
+	offset = enc.WriteInt32(buf, v.Int, offset)
+	offset = enc.WriteUint32(buf, v.Uint, offset)
+	offset = enc.WriteFloat32(buf, v.Float, offset)
+	offset = enc.WriteFloat64(buf, v.Double, offset)
+	offset = enc.WriteBool(buf, v.Bool, offset)
+	offset = enc.WriteString(buf, v.String_, offset)
+	if v.Array != nil {
+		offset = enc.WriteSliceLength(buf, len(v.Array), offset, false)
+		for _, vv := range v.Array {
+			offset = enc.WriteInt32(buf, vv, offset)
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	if v.Map != nil {
+		offset = enc.WriteMapLength(buf, len(v.Map), offset)
+		for kk, vv := range v.Map {
+			offset = enc.WriteString(buf, kk, offset)
+			offset = enc.WriteUint32(buf, vv, offset)
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	if v.Child != nil {
+		offset, err = ___encodeArrayBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v.Child, buf, offset)
+		if err != nil {
+			return 0, err
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	return offset, err
+}
+
+// encode from github.com/shamaton/msgpack_bench/protocmp.BenchMarkStruct
+func ___encodeMapBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchMarkStruct, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsMap(buf, 9, offset)
+	offset += copy(buf[offset:offset+4], "\xa3Int")
+	offset = enc.WriteInt32(buf, v.Int, offset)
+	offset += copy(buf[offset:offset+5], "\xa4Uint")
+	offset = enc.WriteUint32(buf, v.Uint, offset)
+	offset += copy(buf[offset:offset+6], "\xa5Float")
+	offset = enc.WriteFloat32(buf, v.Float, offset)
+	offset += copy(buf[offset:offset+7], "\xa6Double")
+	offset = enc.WriteFloat64(buf, v.Double, offset)
+	offset += copy(buf[offset:offset+5], "\xa4Bool")
+	offset = enc.WriteBool(buf, v.Bool, offset)
+	offset += copy(buf[offset:offset+8], "\xa7String_")
+	offset = enc.WriteString(buf, v.String_, offset)
+	offset += copy(buf[offset:offset+6], "\xa5Array")
+	if v.Array != nil {
+		offset = enc.WriteSliceLength(buf, len(v.Array), offset, false)
+		for _, vv := range v.Array {
+			offset = enc.WriteInt32(buf, vv, offset)
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	offset += copy(buf[offset:offset+4], "\xa3Map")
+	if v.Map != nil {
+		offset = enc.WriteMapLength(buf, len(v.Map), offset)
+		for kk, vv := range v.Map {
+			offset = enc.WriteString(buf, kk, offset)
+			offset = enc.WriteUint32(buf, vv, offset)
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	offset += copy(buf[offset:offset+6], "\xa5Child")
+	if v.Child != nil {
+		offset, err = ___encodeMapBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v.Child, buf, offset)
+		if err != nil {
+			return 0, err
+		}
+	} else {
+		offset = enc.WriteNil(buf, offset)
+	}
+	return offset, err
+}
+
+// decode to github.com/shamaton/msgpack_bench/protocmp.BenchMarkStruct
+func ___decodeArrayBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchMarkStruct, decoder *dec.Decoder, offset int) (int, error) {
+	offset, err := decoder.CheckStructHeader(9, offset)
+	if err != nil {
+		return 0, err
+	}
+	{
+		var vv int32
+		vv, offset, err = decoder.AsInt32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Int = vv
+	}
+	{
+		var vv uint32
+		vv, offset, err = decoder.AsUint32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Uint = vv
+	}
+	{
+		var vv float32
+		vv, offset, err = decoder.AsFloat32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Float = vv
+	}
+	{
+		var vv float64
+		vv, offset, err = decoder.AsFloat64(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Double = vv
+	}
+	{
+		var vv bool
+		vv, offset, err = decoder.AsBool(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Bool = vv
+	}
+	{
+		var vv string
+		vv, offset, err = decoder.AsString(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.String_ = vv
+	}
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
+		if err != nil {
+			return 0, err
+		}
+		if !isNil {
+			var vv []int32
+			var vvl int
+			vvl, offset, err = decoder.SliceLength(offset)
+			if err != nil {
+				return 0, err
+			}
+			vv = make([]int32, vvl)
+			for vvi := range vv {
+				vv[vvi], offset, err = decoder.AsInt32(offset)
+				if err != nil {
+					return 0, err
+				}
+			}
+			v.Array = vv
+		} else {
+			offset++
+		}
+	}
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
+		if err != nil {
+			return 0, err
+		}
+		if !isNil {
+			var vv map[string]uint32
+			var vvl int
+			vvl, offset, err = decoder.MapLength(offset)
+			if err != nil {
+				return 0, err
+			}
+			vv = make(map[string]uint32, vvl)
+			for vvi := 0; vvi < vvl; vvi++ {
+				var kkv string
+				kkv, offset, err = decoder.AsString(offset)
+				if err != nil {
+					return 0, err
+				}
+				vv[kkv], offset, err = decoder.AsUint32(offset)
+				if err != nil {
+					return 0, err
+				}
+			}
+			v.Map = vv
+		} else {
+			offset++
+		}
+	}
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
+		if err != nil {
+			return 0, err
+		}
+		if !isNil {
+			{
+				var vv protocmp.BenchChild
+				offset, err = ___decodeArrayBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&vv, decoder, offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Child = &vv
+			}
+		} else {
+			offset++
+		}
+	}
+	return offset, err
+}
+
+// decode to github.com/shamaton/msgpack_bench/protocmp.BenchMarkStruct
+func ___decodeMapBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchMarkStruct, decoder *dec.Decoder, offset int) (int, error) {
+	offset, err := decoder.CheckStructHeader(9, offset)
+	if err != nil {
+		return 0, err
+	}
+	count := 0
+	for count < 9 {
+		var dataKey []byte
+		dataKey, offset, err = decoder.AsStringBytes(offset)
+		if err != nil {
+			return 0, err
+		}
+		switch string(dataKey) {
+		case "Int":
+			{
+				var vv int32
+				vv, offset, err = decoder.AsInt32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Int = vv
+			}
+			count++
+		case "Uint":
+			{
+				var vv uint32
+				vv, offset, err = decoder.AsUint32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Uint = vv
+			}
+			count++
+		case "Float":
+			{
+				var vv float32
+				vv, offset, err = decoder.AsFloat32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Float = vv
+			}
+			count++
+		case "Double":
+			{
+				var vv float64
+				vv, offset, err = decoder.AsFloat64(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Double = vv
+			}
+			count++
+		case "Bool":
+			{
+				var vv bool
+				vv, offset, err = decoder.AsBool(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Bool = vv
+			}
+			count++
+		case "String_":
+			{
+				var vv string
+				vv, offset, err = decoder.AsString(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.String_ = vv
+			}
+			count++
+		case "Array":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
+				if err != nil {
+					return 0, err
+				}
+				if !isNil {
+					var vv []int32
+					var vvl int
+					vvl, offset, err = decoder.SliceLength(offset)
+					if err != nil {
+						return 0, err
+					}
+					vv = make([]int32, vvl)
+					for vvi := range vv {
+						vv[vvi], offset, err = decoder.AsInt32(offset)
+						if err != nil {
+							return 0, err
+						}
+					}
+					v.Array = vv
+				} else {
+					offset++
+				}
+			}
+			count++
+		case "Map":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
+				if err != nil {
+					return 0, err
+				}
+				if !isNil {
+					var vv map[string]uint32
+					var vvl int
+					vvl, offset, err = decoder.MapLength(offset)
+					if err != nil {
+						return 0, err
+					}
+					vv = make(map[string]uint32, vvl)
+					for vvi := 0; vvi < vvl; vvi++ {
+						var kkv string
+						kkv, offset, err = decoder.AsString(offset)
+						if err != nil {
+							return 0, err
+						}
+						vv[kkv], offset, err = decoder.AsUint32(offset)
+						if err != nil {
+							return 0, err
+						}
+					}
+					v.Map = vv
+				} else {
+					offset++
+				}
+			}
+			count++
+		case "Child":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
+				if err != nil {
+					return 0, err
+				}
+				if !isNil {
+					{
+						var vv protocmp.BenchChild
+						offset, err = ___decodeMapBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(&vv, decoder, offset)
+						if err != nil {
+							return 0, err
+						}
+						v.Child = &vv
+					}
+				} else {
+					offset++
+				}
+			}
+			count++
+		default:
+			return 0, fmt.Errorf("unknown key[%s] found", string(dataKey))
+		}
+	}
+	return offset, err
+}
+func ___isNotEmptyBenchMarkStruct_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v protocmp.BenchMarkStruct) bool {
+	if v.Int != 0 {
+		return true
+	}
+	if v.Uint != 0 {
+		return true
+	}
+	if v.Float != 0 {
+		return true
+	}
+	if v.Double != 0 {
+		return true
+	}
+	if v.Bool {
+		return true
+	}
+	if v.String_ != "" {
+		return true
+	}
+	if v.Array != nil {
+		return true
+	}
+	if v.Map != nil {
+		return true
+	}
+	if v.Child != nil {
+		return true
+	}
+	return false
+}
+
+// calculate size from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___calcArraySizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += enc.CalcInt32(v.Int)
+	size += enc.CalcString(v.String_)
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___calcArraySizeMaxBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += enc.CalcInt32Max(v.Int)
+	size += enc.CalcStringMax(v.String_)
+	return size, nil
+}
+
+// calculate size from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___calcMapSizeBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += 4
+	size += enc.CalcInt32(v.Int)
+	size += 8
+	size += enc.CalcString(v.String_)
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___calcMapSizeMaxBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += 4
+	size += enc.CalcInt32Max(v.Int)
+	size += 8
+	size += enc.CalcStringMax(v.String_)
+	return size, nil
+}
+
+// calculate no-error size from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___calcArraySizeNoErrBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += enc.CalcInt32(v.Int)
+	size += enc.CalcString(v.String_)
+	return size
+}
+
+// calculate no-error max size from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___calcArraySizeMaxNoErrBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += enc.CalcInt32Max(v.Int)
+	size += enc.CalcStringMax(v.String_)
+	return size
+}
+
+// calculate no-error size from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___calcMapSizeNoErrBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += 4
+	size += enc.CalcInt32(v.Int)
+	size += 8
+	size += enc.CalcString(v.String_)
+	return size
+}
+
+// calculate no-error max size from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___calcMapSizeMaxNoErrBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += 4
+	size += enc.CalcInt32Max(v.Int)
+	size += 8
+	size += enc.CalcStringMax(v.String_)
+	return size
+}
+
+// encode from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___encodeArrayBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsArray(buf, 2, offset)
+	offset = enc.WriteInt32(buf, v.Int, offset)
+	offset = enc.WriteString(buf, v.String_, offset)
+	return offset, err
+}
+
+// encode from github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___encodeMapBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsMap(buf, 2, offset)
+	offset += copy(buf[offset:offset+4], "\xa3Int")
+	offset = enc.WriteInt32(buf, v.Int, offset)
+	offset += copy(buf[offset:offset+8], "\xa7String_")
+	offset = enc.WriteString(buf, v.String_, offset)
+	return offset, err
+}
+
+// decode to github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___decodeArrayBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild, decoder *dec.Decoder, offset int) (int, error) {
+	offset, err := decoder.CheckStructHeader(2, offset)
+	if err != nil {
+		return 0, err
+	}
+	{
+		var vv int32
+		vv, offset, err = decoder.AsInt32(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.Int = vv
+	}
+	{
+		var vv string
+		vv, offset, err = decoder.AsString(offset)
+		if err != nil {
+			return 0, err
+		}
+		v.String_ = vv
+	}
+	return offset, err
+}
+
+// decode to github.com/shamaton/msgpack_bench/protocmp.BenchChild
+func ___decodeMapBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v *protocmp.BenchChild, decoder *dec.Decoder, offset int) (int, error) {
+	offset, err := decoder.CheckStructHeader(2, offset)
+	if err != nil {
+		return 0, err
+	}
+	count := 0
+	for count < 2 {
+		var dataKey []byte
+		dataKey, offset, err = decoder.AsStringBytes(offset)
+		if err != nil {
+			return 0, err
+		}
+		switch string(dataKey) {
+		case "Int":
+			{
+				var vv int32
+				vv, offset, err = decoder.AsInt32(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.Int = vv
+			}
+			count++
+		case "String_":
+			{
+				var vv string
+				vv, offset, err = decoder.AsString(offset)
+				if err != nil {
+					return 0, err
+				}
+				v.String_ = vv
+			}
+			count++
+		default:
+			return 0, fmt.Errorf("unknown key[%s] found", string(dataKey))
+		}
+	}
+	return offset, err
+}
+func ___isNotEmptyBenchChild_a402043aea71212b32c455c7a31b91b4d41970e009e2efebe819feff738529d0(v protocmp.BenchChild) bool {
+	if v.Int != 0 {
+		return true
+	}
+	if v.String_ != "" {
+		return true
+	}
+	return false
 }
 
 // calculate size from github.com/shamaton/msgpack_bench.BenchChild
-func ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchChild, encoder *enc.Encoder) (int, error) {
+func ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild) (int, error) {
 	size := 0
-	size += encoder.CalcStructHeaderFix(2)
-	size += encoder.CalcInt(v.Int)
-	size += encoder.CalcString(v.String)
+	size += enc.CalcStructHeaderFix(2)
+	size += enc.CalcInt(v.Int)
+	size += enc.CalcString(v.String)
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench.BenchChild
+func ___calcArraySizeMaxBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += enc.CalcIntMax(v.Int)
+	size += enc.CalcStringMax(v.String)
 	return size, nil
 }
 
 // calculate size from github.com/shamaton/msgpack_bench.BenchChild
-func ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchChild, encoder *enc.Encoder) (int, error) {
+func ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild) (int, error) {
 	size := 0
-	size += encoder.CalcStructHeaderFix(2)
-	size += encoder.CalcStringFix(3)
-	size += encoder.CalcInt(v.Int)
-	size += encoder.CalcStringFix(6)
-	size += encoder.CalcString(v.String)
+	fieldNum := 0
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		fieldNum++
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		fieldNum++
+	}
+	if fieldNum <= 15 {
+		size += enc.CalcStructHeaderFix(fieldNum)
+	} else if fieldNum <= math.MaxUint16 {
+		size += enc.CalcStructHeader16(fieldNum)
+	} else {
+		size += enc.CalcStructHeader32(fieldNum)
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += 4
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += enc.CalcInt(v.Int)
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += 7
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += enc.CalcString(v.String)
+	}
 	return size, nil
 }
 
-// encode from github.com/shamaton/msgpack_bench.BenchChild
-func ___encodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchChild, encoder *enc.Encoder, offset int) ([]byte, int, error) {
-	var err error
-	offset = encoder.WriteStructHeaderFixAsArray(2, offset)
-	offset = encoder.WriteInt(v.Int, offset)
-	offset = encoder.WriteString(v.String, offset)
-	return encoder.EncodedBytes(), offset, err
+// calculate max size from github.com/shamaton/msgpack_bench.BenchChild
+func ___calcMapSizeMaxBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild) (int, error) {
+	size := 0
+	fieldNum := 0
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		fieldNum++
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		fieldNum++
+	}
+	if fieldNum <= 15 {
+		size += enc.CalcStructHeaderFix(fieldNum)
+	} else if fieldNum <= math.MaxUint16 {
+		size += enc.CalcStructHeader16(fieldNum)
+	} else {
+		size += enc.CalcStructHeader32(fieldNum)
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += 4
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += enc.CalcIntMax(v.Int)
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += 7
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += enc.CalcStringMax(v.String)
+	}
+	return size, nil
+}
+
+// calculate no-error size from github.com/shamaton/msgpack_bench.BenchChild
+func ___calcArraySizeNoErrBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += enc.CalcInt(v.Int)
+	size += enc.CalcString(v.String)
+	return size
+}
+
+// calculate no-error max size from github.com/shamaton/msgpack_bench.BenchChild
+func ___calcArraySizeMaxNoErrBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(2)
+	size += enc.CalcIntMax(v.Int)
+	size += enc.CalcStringMax(v.String)
+	return size
+}
+
+// calculate no-error size from github.com/shamaton/msgpack_bench.BenchChild
+func ___calcMapSizeNoErrBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild) int {
+	size := 0
+	fieldNum := 0
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		fieldNum++
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		fieldNum++
+	}
+	if fieldNum <= 15 {
+		size += enc.CalcStructHeaderFix(fieldNum)
+	} else if fieldNum <= math.MaxUint16 {
+		size += enc.CalcStructHeader16(fieldNum)
+	} else {
+		size += enc.CalcStructHeader32(fieldNum)
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += 4
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += enc.CalcInt(v.Int)
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += 7
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += enc.CalcString(v.String)
+	}
+	return size
+}
+
+// calculate no-error max size from github.com/shamaton/msgpack_bench.BenchChild
+func ___calcMapSizeMaxNoErrBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild) int {
+	size := 0
+	fieldNum := 0
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		fieldNum++
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		fieldNum++
+	}
+	if fieldNum <= 15 {
+		size += enc.CalcStructHeaderFix(fieldNum)
+	} else if fieldNum <= math.MaxUint16 {
+		size += enc.CalcStructHeader16(fieldNum)
+	} else {
+		size += enc.CalcStructHeader32(fieldNum)
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += 4
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += enc.CalcIntMax(v.Int)
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += 7
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += enc.CalcStringMax(v.String)
+	}
+	return size
 }
 
 // encode from github.com/shamaton/msgpack_bench.BenchChild
-func ___encodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchChild, encoder *enc.Encoder, offset int) ([]byte, int, error) {
+func ___encodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild, buf []byte, offset int) (int, error) {
 	var err error
-	offset = encoder.WriteStructHeaderFixAsMap(2, offset)
-	offset = encoder.WriteStringFix("Int", 3, offset)
-	offset = encoder.WriteInt(v.Int, offset)
-	offset = encoder.WriteStringFix("String", 6, offset)
-	offset = encoder.WriteString(v.String, offset)
-	return encoder.EncodedBytes(), offset, err
+	offset = enc.WriteStructHeaderFixAsArray(buf, 2, offset)
+	offset = enc.WriteInt(buf, v.Int, offset)
+	offset = enc.WriteString(buf, v.String, offset)
+	return offset, err
+}
+
+// encode from github.com/shamaton/msgpack_bench.BenchChild
+func ___encodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild, buf []byte, offset int) (int, error) {
+	var err error
+	fieldNum := 0
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		fieldNum++
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		fieldNum++
+	}
+	if fieldNum <= 15 {
+		offset = enc.WriteStructHeaderFixAsMap(buf, fieldNum, offset)
+	} else if fieldNum <= math.MaxUint16 {
+		offset = enc.WriteStructHeader16AsMap(buf, fieldNum, offset)
+	} else {
+		offset = enc.WriteStructHeader32AsMap(buf, fieldNum, offset)
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		offset += copy(buf[offset:offset+4], "\xa3Int")
+	}
+	if ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		offset = enc.WriteInt(buf, v.Int, offset)
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		offset += copy(buf[offset:offset+7], "\xa6String")
+	}
+	if ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		offset = enc.WriteString(buf, v.String, offset)
+	}
+	return offset, err
 }
 
 // decode to github.com/shamaton/msgpack_bench.BenchChild
@@ -479,39 +2979,22 @@ func ___decodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829
 
 // decode to github.com/shamaton/msgpack_bench.BenchChild
 func ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchChild, decoder *dec.Decoder, offset int) (int, error) {
-	keys := [][]byte{
-		{uint8(0x49), uint8(0x6e), uint8(0x74)},                                        // Int
-		{uint8(0x53), uint8(0x74), uint8(0x72), uint8(0x69), uint8(0x6e), uint8(0x67)}, // String
-	}
-	offset, err := decoder.CheckStructHeader(2, offset)
+	dataLen, offset, err := decoder.MapLength(offset)
 	if err != nil {
 		return 0, err
 	}
+	if dataLen > 2 {
+		return 0, fmt.Errorf("data length wrong %d : %d", 2, dataLen)
+	}
 	count := 0
-	for count < 2 {
+	for count < dataLen {
 		var dataKey []byte
 		dataKey, offset, err = decoder.AsStringBytes(offset)
 		if err != nil {
 			return 0, err
 		}
-		fieldIndex := -1
-		for i, key := range keys {
-			if len(dataKey) != len(key) {
-				continue
-			}
-			fieldIndex = i
-			for dataKeyIndex := range dataKey {
-				if dataKey[dataKeyIndex] != key[dataKeyIndex] {
-					fieldIndex = -1
-					break
-				}
-			}
-			if fieldIndex >= 0 {
-				break
-			}
-		}
-		switch fieldIndex {
-		case 0:
+		switch string(dataKey) {
+		case "Int":
 			{
 				var vv int
 				vv, offset, err = decoder.AsInt(offset)
@@ -521,7 +3004,7 @@ func ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a4
 				v.Int = vv
 			}
 			count++
-		case 1:
+		case "String":
 			{
 				var vv string
 				vv, offset, err = decoder.AsString(offset)
@@ -537,177 +3020,495 @@ func ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a4
 	}
 	return offset, err
 }
+func ___isNotEmptyBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchChild) bool {
+	if v.Int != 0 {
+		return true
+	}
+	if v.String != "" {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyIntBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v int) bool {
+	if v != 0 {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyStringBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v string) bool {
+	if v != "" {
+		return true
+	}
+	return false
+}
 
 // calculate size from github.com/shamaton/msgpack_bench.BenchMarkStruct
-func ___calcArraySizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchMarkStruct, encoder *enc.Encoder) (int, error) {
+func ___calcArraySizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchMarkStruct) (int, error) {
 	size := 0
-	size += encoder.CalcStructHeaderFix(9)
-	size += encoder.CalcInt(v.Int)
-	size += encoder.CalcUint(v.Uint)
-	size += encoder.CalcFloat32(v.Float)
-	size += encoder.CalcFloat64(v.Double)
-	size += encoder.CalcBool(v.Bool)
-	size += encoder.CalcString(v.String)
+	size += enc.CalcStructHeaderFix(9)
+	size += enc.CalcInt(v.Int)
+	size += enc.CalcUint(v.Uint)
+	size += enc.CalcFloat32(v.Float)
+	size += enc.CalcFloat64(v.Double)
+	size += enc.CalcBool(v.Bool)
+	size += enc.CalcString(v.String)
 	if v.Array != nil {
-		s, err := encoder.CalcSliceLength(len(v.Array), false)
+		s, err := enc.CalcSliceLength(len(v.Array), false)
 		if err != nil {
 			return 0, err
 		}
 		size += s
 		for _, vv := range v.Array {
-			size += encoder.CalcInt(vv)
+			size += enc.CalcInt(vv)
 		}
 	} else {
-		size += encoder.CalcNil()
+		size += enc.CalcNil()
 	}
 	if v.Map != nil {
-		s, err := encoder.CalcMapLength(len(v.Map))
+		s, err := enc.CalcMapLength(len(v.Map))
 		if err != nil {
 			return 0, err
 		}
 		size += s
 		for kk, vv := range v.Map {
-			size += encoder.CalcString(kk)
-			size += encoder.CalcUint(vv)
+			size += enc.CalcString(kk)
+			size += enc.CalcUint(vv)
 		}
 	} else {
-		size += encoder.CalcNil()
+		size += enc.CalcNil()
 	}
-	size_v_Child, err := ___calcArraySizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child, encoder)
-	if err != nil {
-		return 0, err
+	size_v_Child := ___calcArraySizeNoErrBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v.Child)
+	size += size_v_Child
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench.BenchMarkStruct
+func ___calcArraySizeMaxBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchMarkStruct) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(9)
+	size += enc.CalcIntMax(v.Int)
+	size += enc.CalcUintMax(v.Uint)
+	size += enc.CalcFloat32Max(v.Float)
+	size += enc.CalcFloat64Max(v.Double)
+	size += enc.CalcBoolMax(v.Bool)
+	size += enc.CalcStringMax(v.String)
+	if v.Array != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.Array), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.Array {
+				size += enc.CalcIntMax(vv)
+			}
+		}
+	} else {
+		size += enc.CalcNil()
 	}
+	if v.Map != nil {
+		s, err := enc.CalcMapLengthMax(len(v.Map))
+		if err != nil {
+			return 0, err
+		}
+		size += s
+		for kk, vv := range v.Map {
+			size += enc.CalcStringMax(kk)
+			size += enc.CalcUintMax(vv)
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	size_v_Child := ___calcArraySizeMaxNoErrBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v.Child)
 	size += size_v_Child
 	return size, nil
 }
 
 // calculate size from github.com/shamaton/msgpack_bench.BenchMarkStruct
-func ___calcMapSizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchMarkStruct, encoder *enc.Encoder) (int, error) {
+func ___calcMapSizeBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchMarkStruct) (int, error) {
 	size := 0
-	size += encoder.CalcStructHeaderFix(9)
-	size += encoder.CalcStringFix(3)
-	size += encoder.CalcInt(v.Int)
-	size += encoder.CalcStringFix(4)
-	size += encoder.CalcUint(v.Uint)
-	size += encoder.CalcStringFix(5)
-	size += encoder.CalcFloat32(v.Float)
-	size += encoder.CalcStringFix(6)
-	size += encoder.CalcFloat64(v.Double)
-	size += encoder.CalcStringFix(4)
-	size += encoder.CalcBool(v.Bool)
-	size += encoder.CalcStringFix(6)
-	size += encoder.CalcString(v.String)
-	size += encoder.CalcStringFix(5)
-	if v.Array != nil {
-		s, err := encoder.CalcSliceLength(len(v.Array), false)
-		if err != nil {
-			return 0, err
-		}
-		size += s
-		for _, vv := range v.Array {
-			size += encoder.CalcInt(vv)
-		}
+	fieldNum := 0
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		fieldNum++
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		fieldNum++
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		fieldNum++
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		fieldNum++
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		fieldNum++
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		fieldNum++
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		fieldNum++
+	}
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		fieldNum++
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		fieldNum++
+	}
+	if fieldNum <= 15 {
+		size += enc.CalcStructHeaderFix(fieldNum)
+	} else if fieldNum <= math.MaxUint16 {
+		size += enc.CalcStructHeader16(fieldNum)
 	} else {
-		size += encoder.CalcNil()
+		size += enc.CalcStructHeader32(fieldNum)
 	}
-	size += encoder.CalcStringFix(3)
-	if v.Map != nil {
-		s, err := encoder.CalcMapLength(len(v.Map))
-		if err != nil {
-			return 0, err
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += 4
+	}
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += enc.CalcInt(v.Int)
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		size += 5
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		size += enc.CalcUint(v.Uint)
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		size += 6
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		size += enc.CalcFloat32(v.Float)
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		size += 7
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		size += enc.CalcFloat64(v.Double)
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		size += 5
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		size += enc.CalcBool(v.Bool)
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += 7
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += enc.CalcString(v.String)
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		size += 6
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		if v.Array != nil {
+			s, err := enc.CalcSliceLength(len(v.Array), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.Array {
+				size += enc.CalcInt(vv)
+			}
+		} else {
+			size += enc.CalcNil()
 		}
-		size += s
-		for kk, vv := range v.Map {
-			size += encoder.CalcString(kk)
-			size += encoder.CalcUint(vv)
+	}
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		size += 4
+	}
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		if v.Map != nil {
+			s, err := enc.CalcMapLength(len(v.Map))
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for kk, vv := range v.Map {
+				size += enc.CalcString(kk)
+				size += enc.CalcUint(vv)
+			}
+		} else {
+			size += enc.CalcNil()
 		}
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		size += 6
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		size_v_Child := ___calcMapSizeNoErrBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v.Child)
+		size += size_v_Child
+	}
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench.BenchMarkStruct
+func ___calcMapSizeMaxBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchMarkStruct) (int, error) {
+	size := 0
+	fieldNum := 0
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		fieldNum++
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		fieldNum++
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		fieldNum++
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		fieldNum++
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		fieldNum++
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		fieldNum++
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		fieldNum++
+	}
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		fieldNum++
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		fieldNum++
+	}
+	if fieldNum <= 15 {
+		size += enc.CalcStructHeaderFix(fieldNum)
+	} else if fieldNum <= math.MaxUint16 {
+		size += enc.CalcStructHeader16(fieldNum)
 	} else {
-		size += encoder.CalcNil()
+		size += enc.CalcStructHeader32(fieldNum)
 	}
-	size += encoder.CalcStringFix(5)
-	size_v_Child, err := ___calcMapSizeBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child, encoder)
-	if err != nil {
-		return 0, err
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += 4
 	}
-	size += size_v_Child
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		size += enc.CalcIntMax(v.Int)
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		size += 5
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		size += enc.CalcUintMax(v.Uint)
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		size += 6
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		size += enc.CalcFloat32Max(v.Float)
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		size += 7
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		size += enc.CalcFloat64Max(v.Double)
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		size += 5
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		size += enc.CalcBoolMax(v.Bool)
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += 7
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		size += enc.CalcStringMax(v.String)
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		size += 6
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		if v.Array != nil {
+			{
+				s, err := enc.CalcSliceLengthMax(len(v.Array), false)
+				if err != nil {
+					return 0, err
+				}
+				size += s
+				for _, vv := range v.Array {
+					size += enc.CalcIntMax(vv)
+				}
+			}
+		} else {
+			size += enc.CalcNil()
+		}
+	}
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		size += 4
+	}
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		if v.Map != nil {
+			s, err := enc.CalcMapLengthMax(len(v.Map))
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for kk, vv := range v.Map {
+				size += enc.CalcStringMax(kk)
+				size += enc.CalcUintMax(vv)
+			}
+		} else {
+			size += enc.CalcNil()
+		}
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		size += 6
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		size_v_Child := ___calcMapSizeMaxNoErrBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v.Child)
+		size += size_v_Child
+	}
 	return size, nil
 }
 
 // encode from github.com/shamaton/msgpack_bench.BenchMarkStruct
-func ___encodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchMarkStruct, encoder *enc.Encoder, offset int) ([]byte, int, error) {
+func ___encodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchMarkStruct, buf []byte, offset int) (int, error) {
 	var err error
-	offset = encoder.WriteStructHeaderFixAsArray(9, offset)
-	offset = encoder.WriteInt(v.Int, offset)
-	offset = encoder.WriteUint(v.Uint, offset)
-	offset = encoder.WriteFloat32(v.Float, offset)
-	offset = encoder.WriteFloat64(v.Double, offset)
-	offset = encoder.WriteBool(v.Bool, offset)
-	offset = encoder.WriteString(v.String, offset)
+	offset = enc.WriteStructHeaderFixAsArray(buf, 9, offset)
+	offset = enc.WriteInt(buf, v.Int, offset)
+	offset = enc.WriteUint(buf, v.Uint, offset)
+	offset = enc.WriteFloat32(buf, v.Float, offset)
+	offset = enc.WriteFloat64(buf, v.Double, offset)
+	offset = enc.WriteBool(buf, v.Bool, offset)
+	offset = enc.WriteString(buf, v.String, offset)
 	if v.Array != nil {
-		offset = encoder.WriteSliceLength(len(v.Array), offset, false)
+		offset = enc.WriteSliceLength(buf, len(v.Array), offset, false)
 		for _, vv := range v.Array {
-			offset = encoder.WriteInt(vv, offset)
+			offset = enc.WriteInt(buf, vv, offset)
 		}
 	} else {
-		offset = encoder.WriteNil(offset)
+		offset = enc.WriteNil(buf, offset)
 	}
 	if v.Map != nil {
-		offset = encoder.WriteMapLength(len(v.Map), offset)
+		offset = enc.WriteMapLength(buf, len(v.Map), offset)
 		for kk, vv := range v.Map {
-			offset = encoder.WriteString(kk, offset)
-			offset = encoder.WriteUint(vv, offset)
+			offset = enc.WriteString(buf, kk, offset)
+			offset = enc.WriteUint(buf, vv, offset)
 		}
 	} else {
-		offset = encoder.WriteNil(offset)
+		offset = enc.WriteNil(buf, offset)
 	}
-	_, offset, err = ___encodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child, encoder, offset)
+	offset, err = ___encodeArrayBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v.Child, buf, offset)
 	if err != nil {
-		return nil, 0, err
+		return 0, err
 	}
-	return encoder.EncodedBytes(), offset, err
+	return offset, err
 }
 
 // encode from github.com/shamaton/msgpack_bench.BenchMarkStruct
-func ___encodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchMarkStruct, encoder *enc.Encoder, offset int) ([]byte, int, error) {
+func ___encodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchMarkStruct, buf []byte, offset int) (int, error) {
 	var err error
-	offset = encoder.WriteStructHeaderFixAsMap(9, offset)
-	offset = encoder.WriteStringFix("Int", 3, offset)
-	offset = encoder.WriteInt(v.Int, offset)
-	offset = encoder.WriteStringFix("Uint", 4, offset)
-	offset = encoder.WriteUint(v.Uint, offset)
-	offset = encoder.WriteStringFix("Float", 5, offset)
-	offset = encoder.WriteFloat32(v.Float, offset)
-	offset = encoder.WriteStringFix("Double", 6, offset)
-	offset = encoder.WriteFloat64(v.Double, offset)
-	offset = encoder.WriteStringFix("Bool", 4, offset)
-	offset = encoder.WriteBool(v.Bool, offset)
-	offset = encoder.WriteStringFix("String", 6, offset)
-	offset = encoder.WriteString(v.String, offset)
-	offset = encoder.WriteStringFix("Array", 5, offset)
-	if v.Array != nil {
-		offset = encoder.WriteSliceLength(len(v.Array), offset, false)
-		for _, vv := range v.Array {
-			offset = encoder.WriteInt(vv, offset)
-		}
+	fieldNum := 0
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		fieldNum++
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		fieldNum++
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		fieldNum++
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		fieldNum++
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		fieldNum++
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		fieldNum++
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		fieldNum++
+	}
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		fieldNum++
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		fieldNum++
+	}
+	if fieldNum <= 15 {
+		offset = enc.WriteStructHeaderFixAsMap(buf, fieldNum, offset)
+	} else if fieldNum <= math.MaxUint16 {
+		offset = enc.WriteStructHeader16AsMap(buf, fieldNum, offset)
 	} else {
-		offset = encoder.WriteNil(offset)
+		offset = enc.WriteStructHeader32AsMap(buf, fieldNum, offset)
 	}
-	offset = encoder.WriteStringFix("Map", 3, offset)
-	if v.Map != nil {
-		offset = encoder.WriteMapLength(len(v.Map), offset)
-		for kk, vv := range v.Map {
-			offset = encoder.WriteString(kk, offset)
-			offset = encoder.WriteUint(vv, offset)
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		offset += copy(buf[offset:offset+4], "\xa3Int")
+	}
+	if ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Int) {
+		offset = enc.WriteInt(buf, v.Int, offset)
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		offset += copy(buf[offset:offset+5], "\xa4Uint")
+	}
+	if ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Uint) {
+		offset = enc.WriteUint(buf, v.Uint, offset)
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		offset += copy(buf[offset:offset+6], "\xa5Float")
+	}
+	if ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Float) {
+		offset = enc.WriteFloat32(buf, v.Float, offset)
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		offset += copy(buf[offset:offset+7], "\xa6Double")
+	}
+	if ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Double) {
+		offset = enc.WriteFloat64(buf, v.Double, offset)
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		offset += copy(buf[offset:offset+5], "\xa4Bool")
+	}
+	if ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Bool) {
+		offset = enc.WriteBool(buf, v.Bool, offset)
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		offset += copy(buf[offset:offset+7], "\xa6String")
+	}
+	if ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.String) {
+		offset = enc.WriteString(buf, v.String, offset)
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		offset += copy(buf[offset:offset+6], "\xa5Array")
+	}
+	if ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Array) {
+		if v.Array != nil {
+			offset = enc.WriteSliceLength(buf, len(v.Array), offset, false)
+			for _, vv := range v.Array {
+				offset = enc.WriteInt(buf, vv, offset)
+			}
+		} else {
+			offset = enc.WriteNil(buf, offset)
 		}
-	} else {
-		offset = encoder.WriteNil(offset)
 	}
-	offset = encoder.WriteStringFix("Child", 5, offset)
-	_, offset, err = ___encodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child, encoder, offset)
-	if err != nil {
-		return nil, 0, err
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		offset += copy(buf[offset:offset+4], "\xa3Map")
 	}
-	return encoder.EncodedBytes(), offset, err
+	if ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Map) {
+		if v.Map != nil {
+			offset = enc.WriteMapLength(buf, len(v.Map), offset)
+			for kk, vv := range v.Map {
+				offset = enc.WriteString(buf, kk, offset)
+				offset = enc.WriteUint(buf, vv, offset)
+			}
+		} else {
+			offset = enc.WriteNil(buf, offset)
+		}
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		offset += copy(buf[offset:offset+6], "\xa5Child")
+	}
+	if ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		offset, err = ___encodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&v.Child, buf, offset)
+		if err != nil {
+			return 0, err
+		}
+	}
+	return offset, err
 }
 
 // decode to github.com/shamaton/msgpack_bench.BenchMarkStruct
@@ -764,50 +3565,58 @@ func ___decodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6
 		}
 		v.String = vv
 	}
-	if !decoder.IsCodeNil(offset) {
-		var vv []int
-		var vvl int
-		vvl, offset, err = decoder.SliceLength(offset)
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
 		if err != nil {
 			return 0, err
 		}
-		vv = make([]int, vvl)
-		for vvi := range vv {
-			var vvv int
-			vvv, offset, err = decoder.AsInt(offset)
+		if !isNil {
+			var vv []int
+			var vvl int
+			vvl, offset, err = decoder.SliceLength(offset)
 			if err != nil {
 				return 0, err
 			}
-			vv[vvi] = vvv
+			vv = make([]int, vvl)
+			for vvi := range vv {
+				vv[vvi], offset, err = decoder.AsInt(offset)
+				if err != nil {
+					return 0, err
+				}
+			}
+			v.Array = vv
+		} else {
+			offset++
 		}
-		v.Array = vv
-	} else {
-		offset++
 	}
-	if !decoder.IsCodeNil(offset) {
-		var vv map[string]uint
-		var vvl int
-		vvl, offset, err = decoder.MapLength(offset)
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
 		if err != nil {
 			return 0, err
 		}
-		vv = make(map[string]uint, vvl)
-		for vvi := 0; vvi < vvl; vvi++ {
-			var kkv string
-			kkv, offset, err = decoder.AsString(offset)
+		if !isNil {
+			var vv map[string]uint
+			var vvl int
+			vvl, offset, err = decoder.MapLength(offset)
 			if err != nil {
 				return 0, err
 			}
-			var vvv uint
-			vvv, offset, err = decoder.AsUint(offset)
-			if err != nil {
-				return 0, err
+			vv = make(map[string]uint, vvl)
+			for vvi := 0; vvi < vvl; vvi++ {
+				var kkv string
+				kkv, offset, err = decoder.AsString(offset)
+				if err != nil {
+					return 0, err
+				}
+				vv[kkv], offset, err = decoder.AsUint(offset)
+				if err != nil {
+					return 0, err
+				}
 			}
-			vv[kkv] = vvv
+			v.Map = vv
+		} else {
+			offset++
 		}
-		v.Map = vv
-	} else {
-		offset++
 	}
 	{
 		var vv BenchChild
@@ -822,46 +3631,22 @@ func ___decodeArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6
 
 // decode to github.com/shamaton/msgpack_bench.BenchMarkStruct
 func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *BenchMarkStruct, decoder *dec.Decoder, offset int) (int, error) {
-	keys := [][]byte{
-		{uint8(0x49), uint8(0x6e), uint8(0x74)},                                        // Int
-		{uint8(0x55), uint8(0x69), uint8(0x6e), uint8(0x74)},                           // Uint
-		{uint8(0x46), uint8(0x6c), uint8(0x6f), uint8(0x61), uint8(0x74)},              // Float
-		{uint8(0x44), uint8(0x6f), uint8(0x75), uint8(0x62), uint8(0x6c), uint8(0x65)}, // Double
-		{uint8(0x42), uint8(0x6f), uint8(0x6f), uint8(0x6c)},                           // Bool
-		{uint8(0x53), uint8(0x74), uint8(0x72), uint8(0x69), uint8(0x6e), uint8(0x67)}, // String
-		{uint8(0x41), uint8(0x72), uint8(0x72), uint8(0x61), uint8(0x79)},              // Array
-		{uint8(0x4d), uint8(0x61), uint8(0x70)},                                        // Map
-		{uint8(0x43), uint8(0x68), uint8(0x69), uint8(0x6c), uint8(0x64)},              // Child
-	}
-	offset, err := decoder.CheckStructHeader(9, offset)
+	dataLen, offset, err := decoder.MapLength(offset)
 	if err != nil {
 		return 0, err
 	}
+	if dataLen > 9 {
+		return 0, fmt.Errorf("data length wrong %d : %d", 9, dataLen)
+	}
 	count := 0
-	for count < 9 {
+	for count < dataLen {
 		var dataKey []byte
 		dataKey, offset, err = decoder.AsStringBytes(offset)
 		if err != nil {
 			return 0, err
 		}
-		fieldIndex := -1
-		for i, key := range keys {
-			if len(dataKey) != len(key) {
-				continue
-			}
-			fieldIndex = i
-			for dataKeyIndex := range dataKey {
-				if dataKey[dataKeyIndex] != key[dataKeyIndex] {
-					fieldIndex = -1
-					break
-				}
-			}
-			if fieldIndex >= 0 {
-				break
-			}
-		}
-		switch fieldIndex {
-		case 0:
+		switch string(dataKey) {
+		case "Int":
 			{
 				var vv int
 				vv, offset, err = decoder.AsInt(offset)
@@ -871,7 +3656,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Int = vv
 			}
 			count++
-		case 1:
+		case "Uint":
 			{
 				var vv uint
 				vv, offset, err = decoder.AsUint(offset)
@@ -881,7 +3666,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Uint = vv
 			}
 			count++
-		case 2:
+		case "Float":
 			{
 				var vv float32
 				vv, offset, err = decoder.AsFloat32(offset)
@@ -891,7 +3676,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Float = vv
 			}
 			count++
-		case 3:
+		case "Double":
 			{
 				var vv float64
 				vv, offset, err = decoder.AsFloat64(offset)
@@ -901,7 +3686,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Double = vv
 			}
 			count++
-		case 4:
+		case "Bool":
 			{
 				var vv bool
 				vv, offset, err = decoder.AsBool(offset)
@@ -911,7 +3696,7 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.Bool = vv
 			}
 			count++
-		case 5:
+		case "String":
 			{
 				var vv string
 				vv, offset, err = decoder.AsString(offset)
@@ -921,56 +3706,64 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 				v.String = vv
 			}
 			count++
-		case 6:
-			if !decoder.IsCodeNil(offset) {
-				var vv []int
-				var vvl int
-				vvl, offset, err = decoder.SliceLength(offset)
+		case "Array":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
 				if err != nil {
 					return 0, err
 				}
-				vv = make([]int, vvl)
-				for vvi := range vv {
-					var vvv int
-					vvv, offset, err = decoder.AsInt(offset)
+				if !isNil {
+					var vv []int
+					var vvl int
+					vvl, offset, err = decoder.SliceLength(offset)
 					if err != nil {
 						return 0, err
 					}
-					vv[vvi] = vvv
+					vv = make([]int, vvl)
+					for vvi := range vv {
+						vv[vvi], offset, err = decoder.AsInt(offset)
+						if err != nil {
+							return 0, err
+						}
+					}
+					v.Array = vv
+				} else {
+					offset++
 				}
-				v.Array = vv
-			} else {
-				offset++
 			}
 			count++
-		case 7:
-			if !decoder.IsCodeNil(offset) {
-				var vv map[string]uint
-				var vvl int
-				vvl, offset, err = decoder.MapLength(offset)
+		case "Map":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
 				if err != nil {
 					return 0, err
 				}
-				vv = make(map[string]uint, vvl)
-				for vvi := 0; vvi < vvl; vvi++ {
-					var kkv string
-					kkv, offset, err = decoder.AsString(offset)
+				if !isNil {
+					var vv map[string]uint
+					var vvl int
+					vvl, offset, err = decoder.MapLength(offset)
 					if err != nil {
 						return 0, err
 					}
-					var vvv uint
-					vvv, offset, err = decoder.AsUint(offset)
-					if err != nil {
-						return 0, err
+					vv = make(map[string]uint, vvl)
+					for vvi := 0; vvi < vvl; vvi++ {
+						var kkv string
+						kkv, offset, err = decoder.AsString(offset)
+						if err != nil {
+							return 0, err
+						}
+						vv[kkv], offset, err = decoder.AsUint(offset)
+						if err != nil {
+							return 0, err
+						}
 					}
-					vv[kkv] = vvv
+					v.Map = vv
+				} else {
+					offset++
 				}
-				v.Map = vv
-			} else {
-				offset++
 			}
 			count++
-		case 8:
+		case "Child":
 			{
 				var vv BenchChild
 				offset, err = ___decodeMapBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&vv, decoder, offset)
@@ -986,57 +3779,219 @@ func ___decodeMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8
 	}
 	return offset, err
 }
+func ___isNotEmptyBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchMarkStruct) bool {
+	if v.Int != 0 {
+		return true
+	}
+	if v.Uint != 0 {
+		return true
+	}
+	if v.Float != 0 {
+		return true
+	}
+	if v.Double != 0 {
+		return true
+	}
+	if v.Bool {
+		return true
+	}
+	if v.String != "" {
+		return true
+	}
+	if v.Array != nil {
+		return true
+	}
+	if v.Map != nil {
+		return true
+	}
+	if ___isNotEmptyBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v.Child) {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyIntBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v int) bool {
+	if v != 0 {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyUintBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v uint) bool {
+	if v != 0 {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyFloatBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v float32) bool {
+	if v != 0 {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyDoubleBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v float64) bool {
+	if v != 0 {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyBoolBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v bool) bool {
+	if v {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyStringBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v string) bool {
+	if v != "" {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyArrayBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v []int) bool {
+	if v != nil {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyMapBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v map[string]uint) bool {
+	if v != nil {
+		return true
+	}
+	return false
+}
+func ___isNotEmptyChildBenchMarkStruct_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v BenchChild) bool {
+	if ___isNotEmptyBenchChild_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v) {
+		return true
+	}
+	return false
+}
 
 // calculate size from github.com/shamaton/msgpack_bench.Item
-func ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v Item, encoder *enc.Encoder) (int, error) {
+func ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item) (int, error) {
 	size := 0
-	size += encoder.CalcStructHeaderFix(4)
-	size += encoder.CalcInt(v.ID)
-	size += encoder.CalcString(v.Name)
-	size += encoder.CalcFloat32(v.Effect)
-	size += encoder.CalcUint(v.Num)
+	size += enc.CalcStructHeaderFix(4)
+	size += enc.CalcInt(v.ID)
+	size += enc.CalcString(v.Name)
+	size += enc.CalcFloat32(v.Effect)
+	size += enc.CalcUint(v.Num)
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench.Item
+func ___calcArraySizeMaxItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += enc.CalcIntMax(v.ID)
+	size += enc.CalcStringMax(v.Name)
+	size += enc.CalcFloat32Max(v.Effect)
+	size += enc.CalcUintMax(v.Num)
 	return size, nil
 }
 
 // calculate size from github.com/shamaton/msgpack_bench.Item
-func ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v Item, encoder *enc.Encoder) (int, error) {
+func ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item) (int, error) {
 	size := 0
-	size += encoder.CalcStructHeaderFix(4)
-	size += encoder.CalcStringFix(2)
-	size += encoder.CalcInt(v.ID)
-	size += encoder.CalcStringFix(4)
-	size += encoder.CalcString(v.Name)
-	size += encoder.CalcStringFix(6)
-	size += encoder.CalcFloat32(v.Effect)
-	size += encoder.CalcStringFix(3)
-	size += encoder.CalcUint(v.Num)
+	size += enc.CalcStructHeaderFix(4)
+	size += 3
+	size += enc.CalcInt(v.ID)
+	size += 5
+	size += enc.CalcString(v.Name)
+	size += 7
+	size += enc.CalcFloat32(v.Effect)
+	size += 4
+	size += enc.CalcUint(v.Num)
 	return size, nil
 }
 
-// encode from github.com/shamaton/msgpack_bench.Item
-func ___encodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v Item, encoder *enc.Encoder, offset int) ([]byte, int, error) {
-	var err error
-	offset = encoder.WriteStructHeaderFixAsArray(4, offset)
-	offset = encoder.WriteInt(v.ID, offset)
-	offset = encoder.WriteString(v.Name, offset)
-	offset = encoder.WriteFloat32(v.Effect, offset)
-	offset = encoder.WriteUint(v.Num, offset)
-	return encoder.EncodedBytes(), offset, err
+// calculate max size from github.com/shamaton/msgpack_bench.Item
+func ___calcMapSizeMaxItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += 3
+	size += enc.CalcIntMax(v.ID)
+	size += 5
+	size += enc.CalcStringMax(v.Name)
+	size += 7
+	size += enc.CalcFloat32Max(v.Effect)
+	size += 4
+	size += enc.CalcUintMax(v.Num)
+	return size, nil
+}
+
+// calculate no-error size from github.com/shamaton/msgpack_bench.Item
+func ___calcArraySizeNoErrItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += enc.CalcInt(v.ID)
+	size += enc.CalcString(v.Name)
+	size += enc.CalcFloat32(v.Effect)
+	size += enc.CalcUint(v.Num)
+	return size
+}
+
+// calculate no-error max size from github.com/shamaton/msgpack_bench.Item
+func ___calcArraySizeMaxNoErrItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += enc.CalcIntMax(v.ID)
+	size += enc.CalcStringMax(v.Name)
+	size += enc.CalcFloat32Max(v.Effect)
+	size += enc.CalcUintMax(v.Num)
+	return size
+}
+
+// calculate no-error size from github.com/shamaton/msgpack_bench.Item
+func ___calcMapSizeNoErrItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += 3
+	size += enc.CalcInt(v.ID)
+	size += 5
+	size += enc.CalcString(v.Name)
+	size += 7
+	size += enc.CalcFloat32(v.Effect)
+	size += 4
+	size += enc.CalcUint(v.Num)
+	return size
+}
+
+// calculate no-error max size from github.com/shamaton/msgpack_bench.Item
+func ___calcMapSizeMaxNoErrItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item) int {
+	size := 0
+	size += enc.CalcStructHeaderFix(4)
+	size += 3
+	size += enc.CalcIntMax(v.ID)
+	size += 5
+	size += enc.CalcStringMax(v.Name)
+	size += 7
+	size += enc.CalcFloat32Max(v.Effect)
+	size += 4
+	size += enc.CalcUintMax(v.Num)
+	return size
 }
 
 // encode from github.com/shamaton/msgpack_bench.Item
-func ___encodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v Item, encoder *enc.Encoder, offset int) ([]byte, int, error) {
+func ___encodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item, buf []byte, offset int) (int, error) {
 	var err error
-	offset = encoder.WriteStructHeaderFixAsMap(4, offset)
-	offset = encoder.WriteStringFix("ID", 2, offset)
-	offset = encoder.WriteInt(v.ID, offset)
-	offset = encoder.WriteStringFix("Name", 4, offset)
-	offset = encoder.WriteString(v.Name, offset)
-	offset = encoder.WriteStringFix("Effect", 6, offset)
-	offset = encoder.WriteFloat32(v.Effect, offset)
-	offset = encoder.WriteStringFix("Num", 3, offset)
-	offset = encoder.WriteUint(v.Num, offset)
-	return encoder.EncodedBytes(), offset, err
+	offset = enc.WriteStructHeaderFixAsArray(buf, 4, offset)
+	offset = enc.WriteInt(buf, v.ID, offset)
+	offset = enc.WriteString(buf, v.Name, offset)
+	offset = enc.WriteFloat32(buf, v.Effect, offset)
+	offset = enc.WriteUint(buf, v.Num, offset)
+	return offset, err
+}
+
+// encode from github.com/shamaton/msgpack_bench.Item
+func ___encodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item, buf []byte, offset int) (int, error) {
+	var err error
+	offset = enc.WriteStructHeaderFixAsMap(buf, 4, offset)
+	offset += copy(buf[offset:offset+3], "\xa2ID")
+	offset = enc.WriteInt(buf, v.ID, offset)
+	offset += copy(buf[offset:offset+5], "\xa4Name")
+	offset = enc.WriteString(buf, v.Name, offset)
+	offset += copy(buf[offset:offset+7], "\xa6Effect")
+	offset = enc.WriteFloat32(buf, v.Effect, offset)
+	offset += copy(buf[offset:offset+4], "\xa3Num")
+	offset = enc.WriteUint(buf, v.Num, offset)
+	return offset, err
 }
 
 // decode to github.com/shamaton/msgpack_bench.Item
@@ -1082,12 +4037,6 @@ func ___decodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c
 
 // decode to github.com/shamaton/msgpack_bench.Item
 func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *Item, decoder *dec.Decoder, offset int) (int, error) {
-	keys := [][]byte{
-		{uint8(0x49), uint8(0x44)},                                                     // ID
-		{uint8(0x4e), uint8(0x61), uint8(0x6d), uint8(0x65)},                           // Name
-		{uint8(0x45), uint8(0x66), uint8(0x66), uint8(0x65), uint8(0x63), uint8(0x74)}, // Effect
-		{uint8(0x4e), uint8(0x75), uint8(0x6d)},                                        // Num
-	}
 	offset, err := decoder.CheckStructHeader(4, offset)
 	if err != nil {
 		return 0, err
@@ -1099,24 +4048,8 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 		if err != nil {
 			return 0, err
 		}
-		fieldIndex := -1
-		for i, key := range keys {
-			if len(dataKey) != len(key) {
-				continue
-			}
-			fieldIndex = i
-			for dataKeyIndex := range dataKey {
-				if dataKey[dataKeyIndex] != key[dataKeyIndex] {
-					fieldIndex = -1
-					break
-				}
-			}
-			if fieldIndex >= 0 {
-				break
-			}
-		}
-		switch fieldIndex {
-		case 0:
+		switch string(dataKey) {
+		case "ID":
 			{
 				var vv int
 				vv, offset, err = decoder.AsInt(offset)
@@ -1126,7 +4059,7 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.ID = vv
 			}
 			count++
-		case 1:
+		case "Name":
 			{
 				var vv string
 				vv, offset, err = decoder.AsString(offset)
@@ -1136,7 +4069,7 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Name = vv
 			}
 			count++
-		case 2:
+		case "Effect":
 			{
 				var vv float32
 				vv, offset, err = decoder.AsFloat32(offset)
@@ -1146,7 +4079,7 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Effect = vv
 			}
 			count++
-		case 3:
+		case "Num":
 			{
 				var vv uint
 				vv, offset, err = decoder.AsUint(offset)
@@ -1162,161 +4095,265 @@ func ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 	}
 	return offset, err
 }
+func ___isNotEmptyItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v Item) bool {
+	if v.ID != 0 {
+		return true
+	}
+	if v.Name != "" {
+		return true
+	}
+	if v.Effect != 0 {
+		return true
+	}
+	if v.Num != 0 {
+		return true
+	}
+	return false
+}
 
 // calculate size from github.com/shamaton/msgpack_bench.User
-func ___calcArraySizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v User, encoder *enc.Encoder) (int, error) {
+func ___calcArraySizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *User) (int, error) {
 	size := 0
-	size += encoder.CalcStructHeaderFix(7)
-	size += encoder.CalcInt(v.ID)
-	size += encoder.CalcString(v.Name)
-	size += encoder.CalcUint(v.Level)
-	size += encoder.CalcUint64(v.Exp)
-	size += encoder.CalcBool(v.Type)
+	size += enc.CalcStructHeaderFix(7)
+	size += enc.CalcInt(v.ID)
+	size += enc.CalcString(v.Name)
+	size += enc.CalcUint(v.Level)
+	size += enc.CalcUint64(v.Exp)
+	size += enc.CalcBool(v.Type)
 	if v.EquipIDs != nil {
-		s, err := encoder.CalcSliceLength(len(v.EquipIDs), false)
+		s, err := enc.CalcSliceLength(len(v.EquipIDs), false)
 		if err != nil {
 			return 0, err
 		}
 		size += s
 		for _, vv := range v.EquipIDs {
-			size += encoder.CalcUint32(vv)
+			size += enc.CalcUint32(vv)
 		}
 	} else {
-		size += encoder.CalcNil()
+		size += enc.CalcNil()
 	}
 	if v.Items != nil {
-		s, err := encoder.CalcSliceLength(len(v.Items), false)
+		s, err := enc.CalcSliceLength(len(v.Items), false)
 		if err != nil {
 			return 0, err
 		}
 		size += s
-		for _, vv := range v.Items {
-			size_vv, err := ___calcArraySizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv, encoder)
-			if err != nil {
-				return 0, err
-			}
+		for vvi := range v.Items {
+			vv := &v.Items[vvi]
+			size_vv := ___calcArraySizeNoErrItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv)
 			size += size_vv
 		}
 	} else {
-		size += encoder.CalcNil()
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench.User
+func ___calcArraySizeMaxUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *User) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(7)
+	size += enc.CalcIntMax(v.ID)
+	size += enc.CalcStringMax(v.Name)
+	size += enc.CalcUintMax(v.Level)
+	size += enc.CalcUint64Max(v.Exp)
+	size += enc.CalcBoolMax(v.Type)
+	if v.EquipIDs != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.EquipIDs), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.EquipIDs {
+				size += enc.CalcUint32Max(vv)
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	if v.Items != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.Items), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for vvi := range v.Items {
+				vv := &v.Items[vvi]
+				size_vv := ___calcArraySizeMaxNoErrItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv)
+				size += size_vv
+			}
+		}
+	} else {
+		size += enc.CalcNil()
 	}
 	return size, nil
 }
 
 // calculate size from github.com/shamaton/msgpack_bench.User
-func ___calcMapSizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v User, encoder *enc.Encoder) (int, error) {
+func ___calcMapSizeUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *User) (int, error) {
 	size := 0
-	size += encoder.CalcStructHeaderFix(7)
-	size += encoder.CalcStringFix(2)
-	size += encoder.CalcInt(v.ID)
-	size += encoder.CalcStringFix(4)
-	size += encoder.CalcString(v.Name)
-	size += encoder.CalcStringFix(5)
-	size += encoder.CalcUint(v.Level)
-	size += encoder.CalcStringFix(3)
-	size += encoder.CalcUint64(v.Exp)
-	size += encoder.CalcStringFix(4)
-	size += encoder.CalcBool(v.Type)
-	size += encoder.CalcStringFix(8)
+	size += enc.CalcStructHeaderFix(7)
+	size += 3
+	size += enc.CalcInt(v.ID)
+	size += 5
+	size += enc.CalcString(v.Name)
+	size += 6
+	size += enc.CalcUint(v.Level)
+	size += 4
+	size += enc.CalcUint64(v.Exp)
+	size += 5
+	size += enc.CalcBool(v.Type)
+	size += 9
 	if v.EquipIDs != nil {
-		s, err := encoder.CalcSliceLength(len(v.EquipIDs), false)
+		s, err := enc.CalcSliceLength(len(v.EquipIDs), false)
 		if err != nil {
 			return 0, err
 		}
 		size += s
 		for _, vv := range v.EquipIDs {
-			size += encoder.CalcUint32(vv)
+			size += enc.CalcUint32(vv)
 		}
 	} else {
-		size += encoder.CalcNil()
+		size += enc.CalcNil()
 	}
-	size += encoder.CalcStringFix(5)
+	size += 6
 	if v.Items != nil {
-		s, err := encoder.CalcSliceLength(len(v.Items), false)
+		s, err := enc.CalcSliceLength(len(v.Items), false)
 		if err != nil {
 			return 0, err
 		}
 		size += s
-		for _, vv := range v.Items {
-			size_vv, err := ___calcMapSizeItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv, encoder)
-			if err != nil {
-				return 0, err
-			}
+		for vvi := range v.Items {
+			vv := &v.Items[vvi]
+			size_vv := ___calcMapSizeNoErrItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv)
 			size += size_vv
 		}
 	} else {
-		size += encoder.CalcNil()
+		size += enc.CalcNil()
+	}
+	return size, nil
+}
+
+// calculate max size from github.com/shamaton/msgpack_bench.User
+func ___calcMapSizeMaxUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *User) (int, error) {
+	size := 0
+	size += enc.CalcStructHeaderFix(7)
+	size += 3
+	size += enc.CalcIntMax(v.ID)
+	size += 5
+	size += enc.CalcStringMax(v.Name)
+	size += 6
+	size += enc.CalcUintMax(v.Level)
+	size += 4
+	size += enc.CalcUint64Max(v.Exp)
+	size += 5
+	size += enc.CalcBoolMax(v.Type)
+	size += 9
+	if v.EquipIDs != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.EquipIDs), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for _, vv := range v.EquipIDs {
+				size += enc.CalcUint32Max(vv)
+			}
+		}
+	} else {
+		size += enc.CalcNil()
+	}
+	size += 6
+	if v.Items != nil {
+		{
+			s, err := enc.CalcSliceLengthMax(len(v.Items), false)
+			if err != nil {
+				return 0, err
+			}
+			size += s
+			for vvi := range v.Items {
+				vv := &v.Items[vvi]
+				size_vv := ___calcMapSizeMaxNoErrItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv)
+				size += size_vv
+			}
+		}
+	} else {
+		size += enc.CalcNil()
 	}
 	return size, nil
 }
 
 // encode from github.com/shamaton/msgpack_bench.User
-func ___encodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v User, encoder *enc.Encoder, offset int) ([]byte, int, error) {
+func ___encodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *User, buf []byte, offset int) (int, error) {
 	var err error
-	offset = encoder.WriteStructHeaderFixAsArray(7, offset)
-	offset = encoder.WriteInt(v.ID, offset)
-	offset = encoder.WriteString(v.Name, offset)
-	offset = encoder.WriteUint(v.Level, offset)
-	offset = encoder.WriteUint64(v.Exp, offset)
-	offset = encoder.WriteBool(v.Type, offset)
+	offset = enc.WriteStructHeaderFixAsArray(buf, 7, offset)
+	offset = enc.WriteInt(buf, v.ID, offset)
+	offset = enc.WriteString(buf, v.Name, offset)
+	offset = enc.WriteUint(buf, v.Level, offset)
+	offset = enc.WriteUint64(buf, v.Exp, offset)
+	offset = enc.WriteBool(buf, v.Type, offset)
 	if v.EquipIDs != nil {
-		offset = encoder.WriteSliceLength(len(v.EquipIDs), offset, false)
+		offset = enc.WriteSliceLength(buf, len(v.EquipIDs), offset, false)
 		for _, vv := range v.EquipIDs {
-			offset = encoder.WriteUint32(vv, offset)
+			offset = enc.WriteUint32(buf, vv, offset)
 		}
 	} else {
-		offset = encoder.WriteNil(offset)
+		offset = enc.WriteNil(buf, offset)
 	}
 	if v.Items != nil {
-		offset = encoder.WriteSliceLength(len(v.Items), offset, false)
-		for _, vv := range v.Items {
-			_, offset, err = ___encodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv, encoder, offset)
+		offset = enc.WriteSliceLength(buf, len(v.Items), offset, false)
+		for vvi := range v.Items {
+			vv := &v.Items[vvi]
+			offset, err = ___encodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv, buf, offset)
 			if err != nil {
-				return nil, 0, err
+				return 0, err
 			}
 		}
 	} else {
-		offset = encoder.WriteNil(offset)
+		offset = enc.WriteNil(buf, offset)
 	}
-	return encoder.EncodedBytes(), offset, err
+	return offset, err
 }
 
 // encode from github.com/shamaton/msgpack_bench.User
-func ___encodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v User, encoder *enc.Encoder, offset int) ([]byte, int, error) {
+func ___encodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *User, buf []byte, offset int) (int, error) {
 	var err error
-	offset = encoder.WriteStructHeaderFixAsMap(7, offset)
-	offset = encoder.WriteStringFix("ID", 2, offset)
-	offset = encoder.WriteInt(v.ID, offset)
-	offset = encoder.WriteStringFix("Name", 4, offset)
-	offset = encoder.WriteString(v.Name, offset)
-	offset = encoder.WriteStringFix("Level", 5, offset)
-	offset = encoder.WriteUint(v.Level, offset)
-	offset = encoder.WriteStringFix("Exp", 3, offset)
-	offset = encoder.WriteUint64(v.Exp, offset)
-	offset = encoder.WriteStringFix("Type", 4, offset)
-	offset = encoder.WriteBool(v.Type, offset)
-	offset = encoder.WriteStringFix("EquipIDs", 8, offset)
+	offset = enc.WriteStructHeaderFixAsMap(buf, 7, offset)
+	offset += copy(buf[offset:offset+3], "\xa2ID")
+	offset = enc.WriteInt(buf, v.ID, offset)
+	offset += copy(buf[offset:offset+5], "\xa4Name")
+	offset = enc.WriteString(buf, v.Name, offset)
+	offset += copy(buf[offset:offset+6], "\xa5Level")
+	offset = enc.WriteUint(buf, v.Level, offset)
+	offset += copy(buf[offset:offset+4], "\xa3Exp")
+	offset = enc.WriteUint64(buf, v.Exp, offset)
+	offset += copy(buf[offset:offset+5], "\xa4Type")
+	offset = enc.WriteBool(buf, v.Type, offset)
+	offset += copy(buf[offset:offset+9], "\xa8EquipIDs")
 	if v.EquipIDs != nil {
-		offset = encoder.WriteSliceLength(len(v.EquipIDs), offset, false)
+		offset = enc.WriteSliceLength(buf, len(v.EquipIDs), offset, false)
 		for _, vv := range v.EquipIDs {
-			offset = encoder.WriteUint32(vv, offset)
+			offset = enc.WriteUint32(buf, vv, offset)
 		}
 	} else {
-		offset = encoder.WriteNil(offset)
+		offset = enc.WriteNil(buf, offset)
 	}
-	offset = encoder.WriteStringFix("Items", 5, offset)
+	offset += copy(buf[offset:offset+6], "\xa5Items")
 	if v.Items != nil {
-		offset = encoder.WriteSliceLength(len(v.Items), offset, false)
-		for _, vv := range v.Items {
-			_, offset, err = ___encodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv, encoder, offset)
+		offset = enc.WriteSliceLength(buf, len(v.Items), offset, false)
+		for vvi := range v.Items {
+			vv := &v.Items[vvi]
+			offset, err = ___encodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(vv, buf, offset)
 			if err != nil {
-				return nil, 0, err
+				return 0, err
 			}
 		}
 	} else {
-		offset = encoder.WriteNil(offset)
+		offset = enc.WriteNil(buf, offset)
 	}
-	return encoder.EncodedBytes(), offset, err
+	return offset, err
 }
 
 // decode to github.com/shamaton/msgpack_bench.User
@@ -1365,60 +4402,59 @@ func ___decodeArrayUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c
 		}
 		v.Type = vv
 	}
-	if !decoder.IsCodeNil(offset) {
-		var vv []uint32
-		var vvl int
-		vvl, offset, err = decoder.SliceLength(offset)
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
 		if err != nil {
 			return 0, err
 		}
-		vv = make([]uint32, vvl)
-		for vvi := range vv {
-			var vvv uint32
-			vvv, offset, err = decoder.AsUint32(offset)
+		if !isNil {
+			var vv []uint32
+			var vvl int
+			vvl, offset, err = decoder.SliceLength(offset)
 			if err != nil {
 				return 0, err
 			}
-			vv[vvi] = vvv
+			vv = make([]uint32, vvl)
+			for vvi := range vv {
+				vv[vvi], offset, err = decoder.AsUint32(offset)
+				if err != nil {
+					return 0, err
+				}
+			}
+			v.EquipIDs = vv
+		} else {
+			offset++
 		}
-		v.EquipIDs = vv
-	} else {
-		offset++
 	}
-	if !decoder.IsCodeNil(offset) {
-		var vv []Item
-		var vvl int
-		vvl, offset, err = decoder.SliceLength(offset)
+	{
+		isNil, err := decoder.IsCodeNilChecked(offset)
 		if err != nil {
 			return 0, err
 		}
-		vv = make([]Item, vvl)
-		for vvi := range vv {
-			var vvv Item
-			offset, err = ___decodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&vvv, decoder, offset)
+		if !isNil {
+			var vv []Item
+			var vvl int
+			vvl, offset, err = decoder.SliceLength(offset)
 			if err != nil {
 				return 0, err
 			}
-			vv[vvi] = vvv
+			vv = make([]Item, vvl)
+			for vvi := range vv {
+				offset, err = ___decodeArrayItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&vv[vvi], decoder, offset)
+				if err != nil {
+					return 0, err
+				}
+			}
+			v.Items = vv
+		} else {
+			offset++
 		}
-		v.Items = vv
-	} else {
-		offset++
 	}
 	return offset, err
 }
 
 // decode to github.com/shamaton/msgpack_bench.User
 func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v *User, decoder *dec.Decoder, offset int) (int, error) {
-	keys := [][]byte{
-		{uint8(0x49), uint8(0x44)},                                                                               // ID
-		{uint8(0x4e), uint8(0x61), uint8(0x6d), uint8(0x65)},                                                     // Name
-		{uint8(0x4c), uint8(0x65), uint8(0x76), uint8(0x65), uint8(0x6c)},                                        // Level
-		{uint8(0x45), uint8(0x78), uint8(0x70)},                                                                  // Exp
-		{uint8(0x54), uint8(0x79), uint8(0x70), uint8(0x65)},                                                     // Type
-		{uint8(0x45), uint8(0x71), uint8(0x75), uint8(0x69), uint8(0x70), uint8(0x49), uint8(0x44), uint8(0x73)}, // EquipIDs
-		{uint8(0x49), uint8(0x74), uint8(0x65), uint8(0x6d), uint8(0x73)},                                        // Items
-	}
 	offset, err := decoder.CheckStructHeader(7, offset)
 	if err != nil {
 		return 0, err
@@ -1430,24 +4466,8 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 		if err != nil {
 			return 0, err
 		}
-		fieldIndex := -1
-		for i, key := range keys {
-			if len(dataKey) != len(key) {
-				continue
-			}
-			fieldIndex = i
-			for dataKeyIndex := range dataKey {
-				if dataKey[dataKeyIndex] != key[dataKeyIndex] {
-					fieldIndex = -1
-					break
-				}
-			}
-			if fieldIndex >= 0 {
-				break
-			}
-		}
-		switch fieldIndex {
-		case 0:
+		switch string(dataKey) {
+		case "ID":
 			{
 				var vv int
 				vv, offset, err = decoder.AsInt(offset)
@@ -1457,7 +4477,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.ID = vv
 			}
 			count++
-		case 1:
+		case "Name":
 			{
 				var vv string
 				vv, offset, err = decoder.AsString(offset)
@@ -1467,7 +4487,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Name = vv
 			}
 			count++
-		case 2:
+		case "Level":
 			{
 				var vv uint
 				vv, offset, err = decoder.AsUint(offset)
@@ -1477,7 +4497,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Level = vv
 			}
 			count++
-		case 3:
+		case "Exp":
 			{
 				var vv uint64
 				vv, offset, err = decoder.AsUint64(offset)
@@ -1487,7 +4507,7 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Exp = vv
 			}
 			count++
-		case 4:
+		case "Type":
 			{
 				var vv bool
 				vv, offset, err = decoder.AsBool(offset)
@@ -1497,48 +4517,56 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 				v.Type = vv
 			}
 			count++
-		case 5:
-			if !decoder.IsCodeNil(offset) {
-				var vv []uint32
-				var vvl int
-				vvl, offset, err = decoder.SliceLength(offset)
+		case "EquipIDs":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
 				if err != nil {
 					return 0, err
 				}
-				vv = make([]uint32, vvl)
-				for vvi := range vv {
-					var vvv uint32
-					vvv, offset, err = decoder.AsUint32(offset)
+				if !isNil {
+					var vv []uint32
+					var vvl int
+					vvl, offset, err = decoder.SliceLength(offset)
 					if err != nil {
 						return 0, err
 					}
-					vv[vvi] = vvv
+					vv = make([]uint32, vvl)
+					for vvi := range vv {
+						vv[vvi], offset, err = decoder.AsUint32(offset)
+						if err != nil {
+							return 0, err
+						}
+					}
+					v.EquipIDs = vv
+				} else {
+					offset++
 				}
-				v.EquipIDs = vv
-			} else {
-				offset++
 			}
 			count++
-		case 6:
-			if !decoder.IsCodeNil(offset) {
-				var vv []Item
-				var vvl int
-				vvl, offset, err = decoder.SliceLength(offset)
+		case "Items":
+			{
+				isNil, err := decoder.IsCodeNilChecked(offset)
 				if err != nil {
 					return 0, err
 				}
-				vv = make([]Item, vvl)
-				for vvi := range vv {
-					var vvv Item
-					offset, err = ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&vvv, decoder, offset)
+				if !isNil {
+					var vv []Item
+					var vvl int
+					vvl, offset, err = decoder.SliceLength(offset)
 					if err != nil {
 						return 0, err
 					}
-					vv[vvi] = vvv
+					vv = make([]Item, vvl)
+					for vvi := range vv {
+						offset, err = ___decodeMapItem_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(&vv[vvi], decoder, offset)
+						if err != nil {
+							return 0, err
+						}
+					}
+					v.Items = vv
+				} else {
+					offset++
 				}
-				v.Items = vv
-			} else {
-				offset++
 			}
 			count++
 		default:
@@ -1546,4 +4574,28 @@ func ___decodeMapUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a
 		}
 	}
 	return offset, err
+}
+func ___isNotEmptyUser_e9fd2a14c1c378bd04d30694c76be6bdbcc546cb500c6f8829a44a1c9a8a1dfc(v User) bool {
+	if v.ID != 0 {
+		return true
+	}
+	if v.Name != "" {
+		return true
+	}
+	if v.Level != 0 {
+		return true
+	}
+	if v.Exp != 0 {
+		return true
+	}
+	if v.Type {
+		return true
+	}
+	if v.EquipIDs != nil {
+		return true
+	}
+	if v.Items != nil {
+		return true
+	}
+	return false
 }

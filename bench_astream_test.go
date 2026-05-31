@@ -3,7 +3,7 @@ package bench
 import (
 	"bytes"
 	"github.com/go-json-experiment/json"
-	"github.com/shamaton/msgpack/v2"
+	"github.com/shamaton/msgpack/v3"
 	"io"
 	"reflect"
 	"testing"
@@ -14,6 +14,7 @@ var mtt []byte
 var jtt []byte
 
 func init() {
+	msgpack.SetDecodedTimeAsLocal()
 	{
 		tt, err := msgpack.Marshal(hoge)
 		if err != nil {

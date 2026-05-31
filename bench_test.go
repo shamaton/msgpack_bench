@@ -3,10 +3,11 @@ package bench
 import (
 	"fmt"
 	"math"
+	"os"
 	"testing"
 	"time"
 
-	shamaton "github.com/shamaton/msgpack/v2"
+	shamaton "github.com/shamaton/msgpack/v3"
 	vmihailenco "github.com/vmihailenco/msgpack/v5"
 )
 
@@ -41,6 +42,7 @@ go get -u github.com/vmihailenco/msgpack
 */
 
 func init() {
+	// RegisterGeneratedResolver()
 
 	Array = make([]int, 10000)
 	for i := 0; i < 10000; i++ {
@@ -52,27 +54,34 @@ func init() {
 		Map[fmt.Sprint(i)+fmt.Sprint(i)] = i * i
 	}
 
-	dataInt, _ = shamaton.Marshal(Int)
-	dataFloat, _ = shamaton.Marshal(Float)
-	dataString, _ = shamaton.Marshal(String)
-	dataBool, _ = shamaton.Marshal(Bool)
-	dataArray, _ = shamaton.Marshal(Array)
-	dataMap, _ = shamaton.Marshal(Map)
-	dataByte, _ = shamaton.Marshal(Byte)
-	dataInterfaces, _ = shamaton.Marshal(Interfaces)
-	dataTime, _ = shamaton.Marshal(Time)
+	dataInt = mustMarshal("int", Int)
+	dataFloat = mustMarshal("float", Float)
+	dataString = mustMarshal("string", String)
+	dataBool = mustMarshal("bool", Bool)
+	dataArray = mustMarshal("array", Array)
+	dataMap = mustMarshal("map", Map)
+	dataByte = mustMarshal("byte", Byte)
+	dataInterfaces = mustMarshal("interfaces", Interfaces)
+	dataTime = mustMarshal("time", Time)
 
 	initCompare()
 	initUseCase()
-	RegisterGeneratedResolver()
+}
+
+func mustMarshal(name string, v any) []byte {
+	d, err := shamaton.Marshal(v)
+	if err != nil {
+		fmt.Println("init err: ", name, err)
+		os.Exit(1)
+	}
+	return d
 }
 
 func BenchmarkMsgEncIntShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Int)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -80,8 +89,7 @@ func BenchmarkMsgEncIntVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Int)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -90,8 +98,7 @@ func BenchmarkMsgEncFloatShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Float)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -100,8 +107,7 @@ func BenchmarkMsgEncFloatVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Float)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -110,8 +116,7 @@ func BenchmarkMsgEncStringShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(String)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -120,8 +125,7 @@ func BenchmarkMsgEncStringVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(String)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -130,8 +134,7 @@ func BenchmarkMsgEncBoolShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Bool)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -140,8 +143,7 @@ func BenchmarkMsgEncBoolVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Bool)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -149,8 +151,7 @@ func BenchmarkMsgEncArrayShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Array)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -159,8 +160,7 @@ func BenchmarkMsgEncArrayVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Array)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -168,8 +168,7 @@ func BenchmarkMsgEncMapShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Map)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -178,8 +177,7 @@ func BenchmarkMsgEncMapVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Map)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -188,8 +186,7 @@ func BenchmarkMsgEncTimeShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Time)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -198,8 +195,7 @@ func BenchmarkMsgEncTimeVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Time)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -208,8 +204,7 @@ func BenchmarkMsgEncByteShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Byte)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -218,8 +213,7 @@ func BenchmarkMsgEncByteVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Byte)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -227,8 +221,7 @@ func BenchmarkMsgEncInterfaceShamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Interfaces)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -237,8 +230,7 @@ func BenchmarkMsgEncInterfaceVmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Interfaces)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -250,8 +242,7 @@ func BenchmarkMsgDecIntShamaton(b *testing.B) {
 		var r int
 		err := shamaton.Unmarshal(dataInt, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -261,8 +252,7 @@ func BenchmarkMsgDecIntVmihailenco(b *testing.B) {
 		var r int
 		err := vmihailenco.Unmarshal(dataInt, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -272,8 +262,7 @@ func BenchmarkMsgDecFloatShamaton(b *testing.B) {
 		var r float64
 		err := shamaton.Unmarshal(dataFloat, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -283,8 +272,7 @@ func BenchmarkMsgDecFloatVmihailenco(b *testing.B) {
 		var r float64
 		err := vmihailenco.Unmarshal(dataFloat, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -293,8 +281,7 @@ func BenchmarkMsgDecStringShamaton(b *testing.B) {
 		var r string
 		err := shamaton.Unmarshal(dataString, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -304,8 +291,7 @@ func BenchmarkMsgDecStringVmihailenco(b *testing.B) {
 		var r string
 		err := vmihailenco.Unmarshal(dataString, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -315,8 +301,7 @@ func BenchmarkMsgDecBoolShamaton(b *testing.B) {
 		var r bool
 		err := shamaton.Unmarshal(dataBool, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -326,8 +311,7 @@ func BenchmarkMsgDecBoolVmihailenco(b *testing.B) {
 		var r bool
 		err := vmihailenco.Unmarshal(dataBool, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -337,8 +321,7 @@ func BenchmarkMsgDecArrayShamaton(b *testing.B) {
 		var r []int
 		err := shamaton.Unmarshal(dataArray, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -348,8 +331,7 @@ func BenchmarkMsgDecArrayVmihailenco(b *testing.B) {
 		var r []int
 		err := vmihailenco.Unmarshal(dataArray, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -358,8 +340,7 @@ func BenchmarkMsgDecMapShamaton(b *testing.B) {
 		var r map[string]int
 		err := shamaton.Unmarshal(dataMap, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -369,8 +350,7 @@ func BenchmarkMsgDecMapVmihailenco(b *testing.B) {
 		var r map[string]int
 		err := vmihailenco.Unmarshal(dataMap, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -379,8 +359,7 @@ func BenchmarkMsgDecTimeShamaton(b *testing.B) {
 		var r time.Time
 		err := shamaton.Unmarshal(dataTime, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -390,8 +369,7 @@ func BenchmarkMsgDecTimeVmihailenco(b *testing.B) {
 		var r time.Time
 		err := vmihailenco.Unmarshal(dataTime, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -401,8 +379,7 @@ func BenchmarkMsgDecByteShamaton(b *testing.B) {
 		var r []byte
 		err := shamaton.Unmarshal(dataByte, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -412,8 +389,7 @@ func BenchmarkMsgDecByteVmihailenco(b *testing.B) {
 		var r []byte
 		err := vmihailenco.Unmarshal(dataByte, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -423,8 +399,7 @@ func BenchmarkMsgDecInterfaceShamaton(b *testing.B) {
 		var r []interface{}
 		err := shamaton.Unmarshal(dataInterfaces, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
@@ -434,8 +409,7 @@ func BenchmarkMsgDecInterfaceVmihailenco(b *testing.B) {
 		var r []interface{}
 		err := vmihailenco.Unmarshal(dataInterfaces, &r)
 		if err != nil {
-			fmt.Println(err)
-			break
+			b.Fatal(err)
 		}
 	}
 }
