@@ -1,4 +1,4 @@
-package bench
+package bench_test
 
 import (
 	"bytes"
@@ -10,12 +10,18 @@ import (
 	"testing"
 
 	shamaton "github.com/shamaton/msgpack/v3"
+	. "github.com/shamaton/msgpack_bench"
+	"github.com/shamaton/msgpack_bench/msgpackgen"
 	"github.com/shamaton/msgpack_bench/protocmp"
 	"github.com/shamaton/zeroformatter"
 	"github.com/ugorji/go/codec"
 	vmihailenco "github.com/vmihailenco/msgpack/v5"
 	"google.golang.org/protobuf/proto"
 )
+
+func init() {
+	initCompare()
+}
 
 var bench = BenchMarkStruct{
 	Int:    -123,
@@ -110,8 +116,8 @@ func check() {
 	var mp, arr, genmp, genarr, vmp, varr, tmp, c, zero, jsn, gb BenchMarkStruct
 	mustCompareCheck("shamaton array", shamaton.UnmarshalAsArray(arrayMsgpackBench, &arr))
 	mustCompareCheck("shamaton map", shamaton.UnmarshalAsMap(mapMsgpackBench, &mp))
-	mustCompareCheck("msgpackgen array", UnmarshalAsArray(arrayMsgpackBench, &genarr))
-	mustCompareCheck("msgpackgen map", UnmarshalAsMap(mapMsgpackBench, &genmp))
+	mustCompareCheck("msgpackgen array", msgpackgen.UnmarshalAsArray(arrayMsgpackBench, &genarr))
+	mustCompareCheck("msgpackgen map", msgpackgen.UnmarshalAsMap(mapMsgpackBench, &genmp))
 	mustCompareCheck("vmihailenco array", vmihailenco.Unmarshal(arrayMsgpackBench, &varr))
 	mustCompareCheck("vmihailenco map", vmihailenco.Unmarshal(mapMsgpackBench, &vmp))
 	_, err := tmp.UnmarshalMsg(mapMsgpackBench)
@@ -239,15 +245,15 @@ func benchFromProto(p *protocmp.BenchMarkStruct) BenchMarkStruct {
 func checkCompareEncodeOutputs() {
 	var v BenchMarkStruct
 
-	d, err := MarshalAsArray(&bench)
+	d, err := msgpackgen.MarshalAsArray(&bench)
 	mustCompareCheck("msgpackgen encode array", err)
-	mustCompareCheck("msgpackgen encoded array decode", UnmarshalAsArray(d, &v))
+	mustCompareCheck("msgpackgen encoded array decode", msgpackgen.UnmarshalAsArray(d, &v))
 	mustCompareValue("msgpackgen array", v)
 
 	v = BenchMarkStruct{}
-	d, err =  MarshalAsMap(&bench)
+	d, err = msgpackgen.MarshalAsMap(&bench)
 	mustCompareCheck("msgpackgen encode map", err)
-	mustCompareCheck("msgpackgen encoded map decode", UnmarshalAsMap(d, &v))
+	mustCompareCheck("msgpackgen encoded map decode", msgpackgen.UnmarshalAsMap(d, &v))
 	mustCompareValue("msgpackgen map", v)
 
 	v = BenchMarkStruct{}
@@ -317,13 +323,12 @@ func checkCompareEncodeOutputs() {
 func BenchmarkCompareDecodeShamatonGenArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := UnmarshalAsArray(arrayMsgpackBench, &r)
+		err := msgpackgen.UnmarshalAsArray(arrayMsgpackBench, &r)
 		if err != nil {
 			b.Fatal(err)
 		}
 	}
 }
-
 
 func BenchmarkCompareDecodeTinylib(b *testing.B) {
 	for i := 0; i < b.N; i++ {
@@ -338,7 +343,7 @@ func BenchmarkCompareDecodeTinylib(b *testing.B) {
 func BenchmarkCompareDecodeShamatonGenMap(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := UnmarshalAsMap(mapMsgpackBench, &r)
+		err := msgpackgen.UnmarshalAsMap(mapMsgpackBench, &r)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -348,7 +353,7 @@ func BenchmarkCompareDecodeShamatonGenMap(b *testing.B) {
 func BenchmarkCompareDecodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
-		err := Unmarshal(mapMsgpackBench, &r)
+		err := msgpackgen.Unmarshal(mapMsgpackBench, &r)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -451,7 +456,7 @@ func BenchmarkCompareDecodeZeroformatter(b *testing.B) {
 
 func BenchmarkCompareEncodeShamatonGenArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := MarshalAsArray(&bench)
+		_, err := msgpackgen.MarshalAsArray(&bench)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -469,7 +474,7 @@ func BenchmarkCompareEncodeTinylib(b *testing.B) {
 
 func BenchmarkCompareEncodeShamatonGenMap(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := MarshalAsMap(&bench)
+		_, err := msgpackgen.MarshalAsMap(&bench)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -478,7 +483,7 @@ func BenchmarkCompareEncodeShamatonGenMap(b *testing.B) {
 
 func BenchmarkCompareEncodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := Marshal(&bench)
+		_, err := msgpackgen.Marshal(&bench)
 		if err != nil {
 			b.Fatal(err)
 		}

@@ -63,9 +63,6 @@ func init() {
 	dataByte = mustMarshal("byte", Byte)
 	dataInterfaces = mustMarshal("interfaces", Interfaces)
 	dataTime = mustMarshal("time", Time)
-
-	initCompare()
-	initUseCase()
 }
 
 func mustMarshal(name string, v any) []byte {

@@ -1,4 +1,4 @@
-package bench
+package bench_test
 
 import (
 	"bytes"
@@ -11,12 +11,18 @@ import (
 	"testing"
 
 	shamaton "github.com/shamaton/msgpack/v3"
+	. "github.com/shamaton/msgpack_bench"
+	"github.com/shamaton/msgpack_bench/msgpackgen"
 	"github.com/shamaton/msgpack_bench/protocmp"
 	"github.com/shamaton/zeroformatter"
 	"github.com/ugorji/go/codec"
 	vmihailenco "github.com/vmihailenco/msgpack/v5"
 	"google.golang.org/protobuf/proto"
 )
+
+func init() {
+	initUseCase()
+}
 
 var user = User{
 	ID:       12345,
@@ -121,7 +127,7 @@ func initUseCase() {
 	checkUseCaseEncodeOutputs()
 
 	{
-		dd, err :=  MarshalAsArray(user)
+		dd, err := msgpackgen.MarshalAsArray(user)
 		if err != nil {
 			fmt.Println("init err : ", err)
 			os.Exit(1)
@@ -130,7 +136,7 @@ func initUseCase() {
 			fmt.Println("not equal as array")
 			os.Exit(1)
 		}
-		dd, err =  MarshalAsMap(user)
+		dd, err = msgpackgen.MarshalAsMap(user)
 		if err != nil {
 			fmt.Println("init err : ", err)
 			os.Exit(1)
@@ -167,7 +173,7 @@ func initUseCase() {
 	}
 	{
 		var v User
-		err :=  UnmarshalAsMap(mapMsgpackUser, &v)
+		err := msgpackgen.UnmarshalAsMap(mapMsgpackUser, &v)
 		if err != nil {
 			fmt.Println("init err : ", err)
 			os.Exit(1)
@@ -179,7 +185,7 @@ func initUseCase() {
 	}
 	{
 		var v User
-		err :=  UnmarshalAsArray(arrayMsgpackUser, &v)
+		err := msgpackgen.UnmarshalAsArray(arrayMsgpackUser, &v)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -358,15 +364,15 @@ func userFromProto(p *protocmp.User) User {
 func checkUseCaseEncodeOutputs() {
 	var v User
 
-	d, err :=  MarshalAsArray(&user)
+	d, err := msgpackgen.MarshalAsArray(&user)
 	mustUseCaseCheck("msgpackgen encode array", err)
-	mustUseCaseCheck("msgpackgen encoded array decode",  UnmarshalAsArray(d, &v))
+	mustUseCaseCheck("msgpackgen encoded array decode", msgpackgen.UnmarshalAsArray(d, &v))
 	mustUseCaseValue("msgpackgen array", v)
 
 	v = User{}
-	d, err =  MarshalAsMap(&user)
+	d, err = msgpackgen.MarshalAsMap(&user)
 	mustUseCaseCheck("msgpackgen encode map", err)
-	mustUseCaseCheck("msgpackgen encoded map decode",  UnmarshalAsMap(d, &v))
+	mustUseCaseCheck("msgpackgen encoded map decode", msgpackgen.UnmarshalAsMap(d, &v))
 	mustUseCaseValue("msgpackgen map", v)
 
 	v = User{}
@@ -473,7 +479,7 @@ func BenchmarkUseCaseDecodeShamatonGenMap(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		var r User
-		err := UnmarshalAsMap(mapMsgpackUser, &r)
+		err := msgpackgen.UnmarshalAsMap(mapMsgpackUser, &r)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -484,7 +490,7 @@ func BenchmarkUseCaseDecodeShamatonGen(b *testing.B) {
 
 	for i := 0; i < b.N; i++ {
 		var r User
-		err := Unmarshal(mapMsgpackUser, &r)
+		err := msgpackgen.Unmarshal(mapMsgpackUser, &r)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -514,7 +520,7 @@ func BenchmarkUseCaseDecodeArrayVmihailenco(b *testing.B) {
 func BenchmarkUseCaseDecodeShamatonGenArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r User
-		err := UnmarshalAsArray(arrayMsgpackUser, &r)
+		err := msgpackgen.UnmarshalAsArray(arrayMsgpackUser, &r)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -596,7 +602,7 @@ func BenchmarkUseCaseEncodeShamaton(b *testing.B) {
 
 func BenchmarkUseCaseEncodeShamatonGenMap(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := MarshalAsMap(&user)
+		_, err := msgpackgen.MarshalAsMap(&user)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -605,7 +611,7 @@ func BenchmarkUseCaseEncodeShamatonGenMap(b *testing.B) {
 
 func BenchmarkUseCaseEncodeShamatonGen(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := Marshal(&user)
+		_, err := msgpackgen.Marshal(&user)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -632,7 +638,7 @@ func BenchmarkUseCaseEncodeArrayShamaton(b *testing.B) {
 
 func BenchmarkUseCaseEncodeShamatonGenArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		_, err := MarshalAsArray(&user)
+		_, err := msgpackgen.MarshalAsArray(&user)
 		if err != nil {
 			b.Fatal(err)
 		}

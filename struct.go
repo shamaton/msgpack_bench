@@ -1,6 +1,6 @@
 package bench
 
-//go:generate go tool github.com/shamaton/msgpackgen --strict
+//go:generate go tool github.com/shamaton/msgpackgen --strict -output-dir msgpackgen --output-file generated.go
 //go:generate go tool github.com/tinylib/msgp -o msgp_gen.go
 
 type BenchChild struct {
