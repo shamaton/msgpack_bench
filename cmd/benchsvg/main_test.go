@@ -127,6 +127,24 @@ func TestFilterSectionSortsStreamByOperation(t *testing.T) {
 	}
 }
 
+func TestRenderSVGSupportsDarkTheme(t *testing.T) {
+	rows := []benchmark{
+		{Name: "CompareEncodeShamaton", Section: "compare-encode", Metrics: map[string]float64{metricNSPerOp: 10}},
+	}
+
+	svg := string(renderSVG("Benchmark", metricNSPerOp, rows))
+	for _, want := range []string{
+		`svg{color-scheme:light dark}`,
+		`@media (prefers-color-scheme:dark)`,
+		`<rect class="background" width="100%" height="100%"/>`,
+		`.background{fill:#111827}`,
+	} {
+		if !strings.Contains(svg, want) {
+			t.Fatalf("rendered SVG does not contain %q:\n%s", want, svg)
+		}
+	}
+}
+
 func TestClassifyStreamAndGeneratedBenchmarks(t *testing.T) {
 	tests := map[string]string{
 		"UnmarshalMsgStream":  "stream",

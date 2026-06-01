@@ -353,14 +353,24 @@ func renderSVG(title, metric string, rows []benchmark) []byte {
 
 	var buf bytes.Buffer
 	fmt.Fprintf(&buf, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", width, height, width, height, esc(title))
-	buf.WriteString(`<rect width="100%" height="100%" fill="#ffffff"/>` + "\n")
+	buf.WriteString(`<rect class="background" width="100%" height="100%"/>` + "\n")
 	buf.WriteString(`<style>
+svg{color-scheme:light dark}
+.background{fill:#ffffff}
 text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#111827}
 .subtitle{fill:#6b7280;font-size:13px}
 .label{font-size:12px}
 .value{fill:#374151;font-size:12px}
 .axis{stroke:#d1d5db;stroke-width:1}
 .grid{stroke:#e5e7eb;stroke-width:1}
+@media (prefers-color-scheme:dark){
+.background{fill:#111827}
+text{fill:#f9fafb}
+.subtitle{fill:#9ca3af}
+.value{fill:#d1d5db}
+.axis{stroke:#4b5563}
+.grid{stroke:#374151}
+}
 </style>` + "\n")
 	fmt.Fprintf(&buf, `<text x="24" y="32" font-size="22" font-weight="700">%s</text>`+"\n", esc(title))
 	scaleLabel := "linear scale"
