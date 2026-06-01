@@ -76,7 +76,7 @@ var hoge Hoge = Hoge{
 	Time:    time.Unix(12345, 0),
 }
 
-func BenchmarkAStreamUnmarshal(b *testing.B) {
+func BenchmarkUnmarshalMsgStream(b *testing.B) {
 	ttt, err := msgpack.Marshal(hoge)
 	if err != nil {
 		panic(err)
@@ -97,7 +97,7 @@ func BenchmarkAStreamUnmarshal(b *testing.B) {
 	b.SetBytes(int64(len(ttt)))
 }
 
-func BenchmarkANoStreamUnmarshal(b *testing.B) {
+func BenchmarkUnmarshalMsgDirect(b *testing.B) {
 	ttt, err := msgpack.Marshal(hoge)
 	if err != nil {
 		panic(err)
@@ -122,7 +122,26 @@ func BenchmarkANoStreamUnmarshal(b *testing.B) {
 	b.SetBytes(int64(len(ttt)))
 }
 
-func BenchmarkAStreamJsonUnmarshal(b *testing.B) {
+func BenchmarkUnmarshalJsonDirect(b *testing.B) {
+	ttt, err := json.Marshal(hoge)
+	if err != nil {
+		panic(err)
+	}
+	b.ResetTimer()
+
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		var fuga Hoge
+		err = json.Unmarshal(ttt, &fuga)
+		if err != nil {
+			panic(err)
+		}
+	}
+	b.StopTimer()
+	b.SetBytes(int64(len(ttt)))
+}
+
+func BenchmarkUnmarshalJsonStream(b *testing.B) {
 	ttt, err := json.Marshal(hoge)
 	if err != nil {
 		panic(err)
@@ -143,7 +162,7 @@ func BenchmarkAStreamJsonUnmarshal(b *testing.B) {
 	b.SetBytes(int64(len(ttt)))
 }
 
-func BenchmarkAStreamUnmarshal_Parallel(b *testing.B) {
+func BenchmarkUnmarshalMsgStreamParallel(b *testing.B) {
 	ttt, err := msgpack.Marshal(hoge)
 	if err != nil {
 		panic(err)
@@ -165,7 +184,7 @@ func BenchmarkAStreamUnmarshal_Parallel(b *testing.B) {
 	b.SetBytes(int64(len(ttt)))
 }
 
-func BenchmarkANoStreamUnmarshal_Parallel(b *testing.B) {
+func BenchmarkUnmarshalMsgDirectParallel(b *testing.B) {
 	ttt, err := msgpack.Marshal(hoge)
 	if err != nil {
 		panic(err)
@@ -190,7 +209,28 @@ func BenchmarkANoStreamUnmarshal_Parallel(b *testing.B) {
 	b.SetBytes(int64(len(ttt)))
 }
 
-func BenchmarkAStreamJsonUnmarshal_Parallel(b *testing.B) {
+func BenchmarkUnmarshalJsonDirectParallel(b *testing.B) {
+	ttt, err := json.Marshal(hoge)
+	if err != nil {
+		panic(err)
+	}
+	b.ResetTimer()
+
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			var fuga Hoge
+			err := json.Unmarshal(ttt, &fuga)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+	b.StopTimer()
+	b.SetBytes(int64(len(ttt)))
+}
+
+func BenchmarkUnmarshalJsonStreamParallel(b *testing.B) {
 	ttt, err := json.Marshal(hoge)
 	if err != nil {
 		panic(err)
@@ -213,7 +253,7 @@ func BenchmarkAStreamJsonUnmarshal_Parallel(b *testing.B) {
 	b.SetBytes(int64(len(ttt)))
 }
 
-func BenchmarkAStreamMarshal(b *testing.B) {
+func BenchmarkMarshalMsgStream(b *testing.B) {
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
 		buf := bytes.Buffer{}
@@ -226,7 +266,7 @@ func BenchmarkAStreamMarshal(b *testing.B) {
 	b.SetBytes(int64(len(mtt)))
 }
 
-func BenchmarkANoStreamMarshal(b *testing.B) {
+func BenchmarkMarshalMsgDirect(b *testing.B) {
 	b.StartTimer()
 
 	for i := 0; i < b.N; i++ {
@@ -241,7 +281,19 @@ func BenchmarkANoStreamMarshal(b *testing.B) {
 	b.SetBytes(int64(len(mtt)))
 }
 
-func BenchmarkAStreamJsonMarshal(b *testing.B) {
+func BenchmarkMarshalJsonDirect(b *testing.B) {
+	b.StartTimer()
+	for i := 0; i < b.N; i++ {
+		_, err := json.Marshal(hoge)
+		if err != nil {
+			b.Fatal(err)
+		}
+	}
+	b.StopTimer()
+	b.SetBytes(int64(len(jtt)))
+}
+
+func BenchmarkMarshalJsonStream(b *testing.B) {
 	data := make([]byte, 1024)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
@@ -256,7 +308,7 @@ func BenchmarkAStreamJsonMarshal(b *testing.B) {
 	b.SetBytes(int64(len(jtt)))
 }
 
-func BenchmarkAStreamMarshal_Parallel(b *testing.B) {
+func BenchmarkMarshalMsgStreamParallel(b *testing.B) {
 	b.StartTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
@@ -271,7 +323,7 @@ func BenchmarkAStreamMarshal_Parallel(b *testing.B) {
 	b.SetBytes(int64(len(mtt)))
 }
 
-func BenchmarkANoStreamMarshal_Parallel(b *testing.B) {
+func BenchmarkMarshalMsgDirectParallel(b *testing.B) {
 	b.StartTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
@@ -287,7 +339,21 @@ func BenchmarkANoStreamMarshal_Parallel(b *testing.B) {
 	b.SetBytes(int64(len(mtt)))
 }
 
-func BenchmarkAStreamJsonMarshal_Parallel(b *testing.B) {
+func BenchmarkMarshalJsonDirectParallel(b *testing.B) {
+	b.StartTimer()
+	b.RunParallel(func(pb *testing.PB) {
+		for pb.Next() {
+			_, err := json.Marshal(hoge)
+			if err != nil {
+				b.Fatal(err)
+			}
+		}
+	})
+	b.StopTimer()
+	b.SetBytes(int64(len(jtt)))
+}
+
+func BenchmarkMarshalJsonStreamParallel(b *testing.B) {
 	b.StartTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {

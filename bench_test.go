@@ -144,7 +144,7 @@ func BenchmarkMsgEncBoolVmihailenco(b *testing.B) {
 		}
 	}
 }
-func BenchmarkMsgEncArrayShamaton(b *testing.B) {
+func BenchmarkMsgEncArray10000Shamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Array)
 		if err != nil {
@@ -153,7 +153,7 @@ func BenchmarkMsgEncArrayShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkMsgEncArrayVmihailenco(b *testing.B) {
+func BenchmarkMsgEncArray10000Vmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Array)
 		if err != nil {
@@ -161,7 +161,7 @@ func BenchmarkMsgEncArrayVmihailenco(b *testing.B) {
 		}
 	}
 }
-func BenchmarkMsgEncMapShamaton(b *testing.B) {
+func BenchmarkMsgEncMap10000Shamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.Marshal(Map)
 		if err != nil {
@@ -170,7 +170,7 @@ func BenchmarkMsgEncMapShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkMsgEncMapVmihailenco(b *testing.B) {
+func BenchmarkMsgEncMap10000Vmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := vmihailenco.Marshal(Map)
 		if err != nil {
@@ -313,7 +313,7 @@ func BenchmarkMsgDecBoolVmihailenco(b *testing.B) {
 	}
 }
 
-func BenchmarkMsgDecArrayShamaton(b *testing.B) {
+func BenchmarkMsgDecArray10000Shamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r []int
 		err := shamaton.Unmarshal(dataArray, &r)
@@ -323,7 +323,7 @@ func BenchmarkMsgDecArrayShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkMsgDecArrayVmihailenco(b *testing.B) {
+func BenchmarkMsgDecArray10000Vmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r []int
 		err := vmihailenco.Unmarshal(dataArray, &r)
@@ -332,7 +332,7 @@ func BenchmarkMsgDecArrayVmihailenco(b *testing.B) {
 		}
 	}
 }
-func BenchmarkMsgDecMapShamaton(b *testing.B) {
+func BenchmarkMsgDecMap10000Shamaton(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r map[string]int
 		err := shamaton.Unmarshal(dataMap, &r)
@@ -342,7 +342,7 @@ func BenchmarkMsgDecMapShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkMsgDecMapVmihailenco(b *testing.B) {
+func BenchmarkMsgDecMap10000Vmihailenco(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r map[string]int
 		err := vmihailenco.Unmarshal(dataMap, &r)
