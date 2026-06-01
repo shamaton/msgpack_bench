@@ -2,12 +2,13 @@ package bench
 
 import (
 	"bytes"
-	"github.com/go-json-experiment/json"
-	"github.com/shamaton/msgpack/v3"
 	"io"
 	"reflect"
 	"testing"
 	"time"
+
+	"github.com/go-json-experiment/json"
+	"github.com/shamaton/msgpack/v3"
 )
 
 var mtt []byte
@@ -76,22 +77,27 @@ var hoge Hoge = Hoge{
 	Time:    time.Unix(12345, 0),
 }
 
+// Unmarshal benchmarks model the common request-body path where input first
+// arrives as an io.Reader. Stream APIs consume that reader directly, while
+// Direct APIs include the io.ReadAll step needed to pass a []byte to the
+// serializer. These numbers are therefore end-to-end handoff costs, not just
+// raw codec costs for already-materialized byte slices.
 func BenchmarkUnmarshalMsgStream(b *testing.B) {
 	ttt, err := msgpack.Marshal(hoge)
 	if err != nil {
 		panic(err)
 	}
-	buf := bytes.NewReader(ttt)
+	var buf bytes.Reader
 	b.ResetTimer()
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
+		buf.Reset(ttt)
 		var fuga Hoge
-		err = msgpack.UnmarshalRead(buf, &fuga)
+		err = msgpack.UnmarshalRead(&buf, &fuga)
 		if err != nil {
 			panic(err)
 		}
-		_, _ = buf.Seek(0, 0)
 	}
 	b.StopTimer()
 	b.SetBytes(int64(len(ttt)))
@@ -102,12 +108,13 @@ func BenchmarkUnmarshalMsgDirect(b *testing.B) {
 	if err != nil {
 		panic(err)
 	}
-	buf := bytes.NewReader(ttt)
+	var buf bytes.Reader
 	b.ResetTimer()
 	b.StartTimer()
 
 	for i := 0; i < b.N; i++ {
-		data, err := io.ReadAll(buf)
+		buf.Reset(ttt)
+		data, err := io.ReadAll(&buf)
 		if err != nil {
 			panic(err)
 		}
@@ -116,7 +123,6 @@ func BenchmarkUnmarshalMsgDirect(b *testing.B) {
 		if err != nil {
 			panic(err)
 		}
-		_, _ = buf.Seek(0, 0)
 	}
 	b.StopTimer()
 	b.SetBytes(int64(len(ttt)))
@@ -127,12 +133,18 @@ func BenchmarkUnmarshalJsonDirect(b *testing.B) {
 	if err != nil {
 		panic(err)
 	}
+	var buf bytes.Reader
 	b.ResetTimer()
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
+		buf.Reset(ttt)
+		data, err := io.ReadAll(&buf)
+		if err != nil {
+			panic(err)
+		}
 		var fuga Hoge
-		err = json.Unmarshal(ttt, &fuga)
+		err = json.Unmarshal(data, &fuga)
 		if err != nil {
 			panic(err)
 		}
@@ -146,17 +158,17 @@ func BenchmarkUnmarshalJsonStream(b *testing.B) {
 	if err != nil {
 		panic(err)
 	}
-	buf := bytes.NewReader(ttt)
+	var buf bytes.Reader
 	b.ResetTimer()
 
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
+		buf.Reset(ttt)
 		var fuga Hoge
-		err = json.UnmarshalRead(buf, &fuga)
+		err = json.UnmarshalRead(&buf, &fuga)
 		if err != nil {
 			panic(err)
 		}
-		_, _ = buf.Seek(0, 0)
 	}
 	b.StopTimer()
 	b.SetBytes(int64(len(ttt)))
@@ -171,10 +183,11 @@ func BenchmarkUnmarshalMsgStreamParallel(b *testing.B) {
 
 	b.StartTimer()
 	b.RunParallel(func(pb *testing.PB) {
+		var buf bytes.Reader
 		for pb.Next() {
+			buf.Reset(ttt)
 			var fuga Hoge
-			buf := bytes.NewReader(ttt)
-			err := msgpack.UnmarshalRead(buf, &fuga)
+			err := msgpack.UnmarshalRead(&buf, &fuga)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -193,12 +206,14 @@ func BenchmarkUnmarshalMsgDirectParallel(b *testing.B) {
 
 	b.StartTimer()
 	b.RunParallel(func(pb *testing.PB) {
+		var buf bytes.Reader
 		for pb.Next() {
+			buf.Reset(ttt)
+			data, err := io.ReadAll(&buf)
+			if err != nil {
+				b.Fatal(err)
+			}
 			var fuga Hoge
-			buf := bytes.NewReader(ttt)
-			data, err := io.ReadAll(buf)
-			//data := make([]byte, len(ttt))
-			//copy(data, ttt)
 			err = msgpack.Unmarshal(data, &fuga)
 			if err != nil {
 				b.Fatal(err)
@@ -218,9 +233,15 @@ func BenchmarkUnmarshalJsonDirectParallel(b *testing.B) {
 
 	b.StartTimer()
 	b.RunParallel(func(pb *testing.PB) {
+		var buf bytes.Reader
 		for pb.Next() {
+			buf.Reset(ttt)
+			data, err := io.ReadAll(&buf)
+			if err != nil {
+				b.Fatal(err)
+			}
 			var fuga Hoge
-			err := json.Unmarshal(ttt, &fuga)
+			err = json.Unmarshal(data, &fuga)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -239,11 +260,11 @@ func BenchmarkUnmarshalJsonStreamParallel(b *testing.B) {
 
 	b.StartTimer()
 	b.RunParallel(func(pb *testing.PB) {
+		var buf bytes.Reader
 		for pb.Next() {
+			buf.Reset(ttt)
 			var fuga Hoge
-			buf := bytes.NewReader(ttt)
-			err := json.UnmarshalRead(buf, &fuga)
-
+			err := json.UnmarshalRead(&buf, &fuga)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -270,12 +291,10 @@ func BenchmarkMarshalMsgDirect(b *testing.B) {
 	b.StartTimer()
 
 	for i := 0; i < b.N; i++ {
-		buf := bytes.Buffer{}
 		_, err := msgpack.Marshal(hoge)
 		if err != nil {
 			b.Fatal(err)
 		}
-		_ = buf
 	}
 	b.StopTimer()
 	b.SetBytes(int64(len(mtt)))
@@ -294,12 +313,10 @@ func BenchmarkMarshalJsonDirect(b *testing.B) {
 }
 
 func BenchmarkMarshalJsonStream(b *testing.B) {
-	data := make([]byte, 1024)
 	b.StartTimer()
 	for i := 0; i < b.N; i++ {
-		//buf := bytes.Buffer{}
-		buf := bytes.NewBuffer(data)
-		err := json.MarshalWrite(buf, hoge)
+		buf := bytes.Buffer{}
+		err := json.MarshalWrite(&buf, hoge)
 		if err != nil {
 			b.Fatal(err)
 		}
@@ -327,12 +344,10 @@ func BenchmarkMarshalMsgDirectParallel(b *testing.B) {
 	b.StartTimer()
 	b.RunParallel(func(pb *testing.PB) {
 		for pb.Next() {
-			buf := bytes.Buffer{}
 			_, err := msgpack.Marshal(hoge)
 			if err != nil {
 				b.Fatal(err)
 			}
-			_ = buf
 		}
 	})
 	b.StopTimer()
