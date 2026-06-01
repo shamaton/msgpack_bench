@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="500" viewBox="0 0 1120 500" role="img" aria-label="msgpack benchmark (purego, ubuntu): Compare encode">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<style>
+text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#111827}
+.subtitle{fill:#6b7280;font-size:13px}
+.label{font-size:12px}
+.value{fill:#374151;font-size:12px}
+.axis{stroke:#d1d5db;stroke-width:1}
+.grid{stroke:#e5e7eb;stroke-width:1}
+</style>
+<text x="24" y="32" font-size="22" font-weight="700">msgpack benchmark (purego, ubuntu): Compare encode</text>
+<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, generated 2026-06-02</text>
+<line x1="320" y1="66" x2="320" y2="454" class="axis"/>
+<line x1="320" y1="66" x2="320" y2="454" class="grid"/>
+<line x1="477" y1="66" x2="477" y2="454" class="grid"/>
+<line x1="635" y1="66" x2="635" y2="454" class="grid"/>
+<line x1="792" y1="66" x2="792" y2="454" class="grid"/>
+<line x1="950" y1="66" x2="950" y2="454" class="grid"/>
+<text x="24" y="95" class="label">Compare encode ShamatonGenArray</text>
+<rect x="320" y="82" width="31.3" height="16" rx="3" fill="#0f766e"/>
+<text x="359" y="95" class="value">147.9 ns/op</text>
+<text x="24" y="123" class="label">Compare encode ShamatonGen</text>
+<rect x="320" y="110" width="36.8" height="16" rx="3" fill="#0f766e"/>
+<text x="364" y="123" class="value">173.6 ns/op</text>
+<text x="24" y="151" class="label">Compare encode ShamatonGenMap</text>
+<rect x="320" y="138" width="38.5" height="16" rx="3" fill="#0f766e"/>
+<text x="366" y="151" class="value">181.6 ns/op</text>
+<text x="24" y="179" class="label">Compare encode Tinylib</text>
+<rect x="320" y="166" width="49.3" height="16" rx="3" fill="#15803d"/>
+<text x="377" y="179" class="value">232.8 ns/op</text>
+<text x="24" y="207" class="label">Compare encode ArrayShamaton</text>
+<rect x="320" y="194" width="74.9" height="16" rx="3" fill="#2563eb"/>
+<text x="402" y="207" class="value">353.3 ns/op</text>
+<text x="24" y="235" class="label">Compare encode Shamaton</text>
+<rect x="320" y="222" width="104.8" height="16" rx="3" fill="#2563eb"/>
+<text x="432" y="235" class="value">494.5 ns/op</text>
+<text x="24" y="263" class="label">Compare encode ProtocolBuffer</text>
+<rect x="320" y="250" width="121.5" height="16" rx="3" fill="#7c3aed"/>
+<text x="449" y="263" class="value">573.6 ns/op</text>
+<text x="24" y="291" class="label">Compare encode Zeroformatter</text>
+<rect x="320" y="278" width="127.0" height="16" rx="3" fill="#be123c"/>
+<text x="454" y="291" class="value">599.1 ns/op</text>
+<text x="24" y="319" class="label">Compare encode Json</text>
+<rect x="320" y="306" width="137.3" height="16" rx="3" fill="#ca8a04"/>
+<text x="465" y="319" class="value">647.7 ns/op</text>
+<text x="24" y="347" class="label">Compare encode ArrayVmihailenco</text>
+<rect x="320" y="334" width="142.4" height="16" rx="3" fill="#c2410c"/>
+<text x="470" y="347" class="value">671.9 ns/op</text>
+<text x="24" y="375" class="label">Compare encode Ugorji</text>
+<rect x="320" y="362" width="156.7" height="16" rx="3" fill="#0891b2"/>
+<text x="484" y="375" class="value">739.7 ns/op</text>
+<text x="24" y="403" class="label">Compare encode Vmihailenco</text>
+<rect x="320" y="390" width="208.3" height="16" rx="3" fill="#c2410c"/>
+<text x="536" y="403" class="value">983 ns/op</text>
+<text x="24" y="431" class="label">Compare encode Gob</text>
+<rect x="320" y="418" width="630.0" height="16" rx="3" fill="#64748b"/>
+<text x="958" y="431" class="value">2973 ns/op</text>
+</svg>
