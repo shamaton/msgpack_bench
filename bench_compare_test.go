@@ -360,7 +360,7 @@ func BenchmarkCompareDecodeShamatonGen(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareDecodeArrayShamaton(b *testing.B) {
+func BenchmarkCompareDecodeShamatonArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
 		err := shamaton.UnmarshalAsArray(arrayMsgpackBench, &r)
@@ -391,7 +391,7 @@ func BenchmarkCompareDecodeUgorji(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareDecodeArrayVmihailenco(b *testing.B) {
+func BenchmarkCompareDecodeVmihailencoArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r BenchMarkStruct
 		err := vmihailenco.Unmarshal(arrayMsgpackBench, &r)
@@ -490,7 +490,7 @@ func BenchmarkCompareEncodeShamatonGen(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareEncodeArrayShamaton(b *testing.B) {
+func BenchmarkCompareEncodeShamatonArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.MarshalAsArray(bench)
 		if err != nil {
@@ -521,7 +521,7 @@ func BenchmarkCompareEncodeUgorji(b *testing.B) {
 	}
 }
 
-func BenchmarkCompareEncodeArrayVmihailenco(b *testing.B) {
+func BenchmarkCompareEncodeVmihailencoArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
 		var buf bytes.Buffer

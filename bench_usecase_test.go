@@ -497,7 +497,7 @@ func BenchmarkUseCaseDecodeShamatonGen(b *testing.B) {
 	}
 }
 
-func BenchmarkUseCaseDecodeArrayShamaton(b *testing.B) {
+func BenchmarkUseCaseDecodeShamatonArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r User
 		err := shamaton.UnmarshalAsArray(arrayMsgpackUser, &r)
@@ -507,7 +507,7 @@ func BenchmarkUseCaseDecodeArrayShamaton(b *testing.B) {
 	}
 }
 
-func BenchmarkUseCaseDecodeArrayVmihailenco(b *testing.B) {
+func BenchmarkUseCaseDecodeVmihailencoArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		var r User
 		err := vmihailenco.Unmarshal(arrayMsgpackUser, &r)
@@ -627,7 +627,7 @@ func BenchmarkUseCaseEncodeVmihailenco(b *testing.B) {
 	}
 }
 
-func BenchmarkUseCaseEncodeArrayShamaton(b *testing.B) {
+func BenchmarkUseCaseEncodeShamatonArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		_, err := shamaton.MarshalAsArray(user)
 		if err != nil {
@@ -645,7 +645,7 @@ func BenchmarkUseCaseEncodeShamatonGenArray(b *testing.B) {
 	}
 }
 
-func BenchmarkUseCaseEncodeArrayVmihailenco(b *testing.B) {
+func BenchmarkUseCaseEncodeVmihailencoArray(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 
 		var buf bytes.Buffer

@@ -38,7 +38,7 @@ text{fill:#f9fafb}
 <text x="24" y="179" class="label">Compare decode Tinylib</text>
 <rect x="320" y="166" width="17.6" height="16" rx="3" fill="#15803d"/>
 <text x="345" y="179" class="value">307.9 ns/op</text>
-<text x="24" y="207" class="label">Compare decode ArrayShamaton</text>
+<text x="24" y="207" class="label">Compare decode ShamatonArray</text>
 <rect x="320" y="194" width="25.0" height="16" rx="3" fill="#2563eb"/>
 <text x="352" y="207" class="value">436.7 ns/op</text>
 <text x="24" y="235" class="label">Compare decode Shamaton</text>
@@ -53,7 +53,7 @@ text{fill:#f9fafb}
 <text x="24" y="319" class="label">Compare decode Ugorji</text>
 <rect x="320" y="306" width="54.1" height="16" rx="3" fill="#0891b2"/>
 <text x="382" y="319" class="value">946.9 ns/op</text>
-<text x="24" y="347" class="label">Compare decode ArrayVmihailenco</text>
+<text x="24" y="347" class="label">Compare decode VmihailencoArray</text>
 <rect x="320" y="334" width="56.7" height="16" rx="3" fill="#c2410c"/>
 <text x="384" y="347" class="value">992.7 ns/op</text>
 <text x="24" y="375" class="label">Compare decode Vmihailenco</text>
