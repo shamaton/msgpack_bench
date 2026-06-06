@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="584" viewBox="0 0 1120 584" role="img" aria-label="msgpack benchmark (purego, ubuntu): Stream">
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="584" viewBox="0 0 1120 584" role="img" aria-label="msgpack benchmark (purego): Stream">
 <rect class="background" width="100%" height="100%"/>
 <style>
 svg{color-scheme:light dark}
@@ -7,6 +7,7 @@ text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#11
 .subtitle{fill:#6b7280;font-size:13px}
 .label{font-size:12px}
 .value{fill:#374151;font-size:12px}
+.allocbar{fill:#94a3b8}
 .axis{stroke:#d1d5db;stroke-width:1}
 .grid{stroke:#e5e7eb;stroke-width:1}
 @media (prefers-color-scheme:dark){
@@ -14,64 +15,97 @@ text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#11
 text{fill:#f9fafb}
 .subtitle{fill:#9ca3af}
 .value{fill:#d1d5db}
+.allocbar{fill:#9ca3af}
 .axis{stroke:#4b5563}
 .grid{stroke:#374151}
 }
 </style>
-<text x="24" y="32" font-size="22" font-weight="700">msgpack benchmark (purego, ubuntu): Stream</text>
-<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, generated 2026-06-02</text>
+<text x="24" y="32" font-size="22" font-weight="700">msgpack benchmark (purego): Stream</text>
+<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, alloc bars: B/op, generated 2026-06-06</text>
 <line x1="320" y1="66" x2="320" y2="538" class="axis"/>
 <line x1="320" y1="66" x2="320" y2="538" class="grid"/>
-<line x1="477" y1="66" x2="477" y2="538" class="grid"/>
-<line x1="635" y1="66" x2="635" y2="538" class="grid"/>
-<line x1="792" y1="66" x2="792" y2="538" class="grid"/>
-<line x1="950" y1="66" x2="950" y2="538" class="grid"/>
+<line x1="460" y1="66" x2="460" y2="538" class="grid"/>
+<line x1="600" y1="66" x2="600" y2="538" class="grid"/>
+<line x1="740" y1="66" x2="740" y2="538" class="grid"/>
+<line x1="880" y1="66" x2="880" y2="538" class="grid"/>
 <text x="24" y="95" class="label">MarshalMsgDirect</text>
-<rect x="320" y="82" width="178.5" height="16" rx="3" fill="#475569"/>
-<text x="506" y="95" class="value">262.9 ns/op</text>
+<rect x="320" y="82" width="185.3" height="16" rx="3" fill="#475569"/>
+<text x="513" y="95" class="value">282.3 ns/op</text>
+<rect x="980" y="101" width="21.2" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="95" class="value" text-anchor="end">256 B/op</text>
 <text x="24" y="123" class="label">MarshalMsgStream</text>
-<rect x="320" y="110" width="267.2" height="16" rx="3" fill="#475569"/>
-<text x="595" y="123" class="value">393.5 ns/op</text>
+<rect x="320" y="110" width="260.3" height="16" rx="3" fill="#475569"/>
+<text x="588" y="123" class="value">396.6 ns/op</text>
+<rect x="980" y="129" width="33.1" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="123" class="value" text-anchor="end">400 B/op</text>
 <text x="24" y="151" class="label">MarshalJsonDirect</text>
-<rect x="320" y="138" width="298.6" height="16" rx="3" fill="#ca8a04"/>
-<text x="626" y="151" class="value">439.8 ns/op</text>
+<rect x="320" y="138" width="315.4" height="16" rx="3" fill="#ca8a04"/>
+<text x="643" y="151" class="value">480.5 ns/op</text>
+<rect x="980" y="157" width="30.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="151" class="value" text-anchor="end">368 B/op</text>
 <text x="24" y="179" class="label">MarshalJsonStream</text>
-<rect x="320" y="166" width="477.2" height="16" rx="3" fill="#ca8a04"/>
-<text x="805" y="179" class="value">702.8 ns/op</text>
+<rect x="320" y="166" width="497.6" height="16" rx="3" fill="#ca8a04"/>
+<text x="825" y="179" class="value">758.1 ns/op</text>
+<rect x="980" y="185" width="69.6" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="179" class="value" text-anchor="end">840 B/op</text>
 <text x="24" y="207" class="label">MarshalMsgDirectParallel</text>
-<rect x="320" y="194" width="105.2" height="16" rx="3" fill="#475569"/>
-<text x="433" y="207" class="value">155 ns/op</text>
+<rect x="320" y="194" width="71.7" height="16" rx="3" fill="#475569"/>
+<text x="399" y="207" class="value">109.3 ns/op</text>
+<rect x="980" y="213" width="21.2" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="207" class="value" text-anchor="end">256 B/op</text>
 <text x="24" y="235" class="label">MarshalMsgStreamParallel</text>
-<rect x="320" y="222" width="160.5" height="16" rx="3" fill="#475569"/>
-<text x="488" y="235" class="value">236.4 ns/op</text>
+<rect x="320" y="222" width="112.5" height="16" rx="3" fill="#475569"/>
+<text x="440" y="235" class="value">171.4 ns/op</text>
+<rect x="980" y="241" width="33.1" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="235" class="value" text-anchor="end">400 B/op</text>
 <text x="24" y="263" class="label">MarshalJsonDirectParallel</text>
-<rect x="320" y="250" width="166.6" height="16" rx="3" fill="#ca8a04"/>
-<text x="494" y="263" class="value">245.3 ns/op</text>
+<rect x="320" y="250" width="151.4" height="16" rx="3" fill="#ca8a04"/>
+<text x="479" y="263" class="value">230.6 ns/op</text>
+<rect x="980" y="269" width="30.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="263" class="value" text-anchor="end">368 B/op</text>
 <text x="24" y="291" class="label">MarshalJsonStreamParallel</text>
-<rect x="320" y="278" width="273.4" height="16" rx="3" fill="#ca8a04"/>
-<text x="601" y="291" class="value">402.7 ns/op</text>
+<rect x="320" y="278" width="259.0" height="16" rx="3" fill="#ca8a04"/>
+<text x="586" y="291" class="value">394.5 ns/op</text>
+<rect x="980" y="297" width="69.6" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="291" class="value" text-anchor="end">840 B/op</text>
 <text x="24" y="319" class="label">UnmarshalMsgDirect</text>
-<rect x="320" y="306" width="388.1" height="16" rx="3" fill="#475569"/>
-<text x="716" y="319" class="value">571.6 ns/op</text>
+<rect x="320" y="306" width="339.4" height="16" rx="3" fill="#475569"/>
+<text x="667" y="319" class="value">517.1 ns/op</text>
+<rect x="980" y="325" width="72.0" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="319" class="value" text-anchor="end">869 B/op</text>
 <text x="24" y="347" class="label">UnmarshalMsgStream</text>
-<rect x="320" y="334" width="421.7" height="16" rx="3" fill="#475569"/>
-<text x="749" y="347" class="value">621 ns/op</text>
+<rect x="320" y="334" width="402.7" height="16" rx="3" fill="#475569"/>
+<text x="730" y="347" class="value">613.4 ns/op</text>
+<rect x="980" y="353" width="32.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="347" class="value" text-anchor="end">392 B/op</text>
 <text x="24" y="375" class="label">UnmarshalJsonDirect</text>
-<rect x="320" y="362" width="630.0" height="16" rx="3" fill="#ca8a04"/>
-<text x="958" y="375" class="value">927.8 ns/op</text>
+<rect x="320" y="362" width="560.0" height="16" rx="3" fill="#ca8a04"/>
+<text x="888" y="375" class="value">853.1 ns/op</text>
+<rect x="980" y="381" width="71.0" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="375" class="value" text-anchor="end">857 B/op</text>
 <text x="24" y="403" class="label">UnmarshalJsonStream</text>
-<rect x="320" y="390" width="509.3" height="16" rx="3" fill="#ca8a04"/>
-<text x="837" y="403" class="value">750.1 ns/op</text>
+<rect x="320" y="390" width="483.1" height="16" rx="3" fill="#ca8a04"/>
+<text x="811" y="403" class="value">736 ns/op</text>
+<rect x="980" y="409" width="28.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="403" class="value" text-anchor="end">344 B/op</text>
 <text x="24" y="431" class="label">UnmarshalMsgDirectParallel</text>
-<rect x="320" y="418" width="267.1" height="16" rx="3" fill="#475569"/>
-<text x="595" y="431" class="value">393.3 ns/op</text>
+<rect x="320" y="418" width="181.6" height="16" rx="3" fill="#475569"/>
+<text x="509" y="431" class="value">276.7 ns/op</text>
+<rect x="980" y="437" width="72.0" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="431" class="value" text-anchor="end">869 B/op</text>
 <text x="24" y="459" class="label">UnmarshalMsgStreamParallel</text>
-<rect x="320" y="446" width="244.2" height="16" rx="3" fill="#475569"/>
-<text x="572" y="459" class="value">359.6 ns/op</text>
+<rect x="320" y="446" width="187.9" height="16" rx="3" fill="#475569"/>
+<text x="515" y="459" class="value">286.2 ns/op</text>
+<rect x="980" y="465" width="32.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="459" class="value" text-anchor="end">392 B/op</text>
 <text x="24" y="487" class="label">UnmarshalJsonDirectParallel</text>
-<rect x="320" y="474" width="363.1" height="16" rx="3" fill="#ca8a04"/>
-<text x="691" y="487" class="value">534.8 ns/op</text>
+<rect x="320" y="474" width="293.2" height="16" rx="3" fill="#ca8a04"/>
+<text x="621" y="487" class="value">446.7 ns/op</text>
+<rect x="980" y="493" width="71.1" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="487" class="value" text-anchor="end">858 B/op</text>
 <text x="24" y="515" class="label">UnmarshalJsonStreamParallel</text>
-<rect x="320" y="502" width="218.6" height="16" rx="3" fill="#ca8a04"/>
-<text x="546" y="515" class="value">322 ns/op</text>
+<rect x="320" y="502" width="179.9" height="16" rx="3" fill="#ca8a04"/>
+<text x="507" y="515" class="value">274.1 ns/op</text>
+<rect x="980" y="521" width="28.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="515" class="value" text-anchor="end">344 B/op</text>
 </svg>

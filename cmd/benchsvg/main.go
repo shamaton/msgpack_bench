@@ -17,7 +17,10 @@ import (
 	"time"
 )
 
-const metricNSPerOp = "ns/op"
+const (
+	metricNSPerOp    = "ns/op"
+	metricBytesPerOp = "B/op"
+)
 
 type benchmark struct {
 	Name    string
@@ -339,17 +342,22 @@ func renderSVG(title, metric string, rows []benchmark) []byte {
 	const (
 		width       = 1120
 		marginLeft  = 320
-		marginRight = 170
+		marginRight = 240
 		top         = 82
 		rowHeight   = 28
 		barHeight   = 16
 		bottom      = 54
+		allocX      = 980
+		allocWidth  = 72
+		allocHeight = 5
 	)
 
 	height := top + len(rows)*rowHeight + bottom
 	plotWidth := width - marginLeft - marginRight
 	minValue, maxValue := metricRange(rows, metric)
 	useLog := shouldUseLogScale(minValue, maxValue)
+	showAllocBars := metric != metricBytesPerOp && hasMetric(rows, metricBytesPerOp)
+	_, maxAllocValue := metricRange(rows, metricBytesPerOp)
 
 	var buf bytes.Buffer
 	fmt.Fprintf(&buf, `<svg xmlns="http://www.w3.org/2000/svg" width="%d" height="%d" viewBox="0 0 %d %d" role="img" aria-label="%s">`+"\n", width, height, width, height, esc(title))
@@ -361,6 +369,7 @@ text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#11
 .subtitle{fill:#6b7280;font-size:13px}
 .label{font-size:12px}
 .value{fill:#374151;font-size:12px}
+.allocbar{fill:#94a3b8}
 .axis{stroke:#d1d5db;stroke-width:1}
 .grid{stroke:#e5e7eb;stroke-width:1}
 @media (prefers-color-scheme:dark){
@@ -368,6 +377,7 @@ text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#11
 text{fill:#f9fafb}
 .subtitle{fill:#9ca3af}
 .value{fill:#d1d5db}
+.allocbar{fill:#9ca3af}
 .axis{stroke:#4b5563}
 .grid{stroke:#374151}
 }
@@ -376,6 +386,9 @@ text{fill:#f9fafb}
 	scaleLabel := "linear scale"
 	if useLog {
 		scaleLabel = "log scale"
+	}
+	if showAllocBars {
+		scaleLabel += ", alloc bars: B/op"
 	}
 	fmt.Fprintf(&buf, `<text x="24" y="56" class="subtitle">metric: %s, lower is better, %s, generated %s</text>`+"\n", esc(metric), scaleLabel, time.Now().Format("2006-01-02"))
 
@@ -397,9 +410,23 @@ text{fill:#f9fafb}
 		}
 		color := colorFor(row.Name)
 		label := displayName(row.Name)
+		valueLabel := formatRowValue(row, metric)
+		if showAllocBars {
+			valueLabel = formatMetric(value, metric)
+		}
 		fmt.Fprintf(&buf, `<text x="24" y="%d" class="label">%s</text>`+"\n", y+13, esc(label))
 		fmt.Fprintf(&buf, `<rect x="%d" y="%d" width="%.1f" height="%d" rx="3" fill="%s"/>`+"\n", marginLeft, y, barWidth, barHeight, color)
-		fmt.Fprintf(&buf, `<text x="%d" y="%d" class="value">%s</text>`+"\n", marginLeft+int(barWidth)+8, y+13, esc(formatMetric(value, metric)))
+		fmt.Fprintf(&buf, `<text x="%d" y="%d" class="value">%s</text>`+"\n", marginLeft+int(barWidth)+8, y+13, esc(valueLabel))
+		if showAllocBars {
+			if allocValue, ok := row.Metrics[metricBytesPerOp]; ok {
+				allocBarWidth := scaleValue(allocValue, 0, maxAllocValue, allocWidth, false)
+				if allocValue > 0 && allocBarWidth < 2 {
+					allocBarWidth = 2
+				}
+				fmt.Fprintf(&buf, `<rect x="%d" y="%d" width="%.1f" height="%d" rx="2" class="allocbar"/>`+"\n", allocX, y+19, allocBarWidth, allocHeight)
+				fmt.Fprintf(&buf, `<text x="%d" y="%d" class="value" text-anchor="end">%s</text>`+"\n", width-24, y+13, esc(formatMetric(allocValue, metricBytesPerOp)))
+			}
+		}
 	}
 
 	buf.WriteString("</svg>\n")
@@ -421,6 +448,15 @@ func metricRange(rows []benchmark, metric string) (float64, float64) {
 		return 0, 0
 	}
 	return minValue, maxValue
+}
+
+func hasMetric(rows []benchmark, metric string) bool {
+	for _, row := range rows {
+		if _, ok := row.Metrics[metric]; ok {
+			return true
+		}
+	}
+	return false
 }
 
 func shouldUseLogScale(minValue, maxValue float64) bool {
@@ -499,6 +535,19 @@ func formatMetric(value float64, metric string) string {
 	default:
 		return fmt.Sprintf("%.2f %s", value, metric)
 	}
+}
+
+func formatRowValue(row benchmark, metric string) string {
+	value := row.Metrics[metric]
+	formatted := formatMetric(value, metric)
+	if metric == "B/op" {
+		return formatted
+	}
+	allocBytes, ok := row.Metrics[metricBytesPerOp]
+	if !ok {
+		return formatted
+	}
+	return fmt.Sprintf("%s, %s", formatted, formatMetric(allocBytes, metricBytesPerOp))
 }
 
 func formatNumber(value float64) string {

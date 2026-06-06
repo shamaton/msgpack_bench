@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="500" viewBox="0 0 1120 500" role="img" aria-label="msgpack benchmark (purego, ubuntu): Compare encode">
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="500" viewBox="0 0 1120 500" role="img" aria-label="msgpack benchmark (purego): Compare encode">
 <rect class="background" width="100%" height="100%"/>
 <style>
 svg{color-scheme:light dark}
@@ -7,6 +7,7 @@ text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#11
 .subtitle{fill:#6b7280;font-size:13px}
 .label{font-size:12px}
 .value{fill:#374151;font-size:12px}
+.allocbar{fill:#94a3b8}
 .axis{stroke:#d1d5db;stroke-width:1}
 .grid{stroke:#e5e7eb;stroke-width:1}
 @media (prefers-color-scheme:dark){
@@ -14,55 +15,82 @@ text{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;fill:#11
 text{fill:#f9fafb}
 .subtitle{fill:#9ca3af}
 .value{fill:#d1d5db}
+.allocbar{fill:#9ca3af}
 .axis{stroke:#4b5563}
 .grid{stroke:#374151}
 }
 </style>
-<text x="24" y="32" font-size="22" font-weight="700">msgpack benchmark (purego, ubuntu): Compare encode</text>
-<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, generated 2026-06-02</text>
+<text x="24" y="32" font-size="22" font-weight="700">msgpack benchmark (purego): Compare encode</text>
+<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, alloc bars: B/op, generated 2026-06-06</text>
 <line x1="320" y1="66" x2="320" y2="454" class="axis"/>
 <line x1="320" y1="66" x2="320" y2="454" class="grid"/>
-<line x1="477" y1="66" x2="477" y2="454" class="grid"/>
-<line x1="635" y1="66" x2="635" y2="454" class="grid"/>
-<line x1="792" y1="66" x2="792" y2="454" class="grid"/>
-<line x1="950" y1="66" x2="950" y2="454" class="grid"/>
+<line x1="460" y1="66" x2="460" y2="454" class="grid"/>
+<line x1="600" y1="66" x2="600" y2="454" class="grid"/>
+<line x1="740" y1="66" x2="740" y2="454" class="grid"/>
+<line x1="880" y1="66" x2="880" y2="454" class="grid"/>
 <text x="24" y="95" class="label">Compare encode ShamatonGenArray</text>
-<rect x="320" y="82" width="31.3" height="16" rx="3" fill="#0f766e"/>
-<text x="359" y="95" class="value">147.9 ns/op</text>
-<text x="24" y="123" class="label">Compare encode ShamatonGen</text>
-<rect x="320" y="110" width="36.8" height="16" rx="3" fill="#0f766e"/>
-<text x="364" y="123" class="value">173.6 ns/op</text>
-<text x="24" y="151" class="label">Compare encode ShamatonGenMap</text>
-<rect x="320" y="138" width="38.5" height="16" rx="3" fill="#0f766e"/>
-<text x="366" y="151" class="value">181.6 ns/op</text>
+<rect x="320" y="82" width="24.6" height="16" rx="3" fill="#0f766e"/>
+<text x="352" y="95" class="value">146.1 ns/op</text>
+<rect x="980" y="101" width="2.7" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="95" class="value" text-anchor="end">96 B/op</text>
+<text x="24" y="123" class="label">Compare encode ShamatonGenMap</text>
+<rect x="320" y="110" width="28.7" height="16" rx="3" fill="#0f766e"/>
+<text x="356" y="123" class="value">170.4 ns/op</text>
+<rect x="980" y="129" width="4.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="123" class="value" text-anchor="end">160 B/op</text>
+<text x="24" y="151" class="label">Compare encode ShamatonGen</text>
+<rect x="320" y="138" width="29.4" height="16" rx="3" fill="#0f766e"/>
+<text x="357" y="151" class="value">174.7 ns/op</text>
+<rect x="980" y="157" width="4.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="151" class="value" text-anchor="end">160 B/op</text>
 <text x="24" y="179" class="label">Compare encode Tinylib</text>
-<rect x="320" y="166" width="49.3" height="16" rx="3" fill="#15803d"/>
-<text x="377" y="179" class="value">232.8 ns/op</text>
+<rect x="320" y="166" width="35.3" height="16" rx="3" fill="#15803d"/>
+<text x="363" y="179" class="value">209.6 ns/op</text>
+<rect x="980" y="185" width="9.1" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="179" class="value" text-anchor="end">320 B/op</text>
 <text x="24" y="207" class="label">Compare encode ShamatonArray</text>
-<rect x="320" y="194" width="74.9" height="16" rx="3" fill="#2563eb"/>
-<text x="402" y="207" class="value">353.3 ns/op</text>
+<rect x="320" y="194" width="58.2" height="16" rx="3" fill="#2563eb"/>
+<text x="386" y="207" class="value">345.1 ns/op</text>
+<rect x="980" y="213" width="7.3" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="207" class="value" text-anchor="end">256 B/op</text>
 <text x="24" y="235" class="label">Compare encode Shamaton</text>
-<rect x="320" y="222" width="104.8" height="16" rx="3" fill="#2563eb"/>
-<text x="432" y="235" class="value">494.5 ns/op</text>
+<rect x="320" y="222" width="83.2" height="16" rx="3" fill="#2563eb"/>
+<text x="411" y="235" class="value">493.3 ns/op</text>
+<rect x="980" y="241" width="9.1" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="235" class="value" text-anchor="end">320 B/op</text>
 <text x="24" y="263" class="label">Compare encode ProtocolBuffer</text>
-<rect x="320" y="250" width="121.5" height="16" rx="3" fill="#7c3aed"/>
-<text x="449" y="263" class="value">573.6 ns/op</text>
+<rect x="320" y="250" width="95.3" height="16" rx="3" fill="#7c3aed"/>
+<text x="423" y="263" class="value">565.1 ns/op</text>
+<rect x="980" y="269" width="7.0" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="263" class="value" text-anchor="end">248 B/op</text>
 <text x="24" y="291" class="label">Compare encode Zeroformatter</text>
-<rect x="320" y="278" width="127.0" height="16" rx="3" fill="#be123c"/>
-<text x="454" y="291" class="value">599.1 ns/op</text>
-<text x="24" y="319" class="label">Compare encode Json</text>
-<rect x="320" y="306" width="137.3" height="16" rx="3" fill="#ca8a04"/>
-<text x="465" y="319" class="value">647.7 ns/op</text>
-<text x="24" y="347" class="label">Compare encode VmihailencoArray</text>
-<rect x="320" y="334" width="142.4" height="16" rx="3" fill="#c2410c"/>
-<text x="470" y="347" class="value">671.9 ns/op</text>
+<rect x="320" y="278" width="98.5" height="16" rx="3" fill="#be123c"/>
+<text x="426" y="291" class="value">584.6 ns/op</text>
+<rect x="980" y="297" width="18.2" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="291" class="value" text-anchor="end">640 B/op</text>
+<text x="24" y="319" class="label">Compare encode VmihailencoArray</text>
+<rect x="320" y="306" width="106.5" height="16" rx="3" fill="#c2410c"/>
+<text x="434" y="319" class="value">632 ns/op</text>
+<rect x="980" y="325" width="15.2" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="319" class="value" text-anchor="end">536 B/op</text>
+<text x="24" y="347" class="label">Compare encode Json</text>
+<rect x="320" y="334" width="111.3" height="16" rx="3" fill="#ca8a04"/>
+<text x="439" y="347" class="value">660.2 ns/op</text>
+<rect x="980" y="353" width="14.8" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="347" class="value" text-anchor="end">520 B/op</text>
 <text x="24" y="375" class="label">Compare encode Ugorji</text>
-<rect x="320" y="362" width="156.7" height="16" rx="3" fill="#0891b2"/>
-<text x="484" y="375" class="value">739.7 ns/op</text>
+<rect x="320" y="362" width="117.1" height="16" rx="3" fill="#0891b2"/>
+<text x="445" y="375" class="value">694.7 ns/op</text>
+<rect x="980" y="381" width="26.3" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="375" class="value" text-anchor="end">928 B/op</text>
 <text x="24" y="403" class="label">Compare encode Vmihailenco</text>
-<rect x="320" y="390" width="208.3" height="16" rx="3" fill="#c2410c"/>
-<text x="536" y="403" class="value">983 ns/op</text>
+<rect x="320" y="390" width="162.0" height="16" rx="3" fill="#c2410c"/>
+<text x="489" y="403" class="value">961 ns/op</text>
+<rect x="980" y="409" width="22.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="403" class="value" text-anchor="end">792 B/op</text>
 <text x="24" y="431" class="label">Compare encode Gob</text>
-<rect x="320" y="418" width="630.0" height="16" rx="3" fill="#64748b"/>
-<text x="958" y="431" class="value">2973 ns/op</text>
+<rect x="320" y="418" width="560.0" height="16" rx="3" fill="#64748b"/>
+<text x="888" y="431" class="value">3322 ns/op</text>
+<rect x="980" y="437" width="72.0" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="431" class="value" text-anchor="end">2.48 KiB/op</text>
 </svg>

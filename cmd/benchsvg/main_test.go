@@ -145,6 +145,44 @@ func TestRenderSVGSupportsDarkTheme(t *testing.T) {
 	}
 }
 
+func TestRenderSVGIncludesBytesPerOpBarWhenAvailable(t *testing.T) {
+	rows := []benchmark{
+		{Name: "CompareEncodeShamaton", Section: "compare-encode", Metrics: map[string]float64{metricNSPerOp: 10, "B/op": 160}},
+	}
+
+	svg := string(renderSVG("Benchmark", metricNSPerOp, rows))
+	for _, want := range []string{
+		`10 ns/op`,
+		`160 B/op`,
+		`class="allocbar"`,
+		`alloc bars: B/op`,
+	} {
+		if !strings.Contains(svg, want) {
+			t.Fatalf("rendered SVG does not include %q:\n%s", want, svg)
+		}
+	}
+	if strings.Contains(svg, `10 ns/op, 160 B/op`) {
+		t.Fatalf("rendered SVG does not include B/op:\n%s", svg)
+	}
+}
+
+func TestRenderSVGDoesNotDuplicateBytesPerOpMetric(t *testing.T) {
+	rows := []benchmark{
+		{Name: "CompareEncodeShamaton", Section: "compare-encode", Metrics: map[string]float64{"B/op": 160}},
+	}
+
+	svg := string(renderSVG("Benchmark", "B/op", rows))
+	if strings.Contains(svg, `160 B/op, 160 B/op`) {
+		t.Fatalf("rendered SVG duplicated B/op:\n%s", svg)
+	}
+	if strings.Contains(svg, `class="allocbar"`) {
+		t.Fatalf("rendered SVG included allocation bar for B/op metric:\n%s", svg)
+	}
+	if !strings.Contains(svg, `160 B/op`) {
+		t.Fatalf("rendered SVG does not include B/op:\n%s", svg)
+	}
+}
+
 func TestClassifyStreamAndGeneratedBenchmarks(t *testing.T) {
 	tests := map[string]string{
 		"UnmarshalMsgStream":  "stream",
