@@ -21,7 +21,7 @@ text{fill:#f9fafb}
 }
 </style>
 <text x="24" y="32" font-size="22" font-weight="700">msgpack benchmark (purego): Compare decode</text>
-<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, alloc bars: B/op, generated 2026-06-06</text>
+<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, alloc bars: B/op, generated 2026-07-15</text>
 <line x1="320" y1="66" x2="320" y2="454" class="axis"/>
 <line x1="320" y1="66" x2="320" y2="454" class="grid"/>
 <line x1="460" y1="66" x2="460" y2="454" class="grid"/>
@@ -29,68 +29,68 @@ text{fill:#f9fafb}
 <line x1="740" y1="66" x2="740" y2="454" class="grid"/>
 <line x1="880" y1="66" x2="880" y2="454" class="grid"/>
 <text x="24" y="95" class="label">Compare decode ShamatonGenArray</text>
-<rect x="320" y="82" width="11.4" height="16" rx="3" fill="#0f766e"/>
-<text x="339" y="95" class="value">236.8 ns/op</text>
+<rect x="320" y="82" width="11.9" height="16" rx="3" fill="#0f766e"/>
+<text x="339" y="95" class="value">231.5 ns/op</text>
 <rect x="980" y="101" width="2.8" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="95" class="value" text-anchor="end">386 B/op</text>
-<text x="24" y="123" class="label">Compare decode Tinylib</text>
-<rect x="320" y="110" width="13.5" height="16" rx="3" fill="#15803d"/>
-<text x="341" y="123" class="value">278.7 ns/op</text>
+<text x="24" y="123" class="label">Compare decode ShamatonGenMap</text>
+<rect x="320" y="110" width="13.4" height="16" rx="3" fill="#0f766e"/>
+<text x="341" y="123" class="value">260.9 ns/op</text>
 <rect x="980" y="129" width="2.8" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="123" class="value" text-anchor="end">386 B/op</text>
 <text x="24" y="151" class="label">Compare decode ShamatonGen</text>
-<rect x="320" y="138" width="13.6" height="16" rx="3" fill="#0f766e"/>
-<text x="341" y="151" class="value">282 ns/op</text>
+<rect x="320" y="138" width="13.9" height="16" rx="3" fill="#0f766e"/>
+<text x="341" y="151" class="value">270.2 ns/op</text>
 <rect x="980" y="157" width="2.8" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="151" class="value" text-anchor="end">386 B/op</text>
-<text x="24" y="179" class="label">Compare decode ShamatonGenMap</text>
-<rect x="320" y="166" width="13.7" height="16" rx="3" fill="#0f766e"/>
-<text x="341" y="179" class="value">284.6 ns/op</text>
+<text x="24" y="179" class="label">Compare decode Tinylib</text>
+<rect x="320" y="166" width="15.0" height="16" rx="3" fill="#15803d"/>
+<text x="342" y="179" class="value">290.9 ns/op</text>
 <rect x="980" y="185" width="2.8" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="179" class="value" text-anchor="end">386 B/op</text>
 <text x="24" y="207" class="label">Compare decode ShamatonArray</text>
-<rect x="320" y="194" width="21.7" height="16" rx="3" fill="#2563eb"/>
-<text x="349" y="207" class="value">449.8 ns/op</text>
+<rect x="320" y="194" width="20.2" height="16" rx="3" fill="#2563eb"/>
+<text x="348" y="207" class="value">392.3 ns/op</text>
 <rect x="980" y="213" width="4.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="207" class="value" text-anchor="end">554 B/op</text>
 <text x="24" y="235" class="label">Compare decode Shamaton</text>
-<rect x="320" y="222" width="23.1" height="16" rx="3" fill="#2563eb"/>
-<text x="351" y="235" class="value">478.3 ns/op</text>
+<rect x="320" y="222" width="23.5" height="16" rx="3" fill="#2563eb"/>
+<text x="351" y="235" class="value">457.6 ns/op</text>
 <rect x="980" y="241" width="4.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="235" class="value" text-anchor="end">554 B/op</text>
 <text x="24" y="263" class="label">Compare decode ProtocolBuffer</text>
-<rect x="320" y="250" width="34.2" height="16" rx="3" fill="#7c3aed"/>
-<text x="362" y="263" class="value">708.2 ns/op</text>
+<rect x="320" y="250" width="33.7" height="16" rx="3" fill="#7c3aed"/>
+<text x="361" y="263" class="value">655.3 ns/op</text>
 <rect x="980" y="269" width="4.7" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="263" class="value" text-anchor="end">656 B/op</text>
-<text x="24" y="291" class="label">Compare decode Zeroformatter</text>
-<rect x="320" y="278" width="41.4" height="16" rx="3" fill="#be123c"/>
-<text x="369" y="291" class="value">858.3 ns/op</text>
-<rect x="980" y="297" width="6.7" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="291" class="value" text-anchor="end">944 B/op</text>
-<text x="24" y="319" class="label">Compare decode Ugorji</text>
-<rect x="320" y="306" width="43.2" height="16" rx="3" fill="#0891b2"/>
-<text x="371" y="319" class="value">894.4 ns/op</text>
-<rect x="980" y="325" width="7.7" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="319" class="value" text-anchor="end">1.05 KiB/op</text>
+<text x="24" y="291" class="label">Compare decode Ugorji</text>
+<rect x="320" y="278" width="38.8" height="16" rx="3" fill="#0891b2"/>
+<text x="366" y="291" class="value">755.2 ns/op</text>
+<rect x="980" y="297" width="7.7" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="291" class="value" text-anchor="end">1.05 KiB/op</text>
+<text x="24" y="319" class="label">Compare decode Zeroformatter</text>
+<rect x="320" y="306" width="41.3" height="16" rx="3" fill="#be123c"/>
+<text x="369" y="319" class="value">802.5 ns/op</text>
+<rect x="980" y="325" width="6.7" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="319" class="value" text-anchor="end">944 B/op</text>
 <text x="24" y="347" class="label">Compare decode VmihailencoArray</text>
-<rect x="320" y="334" width="47.0" height="16" rx="3" fill="#c2410c"/>
-<text x="375" y="347" class="value">974.2 ns/op</text>
+<rect x="320" y="334" width="49.5" height="16" rx="3" fill="#c2410c"/>
+<text x="377" y="347" class="value">962.1 ns/op</text>
 <rect x="980" y="353" width="5.9" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="347" class="value" text-anchor="end">832 B/op</text>
 <text x="24" y="375" class="label">Compare decode Vmihailenco</text>
-<rect x="320" y="362" width="54.6" height="16" rx="3" fill="#c2410c"/>
-<text x="382" y="375" class="value">1130 ns/op</text>
+<rect x="320" y="362" width="57.9" height="16" rx="3" fill="#c2410c"/>
+<text x="385" y="375" class="value">1126 ns/op</text>
 <rect x="980" y="381" width="5.6" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="375" class="value" text-anchor="end">784 B/op</text>
 <text x="24" y="403" class="label">Compare decode Json</text>
-<rect x="320" y="390" width="138.3" height="16" rx="3" fill="#ca8a04"/>
-<text x="466" y="403" class="value">2864 ns/op</text>
+<rect x="320" y="390" width="121.6" height="16" rx="3" fill="#ca8a04"/>
+<text x="449" y="403" class="value">2365 ns/op</text>
 <rect x="980" y="409" width="7.1" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="403" class="value" text-anchor="end">992 B/op</text>
 <text x="24" y="431" class="label">Compare decode Gob</text>
 <rect x="320" y="418" width="560.0" height="16" rx="3" fill="#64748b"/>
-<text x="888" y="431" class="value">11598 ns/op</text>
+<text x="888" y="431" class="value">10892 ns/op</text>
 <rect x="980" y="437" width="72.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="431" class="value" text-anchor="end">9.85 KiB/op</text>
 </svg>

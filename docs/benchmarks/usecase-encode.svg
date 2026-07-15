@@ -21,7 +21,7 @@ text{fill:#f9fafb}
 }
 </style>
 <text x="24" y="32" font-size="22" font-weight="700">msgpack benchmark (purego): Use case encode</text>
-<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, alloc bars: B/op, generated 2026-06-06</text>
+<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, linear scale, alloc bars: B/op, generated 2026-07-15</text>
 <line x1="320" y1="66" x2="320" y2="454" class="axis"/>
 <line x1="320" y1="66" x2="320" y2="454" class="grid"/>
 <line x1="460" y1="66" x2="460" y2="454" class="grid"/>
@@ -29,68 +29,68 @@ text{fill:#f9fafb}
 <line x1="740" y1="66" x2="740" y2="454" class="grid"/>
 <line x1="880" y1="66" x2="880" y2="454" class="grid"/>
 <text x="24" y="95" class="label">Use case encode ShamatonGenArray</text>
-<rect x="320" y="82" width="50.5" height="16" rx="3" fill="#0f766e"/>
-<text x="378" y="95" class="value">1465 ns/op</text>
+<rect x="320" y="82" width="51.7" height="16" rx="3" fill="#0f766e"/>
+<text x="379" y="95" class="value">1435 ns/op</text>
 <rect x="980" y="101" width="6.8" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="95" class="value" text-anchor="end">2.00 KiB/op</text>
 <text x="24" y="123" class="label">Use case encode ShamatonGen</text>
-<rect x="320" y="110" width="58.5" height="16" rx="3" fill="#0f766e"/>
-<text x="386" y="123" class="value">1696 ns/op</text>
+<rect x="320" y="110" width="64.4" height="16" rx="3" fill="#0f766e"/>
+<text x="392" y="123" class="value">1786 ns/op</text>
 <rect x="980" y="129" width="13.6" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="123" class="value" text-anchor="end">4.00 KiB/op</text>
-<text x="24" y="151" class="label">Use case encode Tinylib</text>
-<rect x="320" y="138" width="62.9" height="16" rx="3" fill="#15803d"/>
-<text x="390" y="151" class="value">1822 ns/op</text>
-<rect x="980" y="157" width="20.4" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="151" class="value" text-anchor="end">6.00 KiB/op</text>
-<text x="24" y="179" class="label">Use case encode ShamatonGenMap</text>
-<rect x="320" y="166" width="64.3" height="16" rx="3" fill="#0f766e"/>
-<text x="392" y="179" class="value">1865 ns/op</text>
-<rect x="980" y="185" width="13.6" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="179" class="value" text-anchor="end">4.00 KiB/op</text>
+<text x="24" y="151" class="label">Use case encode ShamatonGenMap</text>
+<rect x="320" y="138" width="65.3" height="16" rx="3" fill="#0f766e"/>
+<text x="393" y="151" class="value">1810 ns/op</text>
+<rect x="980" y="157" width="13.6" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="151" class="value" text-anchor="end">4.00 KiB/op</text>
+<text x="24" y="179" class="label">Use case encode Tinylib</text>
+<rect x="320" y="166" width="65.7" height="16" rx="3" fill="#15803d"/>
+<text x="393" y="179" class="value">1822 ns/op</text>
+<rect x="980" y="185" width="20.4" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="179" class="value" text-anchor="end">6.00 KiB/op</text>
 <text x="24" y="207" class="label">Use case encode ProtocolBuffer</text>
-<rect x="320" y="194" width="145.5" height="16" rx="3" fill="#7c3aed"/>
-<text x="473" y="207" class="value">4218 ns/op</text>
+<rect x="320" y="194" width="156.3" height="16" rx="3" fill="#7c3aed"/>
+<text x="484" y="207" class="value">4336 ns/op</text>
 <rect x="980" y="213" width="7.6" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="207" class="value" text-anchor="end">2.25 KiB/op</text>
-<text x="24" y="235" class="label">Use case encode VmihailencoArray</text>
-<rect x="320" y="222" width="264.4" height="16" rx="3" fill="#c2410c"/>
-<text x="592" y="235" class="value">7665 ns/op</text>
-<rect x="980" y="241" width="14.2" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="235" class="value" text-anchor="end">4.19 KiB/op</text>
-<text x="24" y="263" class="label">Use case encode Json</text>
-<rect x="320" y="250" width="375.8" height="16" rx="3" fill="#ca8a04"/>
-<text x="703" y="263" class="value">10893 ns/op</text>
-<rect x="980" y="269" width="20.7" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="263" class="value" text-anchor="end">6.10 KiB/op</text>
-<text x="24" y="291" class="label">Use case encode Vmihailenco</text>
-<rect x="320" y="278" width="376.7" height="16" rx="3" fill="#c2410c"/>
-<text x="704" y="291" class="value">10921 ns/op</text>
-<rect x="980" y="297" width="27.5" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="291" class="value" text-anchor="end">8.09 KiB/op</text>
+<text x="24" y="235" class="label">Use case encode ShamatonArray</text>
+<rect x="320" y="222" width="194.4" height="16" rx="3" fill="#2563eb"/>
+<text x="522" y="235" class="value">5391 ns/op</text>
+<rect x="980" y="241" width="7.4" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="235" class="value" text-anchor="end">2.18 KiB/op</text>
+<text x="24" y="263" class="label">Use case encode VmihailencoArray</text>
+<rect x="320" y="250" width="272.5" height="16" rx="3" fill="#c2410c"/>
+<text x="600" y="263" class="value">7558 ns/op</text>
+<rect x="980" y="269" width="14.2" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="263" class="value" text-anchor="end">4.19 KiB/op</text>
+<text x="24" y="291" class="label">Use case encode Shamaton</text>
+<rect x="320" y="278" width="291.4" height="16" rx="3" fill="#2563eb"/>
+<text x="619" y="291" class="value">8082 ns/op</text>
+<rect x="980" y="297" width="14.2" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="291" class="value" text-anchor="end">4.18 KiB/op</text>
 <text x="24" y="319" class="label">Use case encode Ugorji</text>
-<rect x="320" y="306" width="419.4" height="16" rx="3" fill="#0891b2"/>
-<text x="747" y="319" class="value">12158 ns/op</text>
+<rect x="320" y="306" width="374.7" height="16" rx="3" fill="#0891b2"/>
+<text x="702" y="319" class="value">10392 ns/op</text>
 <rect x="980" y="325" width="42.6" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="319" class="value" text-anchor="end">12.55 KiB/op</text>
-<text x="24" y="347" class="label">Use case encode Gob</text>
-<rect x="320" y="334" width="425.2" height="16" rx="3" fill="#64748b"/>
-<text x="753" y="347" class="value">12327 ns/op</text>
-<rect x="980" y="353" width="42.2" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="347" class="value" text-anchor="end">12.42 KiB/op</text>
-<text x="24" y="375" class="label">Use case encode ShamatonArray</text>
-<rect x="320" y="362" width="455.2" height="16" rx="3" fill="#2563eb"/>
-<text x="783" y="375" class="value">13197 ns/op</text>
-<rect x="980" y="381" width="7.4" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="375" class="value" text-anchor="end">2.18 KiB/op</text>
-<text x="24" y="403" class="label">Use case encode Shamaton</text>
-<rect x="320" y="390" width="536.9" height="16" rx="3" fill="#2563eb"/>
-<text x="864" y="403" class="value">15563 ns/op</text>
-<rect x="980" y="409" width="14.2" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="403" class="value" text-anchor="end">4.18 KiB/op</text>
+<text x="24" y="347" class="label">Use case encode Vmihailenco</text>
+<rect x="320" y="334" width="397.8" height="16" rx="3" fill="#c2410c"/>
+<text x="725" y="347" class="value">11033 ns/op</text>
+<rect x="980" y="353" width="27.5" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="347" class="value" text-anchor="end">8.09 KiB/op</text>
+<text x="24" y="375" class="label">Use case encode Json</text>
+<rect x="320" y="362" width="398.3" height="16" rx="3" fill="#ca8a04"/>
+<text x="726" y="375" class="value">11046 ns/op</text>
+<rect x="980" y="381" width="20.7" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="375" class="value" text-anchor="end">6.10 KiB/op</text>
+<text x="24" y="403" class="label">Use case encode Gob</text>
+<rect x="320" y="390" width="442.6" height="16" rx="3" fill="#64748b"/>
+<text x="770" y="403" class="value">12275 ns/op</text>
+<rect x="980" y="409" width="42.2" height="5" rx="2" class="allocbar"/>
+<text x="1096" y="403" class="value" text-anchor="end">12.42 KiB/op</text>
 <text x="24" y="431" class="label">Use case encode Zeroformatter</text>
 <rect x="320" y="418" width="560.0" height="16" rx="3" fill="#be123c"/>
-<text x="888" y="431" class="value">16234 ns/op</text>
+<text x="888" y="431" class="value">15532 ns/op</text>
 <rect x="980" y="437" width="72.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="431" class="value" text-anchor="end">21.19 KiB/op</text>
 </svg>

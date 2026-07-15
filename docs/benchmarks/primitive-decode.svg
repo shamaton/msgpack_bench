@@ -21,7 +21,7 @@ text{fill:#f9fafb}
 }
 </style>
 <text x="24" y="32" font-size="22" font-weight="700">msgpack benchmark (purego): Primitive decode</text>
-<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, log scale, alloc bars: B/op, generated 2026-06-06</text>
+<text x="24" y="56" class="subtitle">metric: ns/op, lower is better, log scale, alloc bars: B/op, generated 2026-07-15</text>
 <line x1="320" y1="66" x2="320" y2="594" class="axis"/>
 <line x1="320" y1="66" x2="320" y2="594" class="grid"/>
 <line x1="460" y1="66" x2="460" y2="594" class="grid"/>
@@ -30,92 +30,92 @@ text{fill:#f9fafb}
 <line x1="880" y1="66" x2="880" y2="594" class="grid"/>
 <text x="24" y="95" class="label">Primitive decode BoolShamaton</text>
 <rect x="320" y="82" width="14.2" height="16" rx="3" fill="#2563eb"/>
-<text x="342" y="95" class="value">27.79 ns/op</text>
+<text x="342" y="95" class="value">27.1 ns/op</text>
 <rect x="980" y="101" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="95" class="value" text-anchor="end">33 B/op</text>
 <text x="24" y="123" class="label">Primitive decode BoolVmihailenco</text>
-<rect x="320" y="110" width="36.3" height="16" rx="3" fill="#c2410c"/>
-<text x="364" y="123" class="value">42.74 ns/op</text>
+<rect x="320" y="110" width="39.2" height="16" rx="3" fill="#c2410c"/>
+<text x="367" y="123" class="value">44.19 ns/op</text>
 <rect x="980" y="129" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="123" class="value" text-anchor="end">49 B/op</text>
 <text x="24" y="151" class="label">Primitive decode FloatShamaton</text>
-<rect x="320" y="138" width="17.1" height="16" rx="3" fill="#2563eb"/>
-<text x="345" y="151" class="value">29.4 ns/op</text>
+<rect x="320" y="138" width="24.0" height="16" rx="3" fill="#2563eb"/>
+<text x="352" y="151" class="value">32.87 ns/op</text>
 <rect x="980" y="157" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="151" class="value" text-anchor="end">40 B/op</text>
 <text x="24" y="179" class="label">Primitive decode FloatVmihailenco</text>
-<rect x="320" y="166" width="47.6" height="16" rx="3" fill="#c2410c"/>
-<text x="375" y="179" class="value">53.36 ns/op</text>
+<rect x="320" y="166" width="52.1" height="16" rx="3" fill="#c2410c"/>
+<text x="380" y="179" class="value">56.83 ns/op</text>
 <rect x="980" y="185" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="179" class="value" text-anchor="end">56 B/op</text>
 <text x="24" y="207" class="label">Primitive decode IntShamaton</text>
-<rect x="320" y="194" width="20.2" height="16" rx="3" fill="#2563eb"/>
-<text x="348" y="207" class="value">31.27 ns/op</text>
+<rect x="320" y="194" width="25.2" height="16" rx="3" fill="#2563eb"/>
+<text x="353" y="207" class="value">33.64 ns/op</text>
 <rect x="980" y="213" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="207" class="value" text-anchor="end">40 B/op</text>
 <text x="24" y="235" class="label">Primitive decode IntVmihailenco</text>
-<rect x="320" y="222" width="47.6" height="16" rx="3" fill="#c2410c"/>
-<text x="375" y="235" class="value">53.31 ns/op</text>
+<rect x="320" y="222" width="48.7" height="16" rx="3" fill="#c2410c"/>
+<text x="376" y="235" class="value">53.17 ns/op</text>
 <rect x="980" y="241" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="235" class="value" text-anchor="end">56 B/op</text>
 <text x="24" y="263" class="label">Primitive decode StringShamaton</text>
-<rect x="320" y="250" width="50.2" height="16" rx="3" fill="#2563eb"/>
-<text x="378" y="263" class="value">56.1 ns/op</text>
+<rect x="320" y="250" width="54.6" height="16" rx="3" fill="#2563eb"/>
+<text x="382" y="263" class="value">59.72 ns/op</text>
 <rect x="980" y="269" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="263" class="value" text-anchor="end">96 B/op</text>
 <text x="24" y="291" class="label">Primitive decode StringVmihailenco</text>
-<rect x="320" y="278" width="69.4" height="16" rx="3" fill="#c2410c"/>
-<text x="397" y="291" class="value">81.58 ns/op</text>
+<rect x="320" y="278" width="75.0" height="16" rx="3" fill="#c2410c"/>
+<text x="403" y="291" class="value">88.94 ns/op</text>
 <rect x="980" y="297" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="291" class="value" text-anchor="end">112 B/op</text>
 <text x="24" y="319" class="label">Primitive decode TimeShamaton</text>
-<rect x="320" y="306" width="58.5" height="16" rx="3" fill="#2563eb"/>
-<text x="386" y="319" class="value">65.99 ns/op</text>
+<rect x="320" y="306" width="59.5" height="16" rx="3" fill="#2563eb"/>
+<text x="387" y="319" class="value">65.7 ns/op</text>
 <rect x="980" y="325" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="319" class="value" text-anchor="end">80 B/op</text>
 <text x="24" y="347" class="label">Primitive decode TimeVmihailenco</text>
-<rect x="320" y="334" width="58.9" height="16" rx="3" fill="#c2410c"/>
-<text x="386" y="347" class="value">66.45 ns/op</text>
+<rect x="320" y="334" width="62.7" height="16" rx="3" fill="#c2410c"/>
+<text x="390" y="347" class="value">69.99 ns/op</text>
 <rect x="980" y="353" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="347" class="value" text-anchor="end">72 B/op</text>
 <text x="24" y="375" class="label">Primitive decode ByteShamaton</text>
-<rect x="320" y="362" width="33.1" height="16" rx="3" fill="#2563eb"/>
-<text x="361" y="375" class="value">40.2 ns/op</text>
+<rect x="320" y="362" width="34.2" height="16" rx="3" fill="#2563eb"/>
+<text x="362" y="375" class="value">40.05 ns/op</text>
 <rect x="980" y="381" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="375" class="value" text-anchor="end">56 B/op</text>
 <text x="24" y="403" class="label">Primitive decode ByteVmihailenco</text>
-<rect x="320" y="390" width="66.7" height="16" rx="3" fill="#c2410c"/>
-<text x="394" y="403" class="value">77.39 ns/op</text>
+<rect x="320" y="390" width="68.6" height="16" rx="3" fill="#c2410c"/>
+<text x="396" y="403" class="value">78.48 ns/op</text>
 <rect x="980" y="409" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="403" class="value" text-anchor="end">96 B/op</text>
 <text x="24" y="431" class="label">Primitive decode InterfaceShamaton</text>
-<rect x="320" y="418" width="166.7" height="16" rx="3" fill="#2563eb"/>
-<text x="494" y="431" class="value">544 ns/op</text>
+<rect x="320" y="418" width="164.6" height="16" rx="3" fill="#2563eb"/>
+<text x="492" y="431" class="value">511.6 ns/op</text>
 <rect x="980" y="437" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="431" class="value" text-anchor="end">672 B/op</text>
 <text x="24" y="459" class="label">Primitive decode InterfaceVmihailenco</text>
-<rect x="320" y="446" width="182.1" height="16" rx="3" fill="#c2410c"/>
-<text x="510" y="459" class="value">733.5 ns/op</text>
+<rect x="320" y="446" width="178.9" height="16" rx="3" fill="#c2410c"/>
+<text x="506" y="459" class="value">676.8 ns/op</text>
 <rect x="980" y="465" width="2.0" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="459" class="value" text-anchor="end">816 B/op</text>
 <text x="24" y="487" class="label">Primitive decode Array10000Shamaton</text>
-<rect x="320" y="474" width="388.4" height="16" rx="3" fill="#2563eb"/>
-<text x="716" y="487" class="value">40981 ns/op</text>
+<rect x="320" y="474" width="388.8" height="16" rx="3" fill="#2563eb"/>
+<text x="716" y="487" class="value">40714 ns/op</text>
 <rect x="980" y="493" width="7.8" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="487" class="value" text-anchor="end">80.08 KiB/op</text>
 <text x="24" y="515" class="label">Primitive decode Array10000Vmihailenco</text>
-<rect x="320" y="502" width="478.1" height="16" rx="3" fill="#c2410c"/>
-<text x="806" y="515" class="value">235729 ns/op</text>
+<rect x="320" y="502" width="475.4" height="16" rx="3" fill="#c2410c"/>
+<text x="803" y="515" class="value">221063 ns/op</text>
 <rect x="980" y="521" width="15.6" height="5" rx="2" class="allocbar"/>
 <text x="1096" y="515" class="value" text-anchor="end">160.29 KiB/op</text>
 <text x="24" y="543" class="label">Primitive decode Map10000Shamaton</text>
-<rect x="320" y="530" width="499.6" height="16" rx="3" fill="#2563eb"/>
-<text x="827" y="543" class="value">358300 ns/op</text>
+<rect x="320" y="530" width="500.3" height="16" rx="3" fill="#2563eb"/>
+<text x="828" y="543" class="value">359354 ns/op</text>
 <rect x="980" y="549" width="49.1" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="543" class="value" text-anchor="end">504.78 KiB/op</text>
+<text x="1096" y="543" class="value" text-anchor="end">504.73 KiB/op</text>
 <text x="24" y="571" class="label">Primitive decode Map10000Vmihailenco</text>
 <rect x="320" y="558" width="560.0" height="16" rx="3" fill="#c2410c"/>
-<text x="888" y="571" class="value">1163237 ns/op</text>
+<text x="888" y="571" class="value">1153369 ns/op</text>
 <rect x="980" y="577" width="72.0" height="5" rx="2" class="allocbar"/>
-<text x="1096" y="571" class="value" text-anchor="end">739.97 KiB/op</text>
+<text x="1096" y="571" class="value" text-anchor="end">739.96 KiB/op</text>
 </svg>

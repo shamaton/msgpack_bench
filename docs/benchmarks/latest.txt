@@ -1,133 +1,133 @@
 goos: linux
 goarch: arm64
 pkg: github.com/shamaton/msgpack_bench
-BenchmarkUnmarshalMsgStream-14               	 2300659	       613.4 ns/op	 145.10 MB/s	     392 B/op	      19 allocs/op
-BenchmarkUnmarshalMsgDirect-14               	 2375913	       517.1 ns/op	 172.11 MB/s	     869 B/op	      10 allocs/op
-BenchmarkUnmarshalJsonDirect-14              	 1403786	       853.1 ns/op	 167.62 MB/s	     857 B/op	       9 allocs/op
-BenchmarkUnmarshalJsonStream-14              	 1590409	       736.0 ns/op	 194.30 MB/s	     344 B/op	       8 allocs/op
-BenchmarkUnmarshalMsgStreamParallel-14       	 4228165	       286.2 ns/op	 311.00 MB/s	     392 B/op	      19 allocs/op
-BenchmarkUnmarshalMsgDirectParallel-14       	 4040912	       276.7 ns/op	 321.62 MB/s	     869 B/op	      10 allocs/op
-BenchmarkUnmarshalJsonDirectParallel-14      	 2676525	       446.7 ns/op	 320.13 MB/s	     858 B/op	       9 allocs/op
-BenchmarkUnmarshalJsonStreamParallel-14      	 4524769	       274.1 ns/op	 521.77 MB/s	     344 B/op	       8 allocs/op
-BenchmarkMarshalMsgStream-14                 	 2959717	       396.6 ns/op	 224.42 MB/s	     400 B/op	       5 allocs/op
-BenchmarkMarshalMsgDirect-14                 	 4354930	       282.3 ns/op	 315.22 MB/s	     256 B/op	       3 allocs/op
-BenchmarkMarshalJsonDirect-14                	 2622264	       480.5 ns/op	 297.59 MB/s	     368 B/op	       3 allocs/op
-BenchmarkMarshalJsonStream-14                	 1636166	       758.1 ns/op	 188.64 MB/s	     840 B/op	      10 allocs/op
-BenchmarkMarshalMsgStreamParallel-14         	 6793968	       171.4 ns/op	 519.13 MB/s	     400 B/op	       5 allocs/op
-BenchmarkMarshalMsgDirectParallel-14         	11614162	       109.3 ns/op	 814.10 MB/s	     256 B/op	       3 allocs/op
-BenchmarkMarshalJsonDirectParallel-14        	 5724949	       230.6 ns/op	 620.15 MB/s	     368 B/op	       3 allocs/op
-BenchmarkMarshalJsonStreamParallel-14        	 3066559	       394.5 ns/op	 362.45 MB/s	     840 B/op	      10 allocs/op
-BenchmarkMsgEncIntShamaton-14                	29125506	        41.45 ns/op	      64 B/op	       3 allocs/op
-BenchmarkMsgEncIntVmihailenco-14             	16365356	        73.92 ns/op	     120 B/op	       3 allocs/op
-BenchmarkMsgEncFloatShamaton-14              	27046850	        44.68 ns/op	      72 B/op	       3 allocs/op
-BenchmarkMsgEncFloatVmihailenco-14           	15983119	        73.19 ns/op	     120 B/op	       3 allocs/op
-BenchmarkMsgEncStringShamaton-14             	20798923	        60.07 ns/op	     112 B/op	       3 allocs/op
-BenchmarkMsgEncStringVmihailenco-14          	14300418	        81.68 ns/op	     128 B/op	       3 allocs/op
-BenchmarkMsgEncBoolShamaton-14               	40349358	        30.43 ns/op	      49 B/op	       2 allocs/op
-BenchmarkMsgEncBoolVmihailenco-14            	16288707	        66.93 ns/op	     112 B/op	       2 allocs/op
-BenchmarkMsgEncArray10000Shamaton-14         	   27796	     43132 ns/op	   57416 B/op	       3 allocs/op
-BenchmarkMsgEncArray10000Vmihailenco-14      	    6998	    156524 ns/op	  131199 B/op	      13 allocs/op
-BenchmarkMsgEncMap10000Shamaton-14           	    6000	    198939 ns/op	  139313 B/op	       2 allocs/op
-BenchmarkMsgEncMap10000Vmihailenco-14        	    1722	    721047 ns/op	  765021 B/op	   20014 allocs/op
-BenchmarkMsgEncTimeShamaton-14               	19501426	        64.84 ns/op	      88 B/op	       3 allocs/op
-BenchmarkMsgEncTimeVmihailenco-14            	14230436	        85.94 ns/op	     136 B/op	       3 allocs/op
-BenchmarkMsgEncByteShamaton-14               	16265341	        73.19 ns/op	     104 B/op	       3 allocs/op
-BenchmarkMsgEncByteVmihailenco-14            	14391788	        86.38 ns/op	     136 B/op	       3 allocs/op
-BenchmarkMsgEncInterfaceShamaton-14          	 4119316	       290.3 ns/op	     120 B/op	       3 allocs/op
-BenchmarkMsgEncInterfaceVmihailenco-14       	 2809942	       415.1 ns/op	     184 B/op	       7 allocs/op
-BenchmarkMsgDecIntShamaton-14                	40428372	        31.27 ns/op	      40 B/op	       2 allocs/op
-BenchmarkMsgDecIntVmihailenco-14             	22948078	        53.31 ns/op	      56 B/op	       2 allocs/op
-BenchmarkMsgDecFloatShamaton-14              	43990418	        29.40 ns/op	      40 B/op	       2 allocs/op
-BenchmarkMsgDecFloatVmihailenco-14           	23965369	        53.36 ns/op	      56 B/op	       2 allocs/op
-BenchmarkMsgDecStringShamaton-14             	21134914	        56.10 ns/op	      96 B/op	       3 allocs/op
-BenchmarkMsgDecStringVmihailenco-14          	14767510	        81.58 ns/op	     112 B/op	       3 allocs/op
-BenchmarkMsgDecBoolShamaton-14               	45912877	        27.79 ns/op	      33 B/op	       2 allocs/op
-BenchmarkMsgDecBoolVmihailenco-14            	30504564	        42.74 ns/op	      49 B/op	       2 allocs/op
-BenchmarkMsgDecArray10000Shamaton-14         	   29445	     40981 ns/op	   82000 B/op	       4 allocs/op
-BenchmarkMsgDecArray10000Vmihailenco-14      	    5034	    235729 ns/op	  164141 B/op	       7 allocs/op
-BenchmarkMsgDecMap10000Shamaton-14           	    3658	    358300 ns/op	  516894 B/op	   10036 allocs/op
-BenchmarkMsgDecMap10000Vmihailenco-14        	     981	   1163237 ns/op	  757726 B/op	   30036 allocs/op
-BenchmarkMsgDecTimeShamaton-14               	18356845	        65.99 ns/op	      80 B/op	       3 allocs/op
-BenchmarkMsgDecTimeVmihailenco-14            	16815592	        66.45 ns/op	      72 B/op	       2 allocs/op
-BenchmarkMsgDecByteShamaton-14               	32324102	        40.20 ns/op	      56 B/op	       2 allocs/op
-BenchmarkMsgDecByteVmihailenco-14            	15395758	        77.39 ns/op	      96 B/op	       3 allocs/op
-BenchmarkMsgDecInterfaceShamaton-14          	 2213371	       544.0 ns/op	     672 B/op	      14 allocs/op
-BenchmarkMsgDecInterfaceVmihailenco-14       	 1750284	       733.5 ns/op	     816 B/op	      15 allocs/op
-BenchmarkMarshalMsgBenchChild-14             	79421330	        15.70 ns/op	      32 B/op	       1 allocs/op
-BenchmarkAppendMsgBenchChild-14              	799156442	         1.512 ns/op	 661.31 MB/s	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalBenchChild-14              	535056609	         2.246 ns/op	 445.18 MB/s	       0 B/op	       0 allocs/op
-BenchmarkEncodeBenchChild-14                 	367213401	         5.025 ns/op	 199.01 MB/s	       0 B/op	       0 allocs/op
-BenchmarkDecodeBenchChild-14                 	162222958	         7.411 ns/op	 134.94 MB/s	       0 B/op	       0 allocs/op
-BenchmarkMarshalMsgBenchMarkStruct-14        	22518400	        47.56 ns/op	     128 B/op	       1 allocs/op
-BenchmarkAppendMsgBenchMarkStruct-14         	280909396	         4.260 ns/op	 234.77 MB/s	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalBenchMarkStruct-14         	533731950	         2.284 ns/op	 437.89 MB/s	       0 B/op	       0 allocs/op
-BenchmarkEncodeBenchMarkStruct-14            	226852426	         5.298 ns/op	 188.75 MB/s	       0 B/op	       0 allocs/op
-BenchmarkDecodeBenchMarkStruct-14            	166184922	         7.237 ns/op	 138.17 MB/s	       0 B/op	       0 allocs/op
-BenchmarkMarshalMsgItem-14                   	50547864	        23.14 ns/op	      48 B/op	       1 allocs/op
-BenchmarkAppendMsgItem-14                    	177743018	         6.687 ns/op	4187.38 MB/s	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalItem-14                    	42341484	        28.50 ns/op	 982.58 MB/s	       0 B/op	       0 allocs/op
-BenchmarkEncodeItem-14                       	54387748	        21.73 ns/op	1288.35 MB/s	       0 B/op	       0 allocs/op
-BenchmarkDecodeItem-14                       	14328913	        81.84 ns/op	 342.14 MB/s	       0 B/op	       0 allocs/op
-BenchmarkMarshalMsgUser-14                   	32254486	        39.89 ns/op	      96 B/op	       1 allocs/op
-BenchmarkAppendMsgUser-14                    	120308053	         9.828 ns/op	4680.41 MB/s	       0 B/op	       0 allocs/op
-BenchmarkUnmarshalUser-14                    	24374556	        49.06 ns/op	 937.58 MB/s	       0 B/op	       0 allocs/op
-BenchmarkEncodeUser-14                       	32836332	        36.17 ns/op	1271.78 MB/s	       0 B/op	       0 allocs/op
-BenchmarkDecodeUser-14                       	 8929454	       133.4 ns/op	 344.89 MB/s	       0 B/op	       0 allocs/op
-BenchmarkCompareDecodeShamatonGenArray-14    	 5035629	       236.8 ns/op	     386 B/op	       8 allocs/op
-BenchmarkCompareDecodeTinylib-14             	 4285155	       278.7 ns/op	     386 B/op	       8 allocs/op
-BenchmarkCompareDecodeShamatonGenMap-14      	 4392049	       284.6 ns/op	     386 B/op	       8 allocs/op
-BenchmarkCompareDecodeShamatonGen-14         	 4338375	       282.0 ns/op	     386 B/op	       8 allocs/op
-BenchmarkCompareDecodeShamatonArray-14       	 2736952	       449.8 ns/op	     554 B/op	      11 allocs/op
-BenchmarkCompareDecodeShamaton-14            	 2514933	       478.3 ns/op	     554 B/op	      11 allocs/op
-BenchmarkCompareDecodeUgorji-14              	 1288450	       894.4 ns/op	    1074 B/op	      10 allocs/op
-BenchmarkCompareDecodeVmihailencoArray-14    	 1225886	       974.2 ns/op	     832 B/op	      22 allocs/op
-BenchmarkCompareDecodeVmihailenco-14         	  990013	      1130 ns/op	     784 B/op	      20 allocs/op
-BenchmarkCompareDecodeProtocolBuffer-14      	 1761663	       708.2 ns/op	     656 B/op	      19 allocs/op
-BenchmarkCompareDecodeJson-14                	  416109	      2864 ns/op	     992 B/op	      23 allocs/op
-BenchmarkCompareDecodeGob-14                 	  102463	     11598 ns/op	   10088 B/op	     234 allocs/op
-BenchmarkCompareDecodeZeroformatter-14       	 1359216	       858.3 ns/op	     944 B/op	      29 allocs/op
-BenchmarkCompareEncodeShamatonGenArray-14    	 8408242	       146.1 ns/op	      96 B/op	       1 allocs/op
-BenchmarkCompareEncodeTinylib-14             	 5854795	       209.6 ns/op	     320 B/op	       1 allocs/op
-BenchmarkCompareEncodeShamatonGenMap-14      	 7294069	       170.4 ns/op	     160 B/op	       1 allocs/op
-BenchmarkCompareEncodeShamatonGen-14         	 6743263	       174.7 ns/op	     160 B/op	       1 allocs/op
-BenchmarkCompareEncodeShamatonArray-14       	 3565826	       345.1 ns/op	     256 B/op	       3 allocs/op
-BenchmarkCompareEncodeShamaton-14            	 2433212	       493.3 ns/op	     320 B/op	       3 allocs/op
-BenchmarkCompareEncodeUgorji-14              	 1777185	       694.7 ns/op	     928 B/op	      10 allocs/op
-BenchmarkCompareEncodeVmihailencoArray-14    	 1940142	       632.0 ns/op	     536 B/op	      12 allocs/op
-BenchmarkCompareEncodeVmihailenco-14         	 1244857	       961.0 ns/op	     792 B/op	      14 allocs/op
-BenchmarkCompareEncodeProtocolBuffer-14      	 2113496	       565.1 ns/op	     248 B/op	      13 allocs/op
-BenchmarkCompareEncodeJson-14                	 1827210	       660.2 ns/op	     520 B/op	       9 allocs/op
-BenchmarkCompareEncodeGob-14                 	  323006	      3322 ns/op	    2536 B/op	      30 allocs/op
-BenchmarkCompareEncodeZeroformatter-14       	 2027167	       584.6 ns/op	     640 B/op	      12 allocs/op
-BenchmarkUseCaseDecodeShamaton-14            	  150843	      7893 ns/op	    5080 B/op	     107 allocs/op
-BenchmarkUseCaseDecodeVmihailenco-14         	   60690	     18592 ns/op	    9320 B/op	     113 allocs/op
-BenchmarkUseCaseDecodeShamatonGenMap-14      	  332638	      3938 ns/op	    4904 B/op	     103 allocs/op
-BenchmarkUseCaseDecodeShamatonGen-14         	  317209	      3854 ns/op	    4904 B/op	     103 allocs/op
-BenchmarkUseCaseDecodeShamatonArray-14       	  185910	      6382 ns/op	    5080 B/op	     107 allocs/op
-BenchmarkUseCaseDecodeVmihailencoArray-14    	   78444	     15370 ns/op	   11747 B/op	     214 allocs/op
-BenchmarkUseCaseDecodeShamatonGenArray-14    	  394461	      2861 ns/op	    4904 B/op	     103 allocs/op
-BenchmarkUseCaseDecodeTinylib-14             	  238106	      4645 ns/op	    4904 B/op	     103 allocs/op
-BenchmarkUseCaseDecodeUgorji-14              	   86718	     13809 ns/op	    5576 B/op	     105 allocs/op
-BenchmarkUseCaseDecodeZeroformatter-14       	   75975	     16011 ns/op	   19672 B/op	     413 allocs/op
-BenchmarkUseCaseDecodeJson-14                	   19315	     62437 ns/op	   13176 B/op	     120 allocs/op
-BenchmarkUseCaseDecodeGob-14                 	   56740	     21433 ns/op	   16712 B/op	     326 allocs/op
-BenchmarkUseCaseDecodeProtocolBuffer-14      	  126637	      9163 ns/op	   11120 B/op	     211 allocs/op
-BenchmarkUseCaseEncodeShamaton-14            	   74569	     15563 ns/op	    4280 B/op	       6 allocs/op
-BenchmarkUseCaseEncodeShamatonGenMap-14      	  616585	      1865 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkUseCaseEncodeShamatonGen-14         	  650515	      1696 ns/op	    4096 B/op	       1 allocs/op
-BenchmarkUseCaseEncodeVmihailenco-14         	  111834	     10921 ns/op	    8280 B/op	       9 allocs/op
-BenchmarkUseCaseEncodeShamatonArray-14       	   88444	     13197 ns/op	    2232 B/op	       6 allocs/op
-BenchmarkUseCaseEncodeShamatonGenArray-14    	  753111	      1465 ns/op	    2048 B/op	       1 allocs/op
-BenchmarkUseCaseEncodeVmihailencoArray-14    	  154310	      7665 ns/op	    4288 B/op	      10 allocs/op
-BenchmarkUseCaseEncodeTinylib-14             	  644547	      1822 ns/op	    6144 B/op	       1 allocs/op
-BenchmarkUseCaseEncodeUgorji-14              	  100809	     12158 ns/op	   12848 B/op	      15 allocs/op
-BenchmarkUseCaseEncodeZeroformatter-14       	   64909	     16234 ns/op	   21696 B/op	     404 allocs/op
-BenchmarkUseCaseEncodeJson-14                	  106998	     10893 ns/op	    6247 B/op	       2 allocs/op
-BenchmarkUseCaseEncodeGob-14                 	   91743	     12327 ns/op	   12720 B/op	      30 allocs/op
-BenchmarkUseCaseEncodeProtocolBuffer-14      	  287434	      4218 ns/op	    2304 B/op	       1 allocs/op
+BenchmarkUnmarshalMsgStream-14               	 1939327	       610.6 ns/op	 145.77 MB/s	     392 B/op	      19 allocs/op
+BenchmarkUnmarshalMsgDirect-14               	 2455111	       504.2 ns/op	 176.51 MB/s	     869 B/op	      10 allocs/op
+BenchmarkUnmarshalJsonDirect-14              	 1382108	       866.6 ns/op	 165.02 MB/s	     857 B/op	       9 allocs/op
+BenchmarkUnmarshalJsonStream-14              	 1626514	       756.8 ns/op	 188.95 MB/s	     344 B/op	       8 allocs/op
+BenchmarkUnmarshalMsgStreamParallel-14       	 4351473	       252.6 ns/op	 352.32 MB/s	     392 B/op	      19 allocs/op
+BenchmarkUnmarshalMsgDirectParallel-14       	 3943908	       276.5 ns/op	 321.84 MB/s	     869 B/op	      10 allocs/op
+BenchmarkUnmarshalJsonDirectParallel-14      	 2677005	       440.6 ns/op	 324.56 MB/s	     858 B/op	       9 allocs/op
+BenchmarkUnmarshalJsonStreamParallel-14      	 4251412	       277.1 ns/op	 516.12 MB/s	     344 B/op	       8 allocs/op
+BenchmarkMarshalMsgStream-14                 	 3389856	       357.1 ns/op	 249.24 MB/s	     400 B/op	       5 allocs/op
+BenchmarkMarshalMsgDirect-14                 	 4724482	       256.2 ns/op	 347.33 MB/s	     256 B/op	       3 allocs/op
+BenchmarkMarshalJsonDirect-14                	 2540613	       463.7 ns/op	 308.38 MB/s	     368 B/op	       3 allocs/op
+BenchmarkMarshalJsonStream-14                	 1701415	       715.2 ns/op	 199.95 MB/s	     840 B/op	      10 allocs/op
+BenchmarkMarshalMsgStreamParallel-14         	 6242222	       182.3 ns/op	 488.27 MB/s	     400 B/op	       5 allocs/op
+BenchmarkMarshalMsgDirectParallel-14         	10467393	       115.7 ns/op	 769.52 MB/s	     256 B/op	       3 allocs/op
+BenchmarkMarshalJsonDirectParallel-14        	 5043241	       240.0 ns/op	 595.72 MB/s	     368 B/op	       3 allocs/op
+BenchmarkMarshalJsonStreamParallel-14        	 3142400	       387.4 ns/op	 369.17 MB/s	     840 B/op	      10 allocs/op
+BenchmarkMsgEncIntShamaton-14                	25486702	        46.82 ns/op	      64 B/op	       3 allocs/op
+BenchmarkMsgEncIntVmihailenco-14             	14316541	        87.13 ns/op	     120 B/op	       3 allocs/op
+BenchmarkMsgEncFloatShamaton-14              	23257570	        49.34 ns/op	      72 B/op	       3 allocs/op
+BenchmarkMsgEncFloatVmihailenco-14           	15371222	        84.80 ns/op	     120 B/op	       3 allocs/op
+BenchmarkMsgEncStringShamaton-14             	17855791	        65.76 ns/op	     112 B/op	       3 allocs/op
+BenchmarkMsgEncStringVmihailenco-14          	12972124	        91.28 ns/op	     128 B/op	       3 allocs/op
+BenchmarkMsgEncBoolShamaton-14               	35263909	        37.15 ns/op	      49 B/op	       2 allocs/op
+BenchmarkMsgEncBoolVmihailenco-14            	16544906	        69.56 ns/op	     112 B/op	       2 allocs/op
+BenchmarkMsgEncArray10000Shamaton-14         	   26235	     43812 ns/op	   57416 B/op	       3 allocs/op
+BenchmarkMsgEncArray10000Vmihailenco-14      	    7609	    158771 ns/op	  131201 B/op	      13 allocs/op
+BenchmarkMsgEncMap10000Shamaton-14           	    5595	    203002 ns/op	  139313 B/op	       2 allocs/op
+BenchmarkMsgEncMap10000Vmihailenco-14        	    1690	    737306 ns/op	  765016 B/op	   20014 allocs/op
+BenchmarkMsgEncTimeShamaton-14               	18068388	        69.45 ns/op	      88 B/op	       3 allocs/op
+BenchmarkMsgEncTimeVmihailenco-14            	13269162	        90.59 ns/op	     136 B/op	       3 allocs/op
+BenchmarkMsgEncByteShamaton-14               	16773939	        74.57 ns/op	     104 B/op	       3 allocs/op
+BenchmarkMsgEncByteVmihailenco-14            	12096931	        90.00 ns/op	     136 B/op	       3 allocs/op
+BenchmarkMsgEncInterfaceShamaton-14          	 3894517	       297.3 ns/op	     120 B/op	       3 allocs/op
+BenchmarkMsgEncInterfaceVmihailenco-14       	 2699432	       433.4 ns/op	     184 B/op	       7 allocs/op
+BenchmarkMsgDecIntShamaton-14                	37189650	        33.64 ns/op	      40 B/op	       2 allocs/op
+BenchmarkMsgDecIntVmihailenco-14             	21713479	        53.17 ns/op	      56 B/op	       2 allocs/op
+BenchmarkMsgDecFloatShamaton-14              	38388942	        32.87 ns/op	      40 B/op	       2 allocs/op
+BenchmarkMsgDecFloatVmihailenco-14           	20982596	        56.83 ns/op	      56 B/op	       2 allocs/op
+BenchmarkMsgDecStringShamaton-14             	18604687	        59.72 ns/op	      96 B/op	       3 allocs/op
+BenchmarkMsgDecStringVmihailenco-14          	14345358	        88.94 ns/op	     112 B/op	       3 allocs/op
+BenchmarkMsgDecBoolShamaton-14               	44517403	        27.10 ns/op	      33 B/op	       2 allocs/op
+BenchmarkMsgDecBoolVmihailenco-14            	27795766	        44.19 ns/op	      49 B/op	       2 allocs/op
+BenchmarkMsgDecArray10000Shamaton-14         	   29042	     40714 ns/op	   82000 B/op	       4 allocs/op
+BenchmarkMsgDecArray10000Vmihailenco-14      	    5355	    221063 ns/op	  164142 B/op	       7 allocs/op
+BenchmarkMsgDecMap10000Shamaton-14           	    3464	    359354 ns/op	  516848 B/op	   10036 allocs/op
+BenchmarkMsgDecMap10000Vmihailenco-14        	    1042	   1153369 ns/op	  757716 B/op	   30036 allocs/op
+BenchmarkMsgDecTimeShamaton-14               	17534469	        65.70 ns/op	      80 B/op	       3 allocs/op
+BenchmarkMsgDecTimeVmihailenco-14            	18266751	        69.99 ns/op	      72 B/op	       2 allocs/op
+BenchmarkMsgDecByteShamaton-14               	31882248	        40.05 ns/op	      56 B/op	       2 allocs/op
+BenchmarkMsgDecByteVmihailenco-14            	15377460	        78.48 ns/op	      96 B/op	       3 allocs/op
+BenchmarkMsgDecInterfaceShamaton-14          	 2369400	       511.6 ns/op	     672 B/op	      14 allocs/op
+BenchmarkMsgDecInterfaceVmihailenco-14       	 1796239	       676.8 ns/op	     816 B/op	      15 allocs/op
+BenchmarkMarshalMsgBenchChild-14             	77508739	        15.74 ns/op	      32 B/op	       1 allocs/op
+BenchmarkAppendMsgBenchChild-14              	777911210	         1.516 ns/op	 659.42 MB/s	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalBenchChild-14              	515572158	         2.262 ns/op	 442.14 MB/s	       0 B/op	       0 allocs/op
+BenchmarkEncodeBenchChild-14                 	358144498	         3.308 ns/op	 302.31 MB/s	       0 B/op	       0 allocs/op
+BenchmarkDecodeBenchChild-14                 	161602204	         7.403 ns/op	 135.08 MB/s	       0 B/op	       0 allocs/op
+BenchmarkMarshalMsgBenchMarkStruct-14        	24566000	        47.54 ns/op	     128 B/op	       1 allocs/op
+BenchmarkAppendMsgBenchMarkStruct-14         	278014228	         4.290 ns/op	 233.09 MB/s	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalBenchMarkStruct-14         	532526359	         2.275 ns/op	 439.54 MB/s	       0 B/op	       0 allocs/op
+BenchmarkEncodeBenchMarkStruct-14            	221993445	         5.302 ns/op	 188.62 MB/s	       0 B/op	       0 allocs/op
+BenchmarkDecodeBenchMarkStruct-14            	167126070	         7.161 ns/op	 139.64 MB/s	       0 B/op	       0 allocs/op
+BenchmarkMarshalMsgItem-14                   	51913873	        23.11 ns/op	      48 B/op	       1 allocs/op
+BenchmarkAppendMsgItem-14                    	182043828	         6.588 ns/op	4250.44 MB/s	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalItem-14                    	41296952	        28.43 ns/op	 984.75 MB/s	       0 B/op	       0 allocs/op
+BenchmarkEncodeItem-14                       	55228486	        21.96 ns/op	1275.10 MB/s	       0 B/op	       0 allocs/op
+BenchmarkDecodeItem-14                       	14617648	        81.67 ns/op	 342.84 MB/s	       0 B/op	       0 allocs/op
+BenchmarkMarshalMsgUser-14                   	29160598	        39.93 ns/op	      96 B/op	       1 allocs/op
+BenchmarkAppendMsgUser-14                    	121574305	         9.997 ns/op	4601.57 MB/s	       0 B/op	       0 allocs/op
+BenchmarkUnmarshalUser-14                    	23999139	        48.56 ns/op	 947.37 MB/s	       0 B/op	       0 allocs/op
+BenchmarkEncodeUser-14                       	33501031	        36.23 ns/op	1269.84 MB/s	       0 B/op	       0 allocs/op
+BenchmarkDecodeUser-14                       	 9006464	       133.1 ns/op	 345.69 MB/s	       0 B/op	       0 allocs/op
+BenchmarkCompareDecodeShamatonGenArray-14    	 5323389	       231.5 ns/op	     386 B/op	       8 allocs/op
+BenchmarkCompareDecodeTinylib-14             	 4160775	       290.9 ns/op	     386 B/op	       8 allocs/op
+BenchmarkCompareDecodeShamatonGenMap-14      	 4747548	       260.9 ns/op	     386 B/op	       8 allocs/op
+BenchmarkCompareDecodeShamatonGen-14         	 4635006	       270.2 ns/op	     386 B/op	       8 allocs/op
+BenchmarkCompareDecodeShamatonArray-14       	 2783067	       392.3 ns/op	     554 B/op	      11 allocs/op
+BenchmarkCompareDecodeShamaton-14            	 2567619	       457.6 ns/op	     554 B/op	      11 allocs/op
+BenchmarkCompareDecodeUgorji-14              	 1654383	       755.2 ns/op	    1074 B/op	      10 allocs/op
+BenchmarkCompareDecodeVmihailencoArray-14    	 1238646	       962.1 ns/op	     832 B/op	      22 allocs/op
+BenchmarkCompareDecodeVmihailenco-14         	 1000000	      1126 ns/op	     784 B/op	      20 allocs/op
+BenchmarkCompareDecodeProtocolBuffer-14      	 1868425	       655.3 ns/op	     656 B/op	      19 allocs/op
+BenchmarkCompareDecodeJson-14                	  507247	      2365 ns/op	     992 B/op	      23 allocs/op
+BenchmarkCompareDecodeGob-14                 	  107646	     10892 ns/op	   10088 B/op	     234 allocs/op
+BenchmarkCompareDecodeZeroformatter-14       	 1599951	       802.5 ns/op	     944 B/op	      29 allocs/op
+BenchmarkCompareEncodeShamatonGenArray-14    	 8264708	       144.1 ns/op	      96 B/op	       1 allocs/op
+BenchmarkCompareEncodeTinylib-14             	 6059175	       201.6 ns/op	     320 B/op	       1 allocs/op
+BenchmarkCompareEncodeShamatonGenMap-14      	 6778176	       170.1 ns/op	     160 B/op	       1 allocs/op
+BenchmarkCompareEncodeShamatonGen-14         	 7176530	       171.1 ns/op	     160 B/op	       1 allocs/op
+BenchmarkCompareEncodeShamatonArray-14       	 3548294	       337.7 ns/op	     256 B/op	       3 allocs/op
+BenchmarkCompareEncodeShamaton-14            	 2429180	       475.5 ns/op	     320 B/op	       3 allocs/op
+BenchmarkCompareEncodeUgorji-14              	 1781988	       652.1 ns/op	     928 B/op	      10 allocs/op
+BenchmarkCompareEncodeVmihailencoArray-14    	 1921237	       714.3 ns/op	     536 B/op	      12 allocs/op
+BenchmarkCompareEncodeVmihailenco-14         	 1000000	      1043 ns/op	     792 B/op	      14 allocs/op
+BenchmarkCompareEncodeProtocolBuffer-14      	 2135275	       593.7 ns/op	     248 B/op	      13 allocs/op
+BenchmarkCompareEncodeJson-14                	 1548516	       730.6 ns/op	     520 B/op	       9 allocs/op
+BenchmarkCompareEncodeGob-14                 	  357266	      3188 ns/op	    2536 B/op	      30 allocs/op
+BenchmarkCompareEncodeZeroformatter-14       	 2056809	       585.2 ns/op	     640 B/op	      12 allocs/op
+BenchmarkUseCaseDecodeShamaton-14            	  154789	      7954 ns/op	    5080 B/op	     107 allocs/op
+BenchmarkUseCaseDecodeVmihailenco-14         	   64837	     19391 ns/op	    9321 B/op	     113 allocs/op
+BenchmarkUseCaseDecodeShamatonGenMap-14      	  284178	      4065 ns/op	    4904 B/op	     103 allocs/op
+BenchmarkUseCaseDecodeShamatonGen-14         	  303058	      3881 ns/op	    4904 B/op	     103 allocs/op
+BenchmarkUseCaseDecodeShamatonArray-14       	  202998	      5935 ns/op	    5080 B/op	     107 allocs/op
+BenchmarkUseCaseDecodeVmihailencoArray-14    	   84000	     14662 ns/op	   11747 B/op	     214 allocs/op
+BenchmarkUseCaseDecodeShamatonGenArray-14    	  410979	      2925 ns/op	    4904 B/op	     103 allocs/op
+BenchmarkUseCaseDecodeTinylib-14             	  252301	      4393 ns/op	    4904 B/op	     103 allocs/op
+BenchmarkUseCaseDecodeUgorji-14              	  111355	     10423 ns/op	    5576 B/op	     105 allocs/op
+BenchmarkUseCaseDecodeZeroformatter-14       	   96618	     13608 ns/op	   19672 B/op	     413 allocs/op
+BenchmarkUseCaseDecodeJson-14                	   23227	     52185 ns/op	   13176 B/op	     120 allocs/op
+BenchmarkUseCaseDecodeGob-14                 	   66234	     18390 ns/op	   16712 B/op	     326 allocs/op
+BenchmarkUseCaseDecodeProtocolBuffer-14      	  121657	      9294 ns/op	   11120 B/op	     211 allocs/op
+BenchmarkUseCaseEncodeShamaton-14            	  147466	      8082 ns/op	    4280 B/op	       6 allocs/op
+BenchmarkUseCaseEncodeShamatonGenMap-14      	  708334	      1810 ns/op	    4096 B/op	       1 allocs/op
+BenchmarkUseCaseEncodeShamatonGen-14         	  723608	      1786 ns/op	    4096 B/op	       1 allocs/op
+BenchmarkUseCaseEncodeVmihailenco-14         	  110054	     11033 ns/op	    8280 B/op	       9 allocs/op
+BenchmarkUseCaseEncodeShamatonArray-14       	  222843	      5391 ns/op	    2232 B/op	       6 allocs/op
+BenchmarkUseCaseEncodeShamatonGenArray-14    	  825614	      1435 ns/op	    2048 B/op	       1 allocs/op
+BenchmarkUseCaseEncodeVmihailencoArray-14    	  159376	      7558 ns/op	    4288 B/op	      10 allocs/op
+BenchmarkUseCaseEncodeTinylib-14             	  652485	      1822 ns/op	    6144 B/op	       1 allocs/op
+BenchmarkUseCaseEncodeUgorji-14              	  102187	     10392 ns/op	   12848 B/op	      15 allocs/op
+BenchmarkUseCaseEncodeZeroformatter-14       	   78409	     15532 ns/op	   21696 B/op	     404 allocs/op
+BenchmarkUseCaseEncodeJson-14                	  106512	     11046 ns/op	    6247 B/op	       2 allocs/op
+BenchmarkUseCaseEncodeGob-14                 	  106092	     12275 ns/op	   12720 B/op	      30 allocs/op
+BenchmarkUseCaseEncodeProtocolBuffer-14      	  271105	      4336 ns/op	    2304 B/op	       1 allocs/op
 PASS
-ok  	github.com/shamaton/msgpack_bench	185.147s
+ok  	github.com/shamaton/msgpack_bench	181.746s
 PASS
-ok  	github.com/shamaton/msgpack_bench/cmd/benchsvg	0.003s
+ok  	github.com/shamaton/msgpack_bench/cmd/benchsvg	0.004s
 ?   	github.com/shamaton/msgpack_bench/msgpackgen	[no test files]
 ?   	github.com/shamaton/msgpack_bench/protocmp	[no test files]
