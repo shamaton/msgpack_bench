@@ -4,8 +4,8 @@ go 1.26.3
 
 require (
 	github.com/go-json-experiment/json v0.0.0-20240524174822-2d9f40f7385b
-	github.com/shamaton/msgpack/v3 v3.1.2
-	github.com/shamaton/msgpackgen v1.0.1
+	github.com/shamaton/msgpack/v3 v3.2.0
+	github.com/shamaton/msgpackgen v1.1.0
 	github.com/shamaton/zeroformatter v1.0.1
 	github.com/tinylib/msgp v1.6.4
 	github.com/ugorji/go/codec v1.3.1
